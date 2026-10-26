@@ -69,6 +69,10 @@
     },
   ];
 
+  /* Categorias que ganham uma coroa no menu para quem ainda não assina
+     (têm pouco ou nenhum conteúdo gratuito) */
+  const premiumCats = ["carinho", "intimidade", "posicoes"];
+
   /* ---------- Intensidades (cumulativas: "Picante" inclui "Leve") ---------- */
   const intensities = [
     { id: "leve",    name: "Leve",    desc: "Carinho, risadas e conversa" },
@@ -120,7 +124,7 @@
   const positionImageBase = "";
 
   window.EntreNosData = {
-    categories, intensities, intLabels, formats, stages,
+    categories, premiumCats, intensities, intLabels, formats, stages,
     cards, positions, positionImageBase,
   };
 })();

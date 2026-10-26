@@ -87,7 +87,6 @@
     if (!session) return "login";
     if (!profile) return null;
     if (!profile.birth_date || !profile.terms_accepted_at) { prefillComplete(); return "complete"; }
-    if (!profile.age_verified_at) return "age";
     return null;
   }
 
@@ -131,8 +130,7 @@
   function proceed() {
     const need = needs();
     if (need === "complete") { prefillComplete(); app().goTo("complete"); return; }
-    if (need === "age") { renderAge(); app().goTo("age"); return; }
-    const target = pending || sessionStorage.getItem("en_next") || "setup";
+    const target = pending || sessionStorage.getItem("en_next") || "inicio";
     pending = null;
     sessionStorage.removeItem("en_next");
     app().goTo(target);
@@ -147,6 +145,7 @@
     if (!session) return;
     const returningFromOAuth = !!sessionStorage.getItem("en_next");
     if (["login", "signup"].includes(screen) || (returningFromOAuth && screen === "home")) proceed();
+    else if (event === "INITIAL" && screen === "home" && !needs()) app().goTo("inicio"); // quem já está logado entra direto no app
   }
 
   /* ---------- Conteúdo do jogo (vem do banco, só para quem tem idade verificada) ---------- */
@@ -181,49 +180,6 @@
     (p.data || []).forEach((r) => D.positions.push({ name: r.name, int: r.intensity, image: r.image || "", desc: r.description || "" }));
     contentLoaded = true;
     return true;
-  }
-
-  /* ---------- Verificação de idade ---------- */
-  async function renderAge() {
-    const box = $("#ageStatus");
-    showMsg(box, "");
-    if (!session) return;
-    const { data } = await client
-      .from("age_verifications")
-      .select("status, created_at")
-      .order("created_at", { ascending: false })
-      .limit(1)
-      .maybeSingle();
-    if (!data) return;
-    if (data.status === "pending") showMsg(box, "Sua verificação está em análise. Isso pode levar alguns minutos.", "info");
-    else if (data.status === "rejected") showMsg(box, "Não conseguimos confirmar sua idade. Você pode tentar de novo.");
-    else if (data.status === "expired") showMsg(box, "A verificação expirou. Inicie uma nova.");
-  }
-
-  async function onAgeStart() {
-    const box = $("#ageStatus");
-    const btn = $("#ageStart");
-    showMsg(box, "");
-    busy(btn, true, "Abrindo…");
-    try {
-      const { data, error } = await client.functions.invoke("age-start", { body: { returnUrl: redirectUrl() + "?age=done" } });
-      busy(btn, false);
-      if (error || !data || !data.url) throw error || new Error("sem url");
-      location.href = data.url;
-    } catch (e) {
-      busy(btn, false);
-      showMsg(box, "A verificação de idade ainda não está disponível. Volte em breve.", "info");
-    }
-  }
-
-  async function onAgeRefresh() {
-    const btn = $("#ageRefresh");
-    busy(btn, true, "Atualizando…");
-    await loadProfile();
-    busy(btn, false);
-    if (profile && profile.age_verified_at) { proceed(); return; }
-    await renderAge();
-    if (!$("#ageStatus").textContent) showMsg($("#ageStatus"), "Ainda não recebemos a confirmação. Tente de novo em instantes.", "info");
   }
 
   /* ---------- Telas ---------- */
@@ -355,7 +311,7 @@
   }
 
   async function onGoogle() {
-    sessionStorage.setItem("en_next", pending || "setup");
+    sessionStorage.setItem("en_next", pending || "inicio");
     const { error } = await client.auth.signInWithOAuth({
       provider: "google",
       options: { redirectTo: redirectUrl() },
@@ -382,9 +338,7 @@
     $("#forgotBtn").addEventListener("click", onForgot);
     $$("[data-auth='google']").forEach((b) => b.addEventListener("click", onGoogle));
     $("#completeLogout").addEventListener("click", signOut);
-    $("#ageStart").addEventListener("click", onAgeStart);
-    $("#ageRefresh").addEventListener("click", onAgeRefresh);
-    $("#ageLogout").addEventListener("click", signOut);
+
 
     // Importante: não chamar o Supabase dentro do callback (evita travar). Usa setTimeout.
     client.auth.onAuthStateChange((event, s) => {
@@ -394,14 +348,56 @@
     const { data } = await client.auth.getSession();
     session = data.session;
     await refresh("INITIAL");
-    // Volta do provedor de verificação de idade
-    if (new URLSearchParams(location.search).get("age") === "done") {
-      history.replaceState(null, "", location.pathname);
-      if (session) { await loadProfile(); if (profile && profile.age_verified_at) proceed(); else { renderAge(); app().goTo("age"); } }
-    }
+  }
+
+  /* ---------- Dia jogado (sequência) e plano ---------- */
+  let playedKey = null;
+  const spToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+
+  async function registerPlay() {
+    if (!client || !session) return;
+    const day = spToday();
+    if (playedKey === day) return;
+    playedKey = day;
+    // Só a data fica guardada; se o dia já existe, nada muda
+    try {
+      await client.from("daily_activity").upsert({ user_id: session.user.id, day }, { onConflict: "user_id,day", ignoreDuplicates: true });
+    } catch { playedKey = null; /* tenta de novo na próxima vez */ }
+  }
+
+  async function getStreak() {
+    if (!client || !session) return null;
+    const { data, error } = await client.rpc("my_streak");
+    return error ? null : data;
+  }
+
+  async function getPlan() {
+    if (!client || !session) return { premium: false };
+    const { data } = await client.from("subscriptions").select("status, current_period_end").eq("user_id", session.user.id).maybeSingle();
+    const ok = data && ["active", "trialing"].includes(data.status) && (!data.current_period_end || new Date(data.current_period_end) > new Date());
+    return { premium: !!ok };
+  }
+
+  async function saveName(name) {
+    const { error } = await client.from("profiles").update({ display_name: name }).eq("id", session.user.id);
+    if (!error) { await loadProfile(); renderHomeUser(); }
+    return !error;
+  }
+
+  async function deleteAccount() {
+    const { error } = await client.functions.invoke("delete-account");
+    if (error) return false;
+    await client.auth.signOut();
+    session = null; profile = null; pending = null;
+    clearContent();
+    renderHomeUser();
+    return true;
   }
 
   window.EntreNosAuth = {
+    registerPlay, getStreak, getPlan, saveName, deleteAccount,
+    getSession: () => session,
+    getProfile: () => profile,
     enabled,
     needs,
     setPending: (t) => { pending = t; },

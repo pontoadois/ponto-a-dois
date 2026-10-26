@@ -162,7 +162,7 @@
   // Telas do jogo exigem login (quando o login está ativo)
   function navigate(target) {
     const A = window.EntreNosAuth;
-    if (A && A.enabled && (target === "setup" || target === "game")) {
+    if (A && A.enabled && ["setup", "game", "inicio", "streak", "perfil", "profile", "planos"].includes(target)) {
       const need = A.needs();
       if (need) { A.setPending(target); goTo(need); return; }
     }
@@ -174,7 +174,10 @@
     const target = $(`.screen[data-screen="${screenName}"]`);
     if (target) target.classList.add("is-active");
 
+    document.body.dataset.screen = screenName;
     if (screenName !== "game") clearWidgets();
+    const hook = window.EntreNosHooks && window.EntreNosHooks[screenName];
+    if (hook) hook();
     if (screenName === "game") startGame();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
@@ -570,6 +573,31 @@
     return deck;
   }
 
+  /* ---------- "Jogados recentemente" (fica só no aparelho) ---------- */
+  const RECENT_KEY = "entre-nos-recent";
+  function getRecent() {
+    try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch { return []; }
+  }
+  function rememberRecent() {
+    const cats = [...state.settings.categories];
+    const mode = state.settings.mode;
+    const one = cats.length === 1 ? CATEGORIES.find((c) => c.id === cats[0]) : null;
+    const label = mode === "noite" ? "Noite de Encontro" : one ? one.name : "Jogo livre";
+    const key = mode + "|" + cats.join(",");
+    const list = getRecent().filter((x) => x.key !== key);
+    list.unshift({ key, label, cats, mode });
+    try { localStorage.setItem(RECENT_KEY, JSON.stringify(list.slice(0, 2))); } catch { /* ignore */ }
+  }
+
+  // Usado pelo menu do app: já deixa a configuração pronta antes de abrir a tela
+  function applyPlay({ categories, mode }) {
+    const valid = (categories || []).filter((id) => CATEGORIES.some((c) => c.id === id));
+    if (valid.length) state.settings.categories = valid;
+    if (mode === "livre" || mode === "noite") state.settings.mode = mode;
+    saveSettings();
+    renderSetup();
+  }
+
   async function startGame() {
     clearWidgets();
     // As cartas vêm do banco (só para quem tem idade verificada)
@@ -590,6 +618,9 @@
       goTo("setup");
       return;
     }
+    // Jogo começou: conta o dia na sequência e guarda em "jogados recentemente"
+    if (A && A.registerPlay) A.registerPlay();
+    rememberRecent();
     state.drawIndex = 0;
     state.round = 1;
     state.turnsPlayed = 0;
@@ -1128,7 +1159,7 @@
     $(".screen--home").classList.add("is-active");
   }
 
-  window.EntreNosApp = { goTo, navigate, showToast };
+  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent };
 
   document.addEventListener("DOMContentLoaded", init);
 })();

@@ -62,6 +62,8 @@
             <a href="termos.html">Termos de Uso</a>
             <span aria-hidden="true">·</span>
             <a href="privacidade.html">Política de Privacidade</a>
+            <span aria-hidden="true">·</span>
+            <a href="reembolso.html">Cancelamento e Reembolso</a>
           </p>
         </div>
       </section>
@@ -229,7 +231,7 @@
             <label class="au-check"><input type="checkbox" id="signupAge"><span>Confirmo que tenho <b>18 anos ou mais</b>.</span></label>
             <label class="au-check"><input type="checkbox" id="signupTerms"><span>Li e aceito os <a class="au-link" href="termos.html" target="_blank" rel="noopener">Termos de Uso</a> e a <a class="au-link" href="privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.</span></label>
           </div>
-              <div class="au-note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span>Para proteger o conteúdo, podemos pedir uma verificação de idade antes de liberar o jogo.</span></div>
+
               <p class="au-error" id="signupError" role="alert" hidden></p>
               <button type="submit" class="btn btn--primary btn--lg btn--block" id="signupSubmit">Criar conta</button>
               <p class="au-switch">Já tem conta? <button type="button" class="au-link" data-goto="login">Entrar</button></p>
@@ -304,30 +306,123 @@
       </section>
 
 
-      <!-- ============ TELA: CONFIRME SUA IDADE ============ -->
-      <section class="screen screen--auth" data-screen="age">
-        <div class="au">
-          <div class="au-grid">
-          <div class="au-hero">
-            <div class="au-brand">Ponto a Dois</div>
-            <p class="au-tag">Experiências para fortalecer a conexão entre vocês.</p>
-            <div class="st-fan au-fan" aria-hidden="true"></div>
-          </div>
-          <div class="au-panel">
-            <div>
-              <h1 class="au-title">Confirme sua idade</h1>
-              <p class="au-sub">Este jogo é só para maiores de 18 anos. Para liberar o conteúdo, precisamos confirmar sua idade com um documento.</p>
+      <!-- ============ APP: INÍCIO ============ -->
+      <section class="screen screen--app" data-screen="inicio">
+        <div class="app">
+          <header class="app-top">
+            <button type="button" class="app-avatar" data-goto="perfil" aria-label="Abrir perfil"><span id="avatarInitial">K</span></button>
+            <div class="app-hello"><b id="helloName">Olá</b><span>Continue de onde pararam</span></div>
+            <button type="button" class="streak-pill" data-goto="streak" aria-label="Ver sequência"><svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,128,189,.25)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span id="streakNow">0</span></button>
+          </header>
+          <div class="app-card week-card" id="weekHome" aria-label="Sua semana"></div>
+          <div class="app-main">
+            <section class="reco">
+              <span class="reco-tag">Recomendado</span>
+              <h2 class="reco-title">Noite de Encontro</h2>
+              <p>Uma sessão guiada de uns 20 minutos, que começa leve e vai esquentando aos poucos.</p>
+              <button type="button" class="btn btn--primary btn--lg btn--block" id="recoPlay"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l14 9-14 9z"/></svg>Jogar</button>
+            </section>
+            <div class="app-side">
+              <button type="button" class="premium-banner" data-goto="planos" id="premiumHome"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
+              <div id="recentWrap" hidden>
+                <h2 class="app-h2">Jogados recentemente</h2>
+                <div class="recent-list" id="recentList"></div>
+              </div>
             </div>
-            <ul class="au-steps">
-              <li>Leva cerca de 2 minutos.</li>
-              <li>Você envia uma foto do documento e uma selfie, em um serviço de verificação seguro.</li>
-              <li>Nós guardamos apenas o resultado: verificado ou não.</li>
-            </ul>
-            <p class="au-error is-info" id="ageStatus" role="status" hidden></p>
-            <button type="button" class="btn btn--primary btn--lg btn--block" id="ageStart">Verificar minha idade</button>
-            <button type="button" class="btn btn--ghost btn--block" id="ageRefresh">Já verifiquei, atualizar</button>
-            <p class="au-switch"><button type="button" class="au-link" id="ageLogout">Sair desta conta</button></p>
           </div>
+          <h2 class="app-h2">Jogos</h2>
+          <div class="game-grid" id="gameGrid"></div>
+        </div>
+      </section>
+
+
+      <!-- ============ APP: SEQUÊNCIA ============ -->
+      <section class="screen screen--app" data-screen="streak">
+        <div class="app">
+          <div class="app-bar"><button type="button" class="icon-btn" data-goto="inicio" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Sequência</h1></div>
+          <div class="streak-hero">
+            <div><div class="streak-num" id="streakBig">0</div><div class="streak-lbl" id="streakLbl">dias seguidos</div><p>Jogar um pouquinho por dia aproxima vocês.</p></div>
+            <span class="streak-flame"><svg width="120" height="120" viewBox="0 0 24 24" fill="rgba(241,59,145,.35)" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg></span>
+          </div>
+          <h2 class="app-h2">Esta semana</h2>
+          <div class="app-card week-card week-card--big" id="weekBig"></div>
+          <h2 class="app-h2">Resumo</h2>
+          <div class="stat-list" id="statList"></div>
+        </div>
+      </section>
+
+
+      <!-- ============ APP: PERFIL E MENU ============ -->
+      <section class="screen screen--app" data-screen="perfil">
+        <div class="app">
+          <div class="prof-head"><span class="app-avatar app-avatar--lg" id="profAvatar">K</span><div><b id="profName">Perfil</b><span id="profPlan">Plano gratuito</span></div></div>
+          <button type="button" class="premium-banner" data-goto="planos" id="premiumProf"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
+          <div class="menu-group"><span class="menu-label">Geral</span>
+            <button class="menu-row" id="rowProfile" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0"/></svg></span><span class="menu-txt"><span>Gerenciar perfil</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+            <button class="menu-row" id="rowPlan" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg></span><span class="menu-txt"><span>Meu plano e assinatura</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+            <button class="menu-row" id="rowPrefs" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M1 14h6 M9 8h6 M17 16h6"/></svg></span><span class="menu-txt"><span>Preferências do jogo</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+            <a class="menu-row" id="rowSupport" href="mailto:kayofellipefer@gmail.com"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20 M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01"/></svg></span><span class="menu-txt"><span>Suporte</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+          </div>
+          <div class="menu-group"><span class="menu-label">Conta</span>
+            <button class="menu-row" id="rowLogout" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9"/></svg></span><span class="menu-txt"><span>Sair</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+          </div>
+          <div class="menu-group"><span class="menu-label">Legal</span>
+            <a class="menu-row" id="rowTerms" href="termos.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Termos de Uso</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+            <a class="menu-row" id="rowPrivacy" href="privacidade.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Política de Privacidade</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+            <a class="menu-row" id="rowRefund" href="reembolso.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Cancelamento e Reembolso</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+          </div>
+          <button class="menu-row menu-row--danger" id="rowDelete" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span class="menu-txt"><span>Excluir minha conta</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+        </div>
+      </section>
+
+
+      <!-- ============ APP: GERENCIAR PERFIL ============ -->
+      <section class="screen screen--app" data-screen="profile">
+        <div class="app">
+          <div class="app-bar"><button type="button" class="icon-btn" data-goto="perfil" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Gerenciar perfil</h1></div>
+          <form class="au-form" id="profileForm" novalidate>
+            <div class="au-field"><label for="pfName">Como quer ser chamado(a)</label><div class="au-input"><input id="pfName" type="text" maxlength="40" autocomplete="given-name"></div></div>
+            <div class="au-field"><label for="pfEmail">E-mail</label><div class="au-input"><input id="pfEmail" type="email" disabled></div></div>
+            <div class="au-field"><label for="pfBirth">Data de nascimento</label><div class="au-input"><input id="pfBirth" type="text" disabled></div><span class="au-hint">A data de nascimento e o e-mail não podem ser alterados aqui.</span></div>
+            <p class="au-error" id="pfError" role="alert" hidden></p>
+            <button type="submit" class="btn btn--primary btn--lg btn--block" id="pfSave">Salvar</button>
+          </form>
+        </div>
+      </section>
+
+
+      <!-- ============ APP: SEJA PREMIUM ============ -->
+      <section class="screen screen--app screen--plans" data-screen="planos">
+        <div class="app app--plans">
+          <button type="button" class="icon-btn plans-close" data-goto="inicio" aria-label="Fechar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18 M6 6l12 12"/></svg></button>
+          <div class="plans-hero"><div class="st-fan au-fan plans-fan" aria-hidden="true"></div></div>
+          <div class="plans-main">
+            <div class="plans-copy">
+              <h1 class="plans-title">Aproximem-se mais</h1>
+              <ul class="plans-list">
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Todas as categorias e todos os níveis</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Noite de Encontro completa</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Novas cartas toda semana</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Uma assinatura para os dois</li>
+              </ul>
+            </div>
+            <div class="plans-box">
+              <div class="plan-options" role="radiogroup" aria-label="Escolha o plano">
+                <button type="button" class="plan-opt is-selected" role="radio" aria-checked="true" data-plan="anual">
+                  <span class="plan-badge">Fundadores · primeiras 100 vagas</span>
+                  <span class="plan-radio"></span>
+                  <span class="plan-info"><b>Anual</b><span>R$ 94,90 por ano · preço travado</span><small>Depois das 100 vagas: <s>R$ 149,90</s></small></span>
+                  <span class="plan-off">-36%</span>
+                </button>
+                <button type="button" class="plan-opt" role="radio" aria-checked="false" data-plan="mensal">
+                  <span class="plan-radio"></span>
+                  <span class="plan-info"><b>Mensal</b><span>R$ 24,90 por mês</span></span>
+                </button>
+              </div>
+              <button type="button" class="btn btn--primary btn--lg btn--block" id="plansContinue">Continuar</button>
+              <p class="plans-note">Cancele quando quiser. Você tem 7 dias para desistir da compra.</p>
+              <p class="plans-links"><a href="termos.html" target="_blank" rel="noopener">Termos</a> · <a href="privacidade.html" target="_blank" rel="noopener">Privacidade</a> · <a href="reembolso.html" target="_blank" rel="noopener">Reembolso</a></p>
+            </div>
           </div>
         </div>
       </section>
@@ -462,6 +557,16 @@
     </main>
 
 
+    <!-- ============ BARRA DE NAVEGAÇÃO DO APP ============ -->
+    <nav class="appnav" id="appNav" aria-label="Navegação principal">
+      <div class="appnav-brand">Ponto a Dois</div>
+      <button type="button" class="appnav-item" data-goto="inicio" data-nav="inicio"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Jogos</span></button>
+      <button type="button" class="appnav-item appnav-desk" data-goto="streak" data-nav="streak"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span>Sequência</span></button>
+      <button type="button" class="appnav-play" data-goto="setup" aria-label="Jogar"><svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(255,247,255,.25)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
+      <button type="button" class="appnav-item appnav-desk" data-goto="planos" data-nav="planos"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg><span>Meu plano</span></button>
+      <button type="button" class="appnav-item" data-goto="perfil" data-nav="perfil"><span class="appnav-avatar" id="navAvatar">K</span><span>Perfil</span></button>
+    </nav>
+
     <!-- ============ MODAL: COMO JOGAR ============ -->
     <div class="modal" id="modalHowto" data-modal="howto" role="dialog" aria-modal="true" aria-labelledby="howtoTitle" aria-hidden="true">
       <div class="modal-backdrop" data-close-modal></div>
@@ -535,6 +640,26 @@
     </div>
 
 
+    <!-- ============ MODAL: EXCLUIR CONTA ============ -->
+    <div class="modal" id="modalDelete" data-modal="delete" role="dialog" aria-modal="true" aria-labelledby="delTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass">
+        <header class="modal-head">
+          <h2 class="modal-title" id="delTitle">Excluir a conta?</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="modal-body">
+          <p class="howto-intro">Isso apaga a sua conta e os seus dados, e <b>não dá para desfazer</b>.</p>
+          <p class="howto-intro">Se você tem uma assinatura, ela é encerrada, sem reembolso do período já pago (exceto nos 7 dias de desistência). Quem tem o preço do plano Fundadores perde esse preço.</p>
+          <p class="au-error" id="delError" role="alert" hidden></p>
+        </div>
+        <footer class="modal-foot modal-foot--row">
+          <button class="btn btn--ghost btn--block" data-close-modal>Cancelar</button>
+          <button class="btn btn--danger btn--block" id="delConfirm">Excluir definitivamente</button>
+        </footer>
+      </div>
+    </div>
+
     <!-- ============ TOAST ============ -->
     <div
       class="toast"
@@ -548,6 +673,7 @@
     <script src="config.js"></script>
     <script src="script.js"></script>
     <script src="auth.js"></script>
+    <script src="app.js"></script>
 
   </body>
 </html>
