@@ -162,6 +162,8 @@
   // Telas do jogo exigem login (quando o login está ativo)
   function navigate(target) {
     const A = window.EntreNosAuth;
+    // Quem já está logado nunca volta para a capa: o "Voltar" leva ao Início do app
+    if (target === "home" && A && A.enabled && A.getSession && A.getSession() && !A.needs()) target = "inicio";
     if (A && A.enabled && ["setup", "game", "inicio", "streak", "perfil", "profile", "planos"].includes(target)) {
       const need = A.needs();
       if (need) { A.setPending(target); goTo(need); return; }
