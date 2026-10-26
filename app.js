@@ -17,6 +17,8 @@
     heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     calendar: "M8 2v4 M16 2v4 M3 10h18 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
     card: "M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20",
+    check: "M20 6 9 17l-5-5",
+    lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
     `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PATHS[k]}"/></svg>`;
@@ -65,18 +67,10 @@
     $("#weekHome").innerHTML = weekHtml();
     $("#premiumHome").hidden = plan.premium;
 
-    const grid = $("#gameGrid");
-    grid.innerHTML = "";
-    D.categories.forEach((cat) => {
-      const lock = !plan.premium && D.premiumCats.includes(cat.id);
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "game-tile";
-      b.innerHTML = `<span class="game-top"><span class="game-ico">${cat.icon}</span>${lock ? `<span class="game-crown" title="Parte do conteúdo é premium">${svg("crown", 16)}</span>` : ""}</span>
-        <span class="game-name">${cat.name}</span><span class="game-sub">${cat.sub || ""}</span>`;
-      b.addEventListener("click", () => { app().applyPlay({ categories: [cat.id], mode: "livre" }); app().navigate("setup"); });
-      grid.appendChild(b);
-    });
+    // Plano e nomes: a seção "Jogo livre" mostra a coroa nas categorias premium e já traz o nome do perfil
+    const p = auth().getProfile && auth().getProfile();
+    app().setPremium(plan.premium);
+    app().prefillPlayers(p && p.display_name ? p.display_name.split(" ")[0] : "", p && p.gender);
 
     const recents = app().getRecent();
     $("#recentWrap").hidden = !recents.length;
@@ -88,7 +82,7 @@
       b.className = "recent-item";
       b.innerHTML = `<span>${svg("heart", 22)}</span><span class="recent-name"></span>`;
       $(".recent-name", b).textContent = r.label;
-      b.addEventListener("click", () => { app().applyPlay({ categories: r.cats, mode: r.mode }); app().navigate("setup"); });
+      b.addEventListener("click", () => { app().applyPlay({ categories: r.cats, mode: r.mode }); app().play(r.mode); });
       list.appendChild(b);
     });
   }
@@ -113,7 +107,6 @@
     $("#navAvatar").textContent = initialOf();
     $("#profName").textContent = nameOf();
     $("#profPlan").textContent = plan.premium ? "Premium" : "Plano gratuito";
-    $("#premiumProf").hidden = plan.premium;
     $("#rowPlan small").textContent = plan.premium ? "Premium" : "Gratuito";
   }
 
@@ -180,6 +173,60 @@
     }
   }
 
+  /* ---------- Meu plano ---------- */
+  const FREE_FEAT = [[1, "Cartas do nível Leve"], [1, "Sequência diária"], [0, "Níveis Picante e Intenso"], [0, "Categoria Posições"], [0, "Noite de Encontro"]];
+  const PAID_FEAT = [[1, "Todas as categorias e níveis"], [1, "Noite de Encontro completa"], [1, "Posições com ilustrações"]];
+
+  function renderPlano() {
+    const paid = plan.premium;
+    $("#myPlanName").textContent = paid ? "Premium" : "Gratuito";
+    const badge = $("#myPlanBadge");
+    badge.textContent = paid ? "Ativa" : "R$ 0";
+    badge.classList.toggle("is-ok", paid);
+    $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
+      .map(([on, t]) => `<li class="${on ? "is-on" : "is-off"}">${svg(on ? "check" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
+    $("#myPlanFree").hidden = paid;
+    $("#myPlanActions").hidden = !paid;
+    const info = $("#myPlanInfo");
+    info.hidden = !paid;
+    if (paid) {
+      const until = plan.until ? new Date(plan.until).toLocaleDateString("pt-BR") : "";
+      info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>Assinatura ativa</b></div>` +
+        (until ? `<div class="plan-kv"><span>Acesso garantido até</span><b>${until}</b></div>` : "");
+    }
+  }
+
+  /* ---------- Parabéns pelo dia (uma vez por dia, ao entrar) ---------- */
+  const WELCOME_KEY = "ponto-a-dois-welcome-day";
+  let welcomedDay = null;
+  const spToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+
+  async function maybeWelcome() {
+    const a = auth();
+    if (!a || !a.getSession || !a.getSession()) return;
+    const day = spToday();
+    let seen = null;
+    try { seen = localStorage.getItem(WELCOME_KEY); } catch { /* ignore */ }
+    if (seen === day || welcomedDay === day) return;
+    welcomedDay = day;
+    await a.registerPlay(); // entrar no app já conta o dia na sequência
+    let fresh = null;
+    try { fresh = await a.getStreak(); } catch { /* ignore */ }
+    if (!fresh) return; // sem conexão: não mostra nada e tenta de novo na próxima vez
+    streak = fresh;
+    try { localStorage.setItem(WELCOME_KEY, day); } catch { /* ignore */ }
+    renderInicio();
+    const n = streak.current || 1;
+    $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
+    $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
+    $("#welNum").textContent = n;
+    $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
+    $("#welWeek").innerHTML = weekHtml();
+    app().openModal("welcome");
+    const ok = $("#welOk");
+    if (ok) ok.focus();
+  }
+
   /* ---------- Barra de navegação: item atual ---------- */
   function markNav(screen) {
     $$("#appNav [data-nav]").forEach((b) => {
@@ -196,10 +243,11 @@
   }
 
   window.EntreNosHooks = {
-    inicio: hook("inicio", renderInicio),
+    inicio: async () => { markNav("inicio"); await load(); renderInicio(); maybeWelcome(); },
     streak: hook("streak", renderStreak),
     perfil: hook("perfil", renderPerfil),
     profile: hook("profile", renderProfile),
+    plano: hook("plano", renderPlano),
     planos: hook("planos", renderPlanos),
   };
 
@@ -207,14 +255,13 @@
     bindPlans();
     $("#profileForm").addEventListener("submit", saveProfile);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
-    $("#rowPlan").addEventListener("click", () => app().goTo("planos"));
-    $("#rowPrefs").addEventListener("click", () => app().navigate("setup"));
+    $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
+    $$("[data-soon]").forEach((b) => b.addEventListener("click", () => app().showToast("Disponível em breve, junto com o pagamento.")));
     $("#rowLogout").addEventListener("click", () => auth().signOut());
     $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
     $("#delConfirm").addEventListener("click", confirmDelete);
     $("#recoPlay").addEventListener("click", () => {
-      app().applyPlay({ categories: D.categories.map((c) => c.id), mode: "noite" });
-      app().navigate("setup");
+      app().play("noite", D.categories.map((c) => c.id));
     });
   });
 })();

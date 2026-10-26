@@ -1537,7 +1537,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 
 /* Barra de navegação */
 .appnav { display: none; position: fixed; left: 0; right: 0; bottom: 0; height: 78px; z-index: 40; justify-content: space-between; align-items: center; padding: 0 28px calc(8px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: rgba(22, 7, 19, 0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid rgba(224, 117, 255, 0.24); }
-body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[data-screen="perfil"] .appnav, body[data-screen="profile"] .appnav { display: flex; }
+body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[data-screen="plano"] .appnav, body[data-screen="perfil"] .appnav, body[data-screen="profile"] .appnav { display: flex; }
 .appnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 72px; min-height: 56px; background: none; border: 0; color: var(--muted); font-size: 0.75rem; cursor: pointer; }
 .appnav-item[aria-current="page"] { color: #ff80bd; }
 .appnav-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(100deg, #ff4e91, #a52ad3); color: var(--white); font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; }
@@ -1571,3 +1571,53 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
   .plans-title { text-align: left; font-size: 4rem; }
   .plans-box { grid-area: box; padding: 40px; border-radius: 24px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.06); }
 }
+
+
+/* ============================================================
+   TELA JOGOS (Início): jogo livre, nomes Ele/Ela
+   ============================================================ */
+.app-sub { margin: -14px 0 0; font-size: 0.95rem; color: var(--muted); }
+.free-panel { gap: 24px; }
+.free-tiles .st-tile { min-height: 96px; padding: 14px; }
+.st-crown { position: absolute; top: 12px; right: 12px; color: #ffd77a; display: flex; }
+.st-tile.is-selected .st-crown { right: 42px; }
+.st-fl { display: block; margin: 0 0 6px 2px; font-size: 0.8rem; font-weight: 500; color: rgba(255, 247, 255, 0.72); }
+.st-p1 .st-fl { color: #ff80bd; }
+.st-p2 .st-fl { color: #d88cff; }
+.st-field input.is-invalid { border-color: #ef5350; box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.2); }
+@media (min-width: 640px) { .free-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .free-panel { max-width: 760px; } }
+
+/* ============================================================
+   MEU PLANO
+   ============================================================ */
+.app.app--narrow { max-width: 560px; }
+.plan-card { border-radius: 20px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.07); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.plan-card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.plan-card-lbl { font-size: 0.8rem; color: var(--muted); }
+.plan-card-name { margin: 2px 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2rem; line-height: 1.05; }
+.plan-card-badge { padding: 4px 12px; border-radius: 999px; background: rgba(255, 247, 255, 0.12); font-size: 0.85rem; }
+.plan-card-badge.is-ok { background: rgba(76, 175, 80, 0.18); color: #7bd67f; border: 1px solid rgba(76, 175, 80, 0.5); }
+.plan-feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.plan-feat li { display: flex; align-items: center; gap: 10px; font-size: 0.95rem; }
+.plan-feat li.is-on svg { color: #4caf50; }
+.plan-feat li.is-off { color: rgba(255, 247, 255, 0.48); }
+.plan-feat li.is-off svg { color: rgba(255, 247, 255, 0.48); }
+.plan-card--promo { background: linear-gradient(155deg, rgba(190, 31, 114, 0.35), rgba(53, 12, 56, 0.7)); border-color: rgba(241, 59, 145, 0.5); }
+.plan-card--promo p { margin: 0; font-size: 0.95rem; color: var(--muted); line-height: 1.45; }
+.plan-card-tag { align-self: flex-start; padding: 3px 12px; border-radius: 999px; background: rgba(255, 215, 122, 0.16); border: 1px solid rgba(255, 215, 122, 0.5); color: #ffd77a; font-size: 0.8rem; }
+.plan-kv { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; padding: 4px 0; }
+.plan-kv span { color: var(--muted); }
+
+/* ============================================================
+   PARABÉNS PELO DIA
+   ============================================================ */
+.welcome-card { align-items: center; text-align: center; gap: 8px; padding: 28px 20px 20px; }
+.welcome-flame { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, #f13b91, #a82dd0); display: flex; align-items: center; justify-content: center; margin-bottom: 4px; box-shadow: 0 0 28px rgba(241, 59, 145, 0.5); }
+.welcome-flame svg { width: 36px; height: 36px; }
+.welcome-title { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.2rem; line-height: 1.05; }
+.welcome-sub { margin: 0 0 6px; color: var(--muted); font-size: 0.95rem; }
+.welcome-num { font-size: 3rem; font-weight: 500; line-height: 1; color: #ff80bd; }
+.welcome-lbl { margin-bottom: 10px; color: var(--muted); font-size: 0.9rem; }
+.welcome-card .week-card { width: 100%; margin-bottom: 14px; }
+.free-panel .st-cta { position: static; padding: 0; border: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }

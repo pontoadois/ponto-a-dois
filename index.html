@@ -44,7 +44,7 @@
           </p>
 
           <div class="home-actions">
-            <button class="btn btn--primary btn--lg" data-goto="setup">
+            <button class="btn btn--primary btn--lg" data-goto="inicio">
               Começar Jogo
             </button>
 
@@ -62,94 +62,13 @@
             <a href="termos.html">Termos de Uso</a>
             <span aria-hidden="true">·</span>
             <a href="privacidade.html">Política de Privacidade</a>
-            <span aria-hidden="true">·</span>
-            <a href="reembolso.html">Cancelamento e Reembolso</a>
           </p>
         </div>
       </section>
 
 
       <!-- ============ TELA DE CONFIGURAÇÃO ============ -->
-      <section class="screen screen--setup" data-screen="setup">
-        <div class="st">
 
-          <button class="btn btn--back st-back" data-goto="home" aria-label="Voltar">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
-            Voltar
-          </button>
-
-          <div class="st-grid">
-
-            <!-- Apresentação + leque de cartas -->
-            <div class="st-hero">
-              <div class="st-head">
-                <h2 class="st-title">Monte o seu jogo</h2>
-                <p class="st-sub">Escolham o clima da noite. A mão de cartas se monta conforme as escolhas.</p>
-              </div>
-              <div class="st-fan" id="stFan" aria-hidden="true"></div>
-            </div>
-
-            <!-- Opções -->
-            <div class="st-panel">
-
-              <div class="st-block">
-                <span class="st-label" id="lblMode">Modo de jogo</span>
-                <div class="st-modes" id="modeGrid" role="radiogroup" aria-labelledby="lblMode"></div>
-              </div>
-
-              <div class="st-block">
-                <span class="st-label" id="lblCats">Categorias</span>
-                <div class="st-tiles" id="categoryChips" role="group" aria-labelledby="lblCats"></div>
-              </div>
-
-              <div class="st-block">
-                <div class="st-row">
-                  <span class="st-label" id="lblInt">Intensidade</span>
-                  <span class="st-level" id="intLevel"></span>
-                </div>
-                <div class="st-scale">
-                  <div class="st-track" aria-hidden="true"><i id="intFill"></i></div>
-                  <div class="st-steps" id="intensityGrid" role="group" aria-labelledby="lblInt"></div>
-                  <p class="st-help" id="intHelp"></p>
-                </div>
-              </div>
-
-              <div class="st-block">
-                <span class="st-label" id="lblGender">Quem é o homem do casal?</span>
-                <div class="st-modes" id="genderGrid" role="radiogroup" aria-labelledby="lblGender"></div>
-                <p class="st-hint">Serve para ajustar os textos (amado ou amada, por exemplo) e escolher cartas. Fica salvo apenas no seu aparelho.</p>
-              </div>
-
-              <div class="st-block">
-                <span class="st-label">Jogadores <span class="st-opt">(opcional)</span></span>
-                <div class="st-players">
-                  <div class="st-field st-p1">
-                    <label class="sr-only" for="player1Name">Nome do jogador 1</label>
-                    <input type="text" id="player1Name" maxlength="16" placeholder="Jogador 1" autocomplete="off" />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  </div>
-                  <div class="st-field st-p2">
-                    <label class="sr-only" for="player2Name">Nome do jogador 2</label>
-                    <input type="text" id="player2Name" maxlength="16" placeholder="Jogador 2" autocomplete="off" />
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Resumo + iniciar -->
-            <div class="st-cta">
-              <span class="st-summary" id="stSummary"></span>
-              <button class="btn btn--primary btn--lg btn--block" data-goto="game">
-                Iniciar jogo
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
 
       <!-- ============ TELA: ENTRAR ============ -->
@@ -330,8 +249,43 @@
               </div>
             </div>
           </div>
-          <h2 class="app-h2">Jogos</h2>
-          <div class="game-grid" id="gameGrid"></div>
+          <h2 class="app-h2">Jogo livre</h2>
+          <p class="app-sub">Escolham as categorias e o clima.</p>
+          <div class="st-panel free-panel">
+            <div class="st-block">
+              <span class="st-label" id="lblCats">Categorias</span>
+              <div class="st-tiles free-tiles" id="categoryChips" role="group" aria-labelledby="lblCats"></div>
+            </div>
+            <div class="st-block">
+              <div class="st-row">
+                <span class="st-label" id="lblInt">Intensidade</span>
+                <span class="st-level" id="intLevel"></span>
+              </div>
+              <div class="st-scale">
+                <div class="st-track" aria-hidden="true"><i id="intFill"></i></div>
+                <div class="st-steps" id="intensityGrid" role="group" aria-labelledby="lblInt"></div>
+                <p class="st-help" id="intHelp"></p>
+              </div>
+            </div>
+            <div class="st-block">
+              <span class="st-label">Quem vai jogar</span>
+              <div class="st-players">
+                <div class="st-field st-p1">
+                  <label class="st-fl" for="player1Name">Ele</label>
+                  <input type="text" id="player1Name" maxlength="16" placeholder="Nome dele" autocomplete="off" required />
+                </div>
+                <div class="st-field st-p2">
+                  <label class="st-fl" for="player2Name">Ela</label>
+                  <input type="text" id="player2Name" maxlength="16" placeholder="Nome dela" autocomplete="off" required />
+                </div>
+              </div>
+              <p class="st-hint" id="playersHint">Os dois nomes são obrigatórios. Servem para ajustar os textos (amado ou amada) e escolher as cartas. Ficam salvos só no seu aparelho.</p>
+            </div>
+            <div class="st-cta">
+              <span class="st-summary" id="stSummary"></span>
+              <button type="button" class="btn btn--primary btn--lg btn--block" id="freePlay">Iniciar jogo</button>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -356,20 +310,17 @@
       <section class="screen screen--app" data-screen="perfil">
         <div class="app">
           <div class="prof-head"><span class="app-avatar app-avatar--lg" id="profAvatar">K</span><div><b id="profName">Perfil</b><span id="profPlan">Plano gratuito</span></div></div>
-          <button type="button" class="premium-banner" data-goto="planos" id="premiumProf"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
           <div class="menu-group"><span class="menu-label">Geral</span>
             <button class="menu-row" id="rowProfile" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0"/></svg></span><span class="menu-txt"><span>Gerenciar perfil</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
             <button class="menu-row" id="rowPlan" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg></span><span class="menu-txt"><span>Meu plano e assinatura</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-            <button class="menu-row" id="rowPrefs" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21v-7 M4 10V3 M12 21v-9 M12 8V3 M20 21v-5 M20 12V3 M1 14h6 M9 8h6 M17 16h6"/></svg></span><span class="menu-txt"><span>Preferências do jogo</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
             <a class="menu-row" id="rowSupport" href="mailto:kayofellipefer@gmail.com"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20 M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01"/></svg></span><span class="menu-txt"><span>Suporte</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
           </div>
           <div class="menu-group"><span class="menu-label">Conta</span>
             <button class="menu-row" id="rowLogout" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4 M16 17l5-5-5-5 M21 12H9"/></svg></span><span class="menu-txt"><span>Sair</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
           </div>
           <div class="menu-group"><span class="menu-label">Legal</span>
-            <a class="menu-row" id="rowTerms" href="termos.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Termos de Uso</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+            <a class="menu-row" id="rowTerms" href="termos.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Termos de Uso e Reembolso</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
             <a class="menu-row" id="rowPrivacy" href="privacidade.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Política de Privacidade</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
-            <a class="menu-row" id="rowRefund" href="reembolso.html" target="_blank" rel="noopener"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7z M14 2v4a2 2 0 0 0 2 2h4 M10 9H8 M16 13H8 M16 17H8"/></svg></span><span class="menu-txt"><span>Cancelamento e Reembolso</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
           </div>
           <button class="menu-row menu-row--danger" id="rowDelete" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18 M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6 M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></span><span class="menu-txt"><span>Excluir minha conta</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
         </div>
@@ -387,6 +338,32 @@
             <p class="au-error" id="pfError" role="alert" hidden></p>
             <button type="submit" class="btn btn--primary btn--lg btn--block" id="pfSave">Salvar</button>
           </form>
+        </div>
+      </section>
+
+
+      <!-- ============ APP: MEU PLANO ============ -->
+      <section class="screen screen--app" data-screen="plano">
+        <div class="app app--narrow">
+          <div class="app-bar"><button type="button" class="icon-btn" data-goto="perfil" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Meu plano</h1></div>
+          <div class="plan-card">
+            <div class="plan-card-top"><div><span class="plan-card-lbl">Plano atual</span><h2 class="plan-card-name" id="myPlanName">Gratuito</h2></div><span class="plan-card-badge" id="myPlanBadge">R$ 0</span></div>
+            <ul class="plan-feat" id="myPlanFeat"></ul>
+          </div>
+          <div class="plan-card plan-card--info" id="myPlanInfo" hidden></div>
+          <div class="plan-card plan-card--promo" id="myPlanFree">
+            <span class="plan-card-tag">Fundadores · primeiras 100 vagas</span>
+            <h2 class="plan-card-name">Premium anual</h2>
+            <p>R$ 94,90 por ano, com preço travado nas renovações. Ou R$ 24,90 por mês.</p>
+            <button type="button" class="btn btn--primary btn--lg btn--block" data-goto="planos">Ver planos Premium</button>
+          </div>
+          <div class="menu-group" id="myPlanActions" hidden>
+            <span class="menu-label">Assinatura</span>
+            <button class="menu-row" type="button" data-soon="cartao"><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
+            <button class="menu-row" type="button" data-soon="recibos"><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
+            <button class="menu-row" type="button" data-soon="plano"><span class="menu-txt"><span>Mudar de plano</span><small></small></span></button>
+            <button class="menu-row menu-row--danger" type="button" data-soon="cancelar"><span class="menu-txt"><span>Cancelar assinatura</span><small></small></span></button>
+          </div>
         </div>
       </section>
 
@@ -421,7 +398,7 @@
               </div>
               <button type="button" class="btn btn--primary btn--lg btn--block" id="plansContinue">Continuar</button>
               <p class="plans-note">Cancele quando quiser. Você tem 7 dias para desistir da compra.</p>
-              <p class="plans-links"><a href="termos.html" target="_blank" rel="noopener">Termos</a> · <a href="privacidade.html" target="_blank" rel="noopener">Privacidade</a> · <a href="reembolso.html" target="_blank" rel="noopener">Reembolso</a></p>
+              <p class="plans-links"><a href="termos.html#reembolso" target="_blank" rel="noopener">Termos e Reembolso</a> · <a href="privacidade.html" target="_blank" rel="noopener">Privacidade</a></p>
             </div>
           </div>
         </div>
@@ -437,7 +414,7 @@
 
             <button
               class="btn btn--ghost btn--sm"
-              data-goto="setup"
+              data-goto="inicio"
               aria-label="Voltar"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left-icon lucide-arrow-left" aria-hidden="true"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
@@ -561,9 +538,8 @@
     <nav class="appnav" id="appNav" aria-label="Navegação principal">
       <div class="appnav-brand">Ponto a Dois</div>
       <button type="button" class="appnav-item" data-goto="inicio" data-nav="inicio"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Jogos</span></button>
-      <button type="button" class="appnav-item appnav-desk" data-goto="streak" data-nav="streak"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span>Sequência</span></button>
-      <button type="button" class="appnav-play" data-goto="setup" aria-label="Jogar"><svg width="28" height="28" viewBox="0 0 24 24" fill="rgba(255,247,255,.25)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-      <button type="button" class="appnav-item appnav-desk" data-goto="planos" data-nav="planos"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg><span>Meu plano</span></button>
+      <button type="button" class="appnav-item" data-goto="streak" data-nav="streak"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span>Sequência</span></button>
+      <button type="button" class="appnav-item" data-goto="plano" data-nav="plano"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg><span>Plano</span></button>
       <button type="button" class="appnav-item" data-goto="perfil" data-nav="perfil"><span class="appnav-avatar" id="navAvatar">K</span><span>Perfil</span></button>
     </nav>
 
@@ -657,6 +633,20 @@
           <button class="btn btn--ghost btn--block" data-close-modal>Cancelar</button>
           <button class="btn btn--danger btn--block" id="delConfirm">Excluir definitivamente</button>
         </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: PARABÉNS PELO DIA ============ -->
+    <div class="modal" id="modalWelcome" data-modal="welcome" role="dialog" aria-modal="true" aria-labelledby="welTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass welcome-card">
+        <span class="welcome-flame" aria-hidden="true"><svg width="34" height="34" viewBox="0 0 24 24" fill="rgba(255,247,255,.3)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg></span>
+        <h2 class="welcome-title" id="welTitle">Parabéns!</h2>
+        <p class="welcome-sub" id="welSub">Mais um dia com o Ponto a Dois.</p>
+        <div class="welcome-num" id="welNum">1</div>
+        <div class="welcome-lbl" id="welLbl">dia seguido</div>
+        <div class="app-card week-card" id="welWeek"></div>
+        <button type="button" class="btn btn--primary btn--lg btn--block" id="welOk" data-close-modal>Continuar</button>
       </div>
     </div>
 

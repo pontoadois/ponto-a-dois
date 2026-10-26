@@ -375,7 +375,7 @@
     if (!client || !session) return { premium: false };
     const { data } = await client.from("subscriptions").select("status, current_period_end").eq("user_id", session.user.id).maybeSingle();
     const ok = data && ["active", "trialing"].includes(data.status) && (!data.current_period_end || new Date(data.current_period_end) > new Date());
-    return { premium: !!ok };
+    return { premium: !!ok, status: data ? data.status : null, until: data ? data.current_period_end : null };
   }
 
   async function saveName(name) {

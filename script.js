@@ -16,6 +16,7 @@
   const CATEGORIES = D.categories;
   const INTENSITIES = D.intensities;
   const INT_ORDER = ["leve", "picante", "intenso"];
+  const PREMIUM_CATS = D.premiumCats || [];
 
   function formatLabel(value) {
     if (value === null || value === undefined) return "";
@@ -39,10 +40,9 @@
     categories: ["conexao", "diversao", "verdade", "carinho", "intimidade", "posicoes"],
     catsVersion: 3,
     intensities: ["leve", "picante"],
-    man: "",           // quem é o homem do casal: "p1" | "p2" | "" (não informar)
     mode: "livre",   // "livre" | "noite"
-    player1: "",
-    player2: "",
+    player1: "",   // Ele (o homem)
+    player2: "",   // Ela (a mulher)
   };
 
   let state = {
@@ -99,7 +99,7 @@
       if (!merged.intensities.length) merged.intensities = [...defaultSettings.intensities];
       delete merged.intensity;
       delete merged.couple;
-      if (!["p1", "p2", ""].includes(merged.man)) merged.man = "";
+      delete merged.man; // a escolha "quem é o homem" foi substituída pelos campos Ele e Ela
       return merged;
     } catch {
       return { ...defaultSettings };
@@ -162,9 +162,10 @@
   // Telas do jogo exigem login (quando o login está ativo)
   function navigate(target) {
     const A = window.EntreNosAuth;
+    if (target === "setup") target = "inicio"; // a antiga tela "Monte o seu jogo" agora vive no Início
     // Quem já está logado nunca volta para a capa: o "Voltar" leva ao Início do app
     if (target === "home" && A && A.enabled && A.getSession && A.getSession() && !A.needs()) target = "inicio";
-    if (A && A.enabled && ["setup", "game", "inicio", "streak", "perfil", "profile", "planos"].includes(target)) {
+    if (A && A.enabled && ["game", "inicio", "streak", "perfil", "profile", "plano", "planos"].includes(target)) {
       const need = A.needs();
       if (need) { A.setPending(target); goTo(need); return; }
     }
@@ -224,10 +225,6 @@
   /* ============================================================
      6. TELA DE CONFIGURAÇÃO — render e interação
      ============================================================ */
-  const MODES = [
-    { id: "livre", name: "Livre", desc: "Cartas variadas, no seu ritmo" },
-    { id: "noite", name: "Noite de Encontro", desc: "Sessão guiada: começa leve e vai esquentando" },
-  ];
 
   const CHECK_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
 
@@ -259,41 +256,37 @@
   }
 
   function renderSummary() {
+    const el = $("#stSummary");
+    if (!el) return;
     const n = state.settings.categories.length;
-    const intName = levelsLabel();
-    const mode = state.settings.mode === "noite" ? "Noite de Encontro" : "Modo livre";
-    $("#stSummary").textContent = `${n} ${n === 1 ? "categoria" : "categorias"} · ${intName} · ${mode}`;
+    el.textContent = `${n} ${n === 1 ? "categoria" : "categorias"} · ${levelsLabel()}`;
   }
 
-  function renderSetup() {
-    // Modo de jogo
-    const modeWrap = $("#modeGrid");
-    modeWrap.innerHTML = "";
-    MODES.forEach((m) => {
-      const on = state.settings.mode === m.id;
-      const opt = document.createElement("button");
-      opt.type = "button";
-      opt.className = "st-mode" + (on ? " is-selected" : "");
-      opt.dataset.mode = m.id;
-      opt.setAttribute("role", "radio");
-      opt.setAttribute("aria-checked", on ? "true" : "false");
-      opt.innerHTML = `<span class="st-radio"></span>
-        <span><span class="st-mode-name">${m.name}</span><span class="st-mode-desc">${m.desc}</span></span>`;
-      opt.addEventListener("click", () => { state.settings.mode = m.id; saveSettings(); renderSetup(); });
-      modeWrap.appendChild(opt);
-    });
+  // O plano muda a coroa das categorias (quem assina não vê a coroa)
+  let isPremium = false;
+  function setPremium(v) {
+    if (isPremium === !!v) return;
+    isPremium = !!v;
+    renderSetup();
+  }
 
-    // Categorias
+  const CROWN_SVG = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>';
+
+  function renderSetup() {
     const catWrap = $("#categoryChips");
+    if (!catWrap) return;
+    // Categorias (a pessoa marca quantas quiser)
     catWrap.innerHTML = "";
     CATEGORIES.forEach((cat) => {
       const on = state.settings.categories.includes(cat.id);
+      const locked = !isPremium && PREMIUM_CATS.includes(cat.id);
       const tile = document.createElement("button");
       tile.type = "button";
       tile.className = "st-tile" + (on ? " is-selected" : "");
       tile.dataset.cat = cat.id;
       tile.setAttribute("aria-pressed", on ? "true" : "false");
       tile.innerHTML = `<span class="st-check">${CHECK_SVG}</span>
+        ${locked ? `<span class="st-crown" title="Parte do conteúdo é premium">${CROWN_SVG}</span>` : ""}
         <span class="st-tile-ico">${cat.icon}</span>
         <span class="st-tile-name">${cat.name}</span>
         <span class="st-tile-sub">${cat.sub || ""}</span>`;
@@ -328,14 +321,12 @@
         ? INTENSITIES.find((i) => i.id === on[0]).desc + "."
         : "Mistura as cartas dos níveis escolhidos.";
 
-    renderGenderBlock();
-
-    renderFan();
     renderSummary();
 
-    // Nomes
-    $("#player1Name").value = state.settings.player1;
-    $("#player2Name").value = state.settings.player2;
+    // Nomes (só atualiza se o campo não está sendo digitado)
+    const n1 = $("#player1Name"), n2 = $("#player2Name");
+    if (document.activeElement !== n1) n1.value = state.settings.player1;
+    if (document.activeElement !== n2) n2.value = state.settings.player2;
   }
 
   function toggleCategory(id) {
@@ -350,35 +341,6 @@
     }
     saveSettings();
     renderSetup();
-  }
-
-  // "Quem é o homem do casal?" Serve para ajustar o português e escolher cartas (fica só no aparelho)
-  function renderGenderBlock() {
-    const wrap = $("#genderGrid");
-    if (!wrap) return;
-    wrap.innerHTML = "";
-    const opts = [
-      { id: "p1", name: playerName(1) },
-      { id: "p2", name: playerName(2) },
-      { id: "", name: "Prefiro não informar" },
-    ];
-    opts.forEach((o) => {
-      const sel = state.settings.man === o.id;
-      const b = document.createElement("button");
-      b.type = "button";
-      b.className = "st-mode st-mode--compact" + (sel ? " is-selected" : "");
-      b.dataset.man = o.id;
-      b.setAttribute("role", "radio");
-      b.setAttribute("aria-checked", sel ? "true" : "false");
-      const r = document.createElement("span");
-      r.className = "st-radio";
-      const n = document.createElement("span");
-      n.className = "st-mode-name";
-      n.textContent = o.name;
-      b.append(r, n);
-      b.addEventListener("click", () => { state.settings.man = o.id; saveSettings(); renderGenderBlock(); });
-      wrap.appendChild(b);
-    });
   }
 
   function toggleIntensity(id) {
@@ -396,16 +358,52 @@
   }
 
   function bindPlayerInputs() {
-    $("#player1Name").addEventListener("input", (e) => {
-      state.settings.player1 = e.target.value.trim();
-      saveSettings();
-      renderGenderBlock();
+    [["#player1Name", "player1"], ["#player2Name", "player2"]].forEach(([sel, key]) => {
+      const el = $(sel);
+      el.addEventListener("input", () => {
+        state.settings[key] = el.value.trim();
+        el.classList.remove("is-invalid");
+        saveSettings();
+      });
     });
-    $("#player2Name").addEventListener("input", (e) => {
-      state.settings.player2 = e.target.value.trim();
-      saveSettings();
-      renderGenderBlock();
+    $("#freePlay").addEventListener("click", () => play("livre"));
+  }
+
+  // Os dois nomes são obrigatórios: "Ele" é o homem e "Ela" é a mulher
+  function namesOk() {
+    const fields = [["#player1Name", state.settings.player1], ["#player2Name", state.settings.player2]];
+    let first = null;
+    fields.forEach(([sel, v]) => {
+      const el = $(sel);
+      const bad = !String(v || "").trim();
+      el.classList.toggle("is-invalid", bad);
+      if (bad && !first) first = el;
     });
+    if (first) {
+      showToast("Escreva o nome dele e o nome dela para começar.");
+      first.scrollIntoView({ behavior: "smooth", block: "center" });
+      first.focus({ preventScroll: true });
+      return false;
+    }
+    return true;
+  }
+
+  // Começa uma partida direto do Início. "cats" (opcional) vale só para esta partida.
+  function play(mode, cats) {
+    if (!namesOk()) return;
+    state.settings.mode = mode === "noite" ? "noite" : "livre";
+    state.playCats = Array.isArray(cats) && cats.length ? cats : null;
+    saveSettings();
+    navigate("game");
+  }
+
+  // Preenche o nome do perfil no campo certo, se ainda estiver vazio
+  function prefillPlayers(name, gender) {
+    const key = gender === "h" ? "player1" : gender === "m" ? "player2" : null;
+    if (!key || !name || state.settings[key]) return;
+    state.settings[key] = String(name).trim().slice(0, 16);
+    saveSettings();
+    renderSetup();
   }
 
   /* ============================================================
@@ -422,11 +420,14 @@
     return v || `Jogador ${n}`;
   }
 
-  // "h" (homem), "m" (mulher) ou "" (não informado) para o jogador n
+  // Jogador 1 é "Ele" (homem) e o jogador 2 é "Ela" (mulher)
   function genderOf(n) {
-    const man = state.settings.man;
-    if (!man) return "";
-    return man === "p" + n ? "h" : "m";
+    return n === 1 ? "h" : "m";
+  }
+
+  // Categorias da partida: as da Noite de Encontro ignoram a seleção do jogo livre
+  function activeCats() {
+    return state.playCats || state.settings.categories;
   }
 
   // Ajusta "amado(a)" para "amado"/"amada" quando se sabe de quem o texto fala.
@@ -518,13 +519,13 @@
   }
 
   function buildFreeDeck(last) {
-    const pool = cardPool(state.settings.categories, allowedInts()).filter((c) => !hasTag(c, "fim"));
+    const pool = cardPool(activeCats(), allowedInts()).filter((c) => !hasTag(c, "fim"));
     return smartOrder(pool, last);
   }
 
   /* Noite de Encontro: etapas em ordem, ~16 cartas */
   function buildGuidedDeck() {
-    const cats = state.settings.categories;
+    const cats = activeCats();
     const allowed = allowedInts();
     const deck = [];
     state.reserve = {};
@@ -581,7 +582,7 @@
     try { return JSON.parse(localStorage.getItem(RECENT_KEY)) || []; } catch { return []; }
   }
   function rememberRecent() {
-    const cats = [...state.settings.categories];
+    const cats = [...activeCats()];
     const mode = state.settings.mode;
     const one = cats.length === 1 ? CATEGORIES.find((c) => c.id === cats[0]) : null;
     const label = mode === "noite" ? "Noite de Encontro" : one ? one.name : "Jogo livre";
@@ -609,15 +610,15 @@
         await A.loadContent();
       } catch (e) {
         showToast("Não foi possível carregar as cartas. Verifique a conexão.");
-        goTo("setup");
+        goTo("inicio");
         return;
       }
     }
     state.mode = state.settings.mode === "noite" ? "noite" : "livre";
     state.deck = state.mode === "noite" ? buildGuidedDeck() : buildFreeDeck();
     if (state.deck.length === 0) {
-      showToast("Nenhuma carta disponível para essas escolhas. Ajuste as categorias, os níveis ou o tipo de casal.");
-      goTo("setup");
+      showToast("Nenhuma carta disponível para essas escolhas. Ajuste as categorias ou os níveis.");
+      goTo("inicio");
       return;
     }
     // Jogo começou: conta o dia na sequência e guarda em "jogados recentemente"
@@ -641,7 +642,7 @@
       state.deck = buildFreeDeck(state.currentCard);
       state.drawIndex = 0;
       c = pullCard();
-      if (!c) { showToast("Nenhuma carta disponível para essas escolhas."); goTo("setup"); return; }
+      if (!c) { showToast("Nenhuma carta disponível para essas escolhas."); goTo("inicio"); return; }
     }
     state.drawIndex++;
     state.currentCard = c;
@@ -1012,7 +1013,7 @@
     if (state.ended) {
       clearWidgets();
       setEndUi(false);
-      goTo("setup");
+      goTo("inicio");
       showToast("Que a noite continue por aí.");
       return;
     }
@@ -1161,7 +1162,7 @@
     $(".screen--home").classList.add("is-active");
   }
 
-  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent };
+  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent, play, prefillPlayers, setPremium };
 
   document.addEventListener("DOMContentLoaded", init);
 })();
