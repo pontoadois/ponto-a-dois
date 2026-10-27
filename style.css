@@ -1558,11 +1558,10 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
   .appnav-item[aria-current="page"] { background: rgba(241, 59, 145, 0.16); border-color: rgba(241, 59, 145, 0.45); color: var(--white); }
   .appnav-item[aria-current="page"] svg { color: #ff80bd; }
   .screen--app:not(.screen--plans) { padding-left: calc(280px + var(--sp-7)); padding-right: var(--sp-7); padding-bottom: var(--sp-7); }
-  .app { max-width: 1000px; margin: 0; }
-  .app-main { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+  .app { max-width: 780px; margin: 0 auto; } /* uma coluna só, centralizada na área ao lado do menu */
+  .app.app--narrow { max-width: 620px; }
   .game-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .app-hello b { font-size: 1.8rem; }
-  .week-card { max-width: 640px; }
   .app--plans { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 1fr) 480px; grid-template-areas: "hero box" "copy box"; column-gap: 64px; align-items: center; padding-top: 40px; }
   .plans-main { display: contents; }
   .plans-hero { grid-area: hero; justify-content: flex-start; }
@@ -1586,7 +1585,6 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .st-p2 .st-fl { color: #d88cff; }
 .st-field input.is-invalid { border-color: #ef5350; box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.2); }
 @media (min-width: 640px) { .free-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (min-width: 1024px) { .free-panel { max-width: 760px; } }
 
 /* ============================================================
    MEU PLANO
@@ -1633,3 +1631,25 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .pf-opt { min-height: 48px; padding: 8px 6px; border-radius: 14px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.07); color: var(--white); font: inherit; font-size: 0.88rem; line-height: 1.2; cursor: pointer; }
 .pf-opt:hover { border-color: var(--glass-brd-hi); }
 .pf-opt.is-selected { border: 1.5px solid #f13b91; background: rgba(241, 59, 145, 0.18); }
+
+/* ============================================================
+   FOTO DE PERFIL: ver e posicionar
+   ============================================================ */
+.pf-avatar { position: relative; padding: 0; border: 0; cursor: pointer; color: inherit; font: inherit; }
+.pf-cam { position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; background: #7519a6; border: 2px solid #160713; display: flex; align-items: center; justify-content: center; color: #fff7ff; }
+.photo-card { max-width: 460px; }
+.photo-view { width: min(360px, calc(100vw - 96px)); aspect-ratio: 1; margin: 6px auto 18px; border-radius: 24px; overflow: hidden; background: #0b0309; border: 1px solid rgba(224, 117, 255, 0.24); }
+.photo-view img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.photo-edit { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 6px 24px 18px; }
+.crop { position: relative; width: min(320px, calc(100vw - 96px)); aspect-ratio: 1; overflow: hidden; border-radius: 20px; background: #0b0309; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
+.crop:active { cursor: grabbing; }
+.crop img { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform-origin: center; pointer-events: none; will-change: transform; }
+.crop-mask { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 999px rgba(10, 3, 12, 0.62); border: 2px solid rgba(255, 247, 255, 0.85); }
+.crop-zoom { display: flex; align-items: center; gap: 12px; width: min(320px, calc(100vw - 96px)); color: var(--muted); font-size: 1.3rem; }
+.crop-zoom input { flex: 1; accent-color: #f13b91; }
+.photo-hint { margin: 0; font-size: 0.85rem; color: var(--muted); text-align: center; }
+
+/* Botão "?" (Como jogar) ao lado da ofensiva */
+.help-btn { width: 44px; height: 44px; flex-shrink: 0; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid rgba(224, 117, 255, 0.3); background: rgba(255, 220, 255, 0.06); color: var(--white); font-family: "Outfit", system-ui, sans-serif; font-size: 1.15rem; font-weight: 600; line-height: 1; cursor: pointer; transition: border-color var(--t-fast, 0.15s), background var(--t-fast, 0.15s); }
+.help-btn:hover { border-color: rgba(239, 143, 255, 0.55); background: rgba(255, 220, 255, 0.12); }
+.help-btn:focus-visible { outline: 2px solid #ff80bd; outline-offset: 2px; }

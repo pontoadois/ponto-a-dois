@@ -154,23 +154,114 @@
     });
   }
 
-  async function changePhoto(file) {
+  /* ---------- Foto de perfil: posicionar (arrastar e aproximar) ---------- */
+  const crop = { w: 0, h: 0, S: 0, base: 1, z: 1, ox: 0, oy: 0, url: "" };
+  const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+
+  function cropApply() {
+    const s = crop.base * crop.z;
+    const mx = Math.max(0, (crop.w * s - crop.S) / 2);
+    const my = Math.max(0, (crop.h * s - crop.S) / 2);
+    crop.ox = clamp(crop.ox, -mx, mx);
+    crop.oy = clamp(crop.oy, -my, my);
+    $("#cropImg").style.transform = `translate(-50%, -50%) translate(${crop.ox}px, ${crop.oy}px) scale(${s})`;
+  }
+
+  function cropSetZoom(z) {
+    crop.z = clamp(z, 1, 4);
+    $("#cropZoom").value = crop.z;
+    cropApply();
+  }
+
+  async function openCropper(file) {
     if (!file) return;
-    const btn = $("#pfPhotoBtn");
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 10 * 1024 * 1024) {
+      app().showToast("Use uma foto JPG, PNG ou WebP de até 10 MB.");
+      return;
+    }
+    if (crop.url) URL.revokeObjectURL(crop.url);
+    crop.url = URL.createObjectURL(file);
+    const img = $("#cropImg");
+    try {
+      await new Promise((ok, fail) => { img.onload = ok; img.onerror = fail; img.src = crop.url; });
+    } catch {
+      app().showToast("Não foi possível abrir essa foto. Tente outra.");
+      return;
+    }
+    crop.w = img.naturalWidth;
+    crop.h = img.naturalHeight;
+    img.style.width = crop.w + "px";
+    img.style.height = crop.h + "px";
+    $("#peError").hidden = true;
+    app().openModal("photoedit");
+    crop.S = $("#cropStage").clientWidth;
+    crop.base = crop.S / Math.min(crop.w, crop.h); // a foto sempre cobre o círculo
+    crop.ox = 0;
+    crop.oy = 0;
+    cropSetZoom(1);
+  }
+
+  function bindCropper() {
+    const stage = $("#cropStage");
+    const pts = new Map();
+    let startDist = 0, startZ = 1;
+    const dist = () => { const [a, b] = [...pts.values()]; return Math.hypot(a.x - b.x, a.y - b.y) || 1; };
+    stage.addEventListener("pointerdown", (e) => {
+      stage.setPointerCapture(e.pointerId);
+      pts.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (pts.size === 2) { startDist = dist(); startZ = crop.z; }
+    });
+    stage.addEventListener("pointermove", (e) => {
+      const p = pts.get(e.pointerId);
+      if (!p) return;
+      if (pts.size === 1) { crop.ox += e.clientX - p.x; crop.oy += e.clientY - p.y; }
+      p.x = e.clientX; p.y = e.clientY;
+      if (pts.size === 2) { cropSetZoom(startZ * dist() / startDist); return; }
+      cropApply();
+    });
+    const up = (e) => pts.delete(e.pointerId);
+    stage.addEventListener("pointerup", up);
+    stage.addEventListener("pointercancel", up);
+    stage.addEventListener("wheel", (e) => { e.preventDefault(); cropSetZoom(crop.z * (e.deltaY < 0 ? 1.07 : 1 / 1.07)); }, { passive: false });
+    $("#cropZoom").addEventListener("input", (e) => cropSetZoom(parseFloat(e.target.value)));
+    $("#cropSave").addEventListener("click", saveCrop);
+  }
+
+  async function saveCrop() {
+    const btn = $("#cropSave");
+    const err = $("#peError");
+    err.hidden = true;
     btn.disabled = true;
-    btn.textContent = "Enviando…";
-    const ok = await auth().uploadAvatar(file);
+    btn.textContent = "Salvando…";
+    // Desenha exatamente o que aparece dentro do círculo, em 512 x 512 (isso também apaga dados de localização)
+    const c = document.createElement("canvas");
+    c.width = c.height = 512;
+    const k = 512 / crop.S, s = crop.base * crop.z;
+    c.getContext("2d").drawImage($("#cropImg"), (crop.S / 2 + crop.ox - (crop.w * s) / 2) * k, (crop.S / 2 + crop.oy - (crop.h * s) / 2) * k, crop.w * s * k, crop.h * s * k);
+    const blob = await new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.88));
+    const ok = blob ? await auth().uploadAvatarBlob(blob) : false;
     btn.disabled = false;
-    btn.textContent = "Alterar foto";
-    if (!ok) { app().showToast("Não foi possível enviar a foto. Use JPG, PNG ou WebP de até 10 MB."); return; }
+    btn.textContent = "Salvar foto";
+    if (!ok) { err.textContent = "Não foi possível salvar a foto agora. Tente de novo."; err.hidden = false; return; }
+    if (crop.url) { URL.revokeObjectURL(crop.url); crop.url = ""; }
+    app().closeModal();
     paintAvatars();
     app().showToast("Foto atualizada.");
+  }
+
+  /* ---------- Foto de perfil: ver em tamanho grande (como no WhatsApp) ---------- */
+  function onAvatarClick() {
+    const url = auth().getAvatarUrl && auth().getAvatarUrl();
+    if (!url) { $("#pfPhotoInput").click(); return; }
+    $("#pvImg").src = url;
+    app().openModal("photoview");
   }
 
   async function removePhoto() {
     const ok = await auth().removeAvatar();
     if (!ok) { app().showToast("Não foi possível remover a foto agora."); return; }
     paintAvatars();
+    if ($("#modalPhotoView").classList.contains("is-open")) app().closeModal();
     app().showToast("Foto removida.");
   }
 
@@ -307,7 +398,11 @@
     bindPlans();
     $("#profileForm").addEventListener("submit", saveProfile);
     $("#pfPhotoBtn").addEventListener("click", () => $("#pfPhotoInput").click());
-    $("#pfPhotoInput").addEventListener("change", (e) => { changePhoto(e.target.files[0]); e.target.value = ""; });
+    $("#pfPhotoInput").addEventListener("change", (e) => { openCropper(e.target.files[0]); e.target.value = ""; });
+    $("#pfAvatar").addEventListener("click", onAvatarClick);
+    $("#pvChange").addEventListener("click", () => { app().closeModal(); $("#pfPhotoInput").click(); });
+    $("#pvRemove").addEventListener("click", removePhoto);
+    bindCropper();
     $("#pfPhotoRemove").addEventListener("click", removePhoto);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));

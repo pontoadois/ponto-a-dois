@@ -413,11 +413,10 @@
     });
   }
 
-  async function uploadAvatar(file) {
-    if (!client || !session) return false;
-    if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 10 * 1024 * 1024) return false;
+  // Envia uma foto já recortada (JPEG quadrado) para a pasta privada da pessoa
+  async function uploadAvatarBlob(blob) {
+    if (!client || !session || !blob || blob.size > 1024 * 1024) return false;
     try {
-      const blob = await toAvatarBlob(file);
       const path = `${session.user.id}/avatar.jpg`;
       const up = await client.storage.from("avatars").upload(path, blob, { contentType: "image/jpeg", upsert: true });
       if (up.error) return false;
@@ -426,6 +425,11 @@
       await loadProfile();
       return true;
     } catch { return false; }
+  }
+
+  async function uploadAvatar(file) {
+    if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 10 * 1024 * 1024) return false;
+    try { return await uploadAvatarBlob(await toAvatarBlob(file)); } catch { return false; }
   }
 
   async function removeAvatar() {
@@ -457,7 +461,7 @@
   }
 
   window.EntreNosAuth = {
-    registerPlay, getStreak, getPlan, saveName, saveProfile, uploadAvatar, removeAvatar, deleteAccount,
+    registerPlay, getStreak, getPlan, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

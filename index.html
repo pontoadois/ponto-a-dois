@@ -231,6 +231,7 @@
           <header class="app-top">
             <button type="button" class="app-avatar" data-goto="perfil" aria-label="Abrir perfil"><span id="avatarInitial">K</span></button>
             <div class="app-hello"><b id="helloName">Olá</b><span>Continue de onde pararam</span></div>
+            <button type="button" class="help-btn" data-open-modal="howto" aria-label="Como jogar" title="Como jogar">?</button>
             <button type="button" class="streak-pill" data-goto="streak" aria-label="Ver sequência"><svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,128,189,.25)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span id="streakNow">0</span></button>
           </header>
           <div class="app-card week-card" id="weekHome" aria-label="Sua semana"></div>
@@ -243,7 +244,6 @@
             </section>
             <div class="app-side">
               <button type="button" class="premium-banner" data-goto="planos" id="premiumHome"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
-          <button type="button" class="btn btn--ghost btn--lg btn--block" data-open-modal="howto"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg>Como jogar</button>
               <div id="recentWrap" hidden>
                 <h2 class="app-h2">Jogados recentemente</h2>
                 <div class="recent-list" id="recentList"></div>
@@ -334,7 +334,7 @@
           <div class="app-bar"><button type="button" class="icon-btn" data-goto="perfil" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Gerenciar perfil</h1></div>
           <form class="au-form" id="profileForm" novalidate>
             <div class="pf-photo">
-              <span class="app-avatar app-avatar--xl" id="pfAvatar" aria-hidden="true"><span id="pfAvatarText">K</span></span>
+              <button type="button" class="app-avatar app-avatar--xl pf-avatar" id="pfAvatar" aria-label="Ver a foto de perfil"><span id="pfAvatarText">K</span><span class="pf-cam" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3z"/><circle cx="12" cy="13" r="3"/></svg></span></button>
               <div class="pf-photo-actions">
                 <button type="button" class="au-link" id="pfPhotoBtn">Alterar foto</button>
                 <button type="button" class="au-link" id="pfPhotoRemove" hidden>Remover</button>
@@ -657,6 +657,43 @@
         <div class="welcome-lbl" id="welLbl">dia seguido</div>
         <div class="app-card week-card" id="welWeek"></div>
         <button type="button" class="btn btn--primary btn--lg btn--block" id="welOk" data-close-modal>Continuar</button>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: VER A FOTO DE PERFIL ============ -->
+    <div class="modal" id="modalPhotoView" data-modal="photoview" role="dialog" aria-modal="true" aria-labelledby="pvTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass photo-card">
+        <header class="modal-head">
+          <h2 class="modal-title" id="pvTitle">Foto do perfil</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="photo-view"><img id="pvImg" alt="A sua foto de perfil" /></div>
+        <footer class="modal-foot modal-foot--row">
+          <button type="button" class="btn btn--ghost btn--block" id="pvRemove">Remover</button>
+          <button type="button" class="btn btn--primary btn--block" id="pvChange">Alterar foto</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: POSICIONAR A FOTO ============ -->
+    <div class="modal" id="modalPhotoEdit" data-modal="photoedit" role="dialog" aria-modal="true" aria-labelledby="peTitle" aria-hidden="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-card glass photo-card">
+        <header class="modal-head">
+          <h2 class="modal-title" id="peTitle">Ajustar foto</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Cancelar">✕</button>
+        </header>
+        <div class="photo-edit">
+          <div class="crop" id="cropStage"><img id="cropImg" alt="" draggable="false" /><div class="crop-mask" aria-hidden="true"></div></div>
+          <label class="crop-zoom"><span aria-hidden="true">−</span><input type="range" id="cropZoom" min="1" max="4" step="0.01" value="1" aria-label="Aproximar" /><span aria-hidden="true">+</span></label>
+          <p class="photo-hint">Arraste a foto para posicionar e use o controle para aproximar.</p>
+          <p class="au-error" id="peError" role="alert" hidden></p>
+        </div>
+        <footer class="modal-foot modal-foot--row">
+          <button type="button" class="btn btn--ghost btn--block" data-close-modal>Cancelar</button>
+          <button type="button" class="btn btn--primary btn--block" id="cropSave">Salvar foto</button>
+        </footer>
       </div>
     </div>
 
