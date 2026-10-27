@@ -15,6 +15,7 @@
 
   let session = null;
   let profile = null;
+  let avatarUrl = null; // endereço temporário da foto (a pasta é privada)
   let pending = null; // tela que a pessoa queria abrir antes de entrar
 
   const redirectUrl = () => location.origin + location.pathname;
@@ -73,13 +74,20 @@
 
   /* ---------- Sessão e perfil ---------- */
   async function loadProfile() {
-    if (!session) { profile = null; return; }
+    if (!session) { profile = null; avatarUrl = null; return; }
     const { data } = await client
       .from("profiles")
-      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at")
+      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path")
       .eq("id", session.user.id)
       .maybeSingle();
     profile = data || null;
+    avatarUrl = null;
+    if (profile && profile.avatar_path) {
+      try {
+        const r = await client.storage.from("avatars").createSignedUrl(profile.avatar_path, 86400);
+        avatarUrl = r.data ? r.data.signedUrl : null;
+      } catch { /* sem foto por enquanto */ }
+    }
   }
 
   function needs() {
@@ -120,7 +128,7 @@
 
   async function signOut() {
     await client.auth.signOut();
-    session = null; profile = null; pending = null;
+    session = null; profile = null; avatarUrl = null; pending = null;
     clearContent();
     renderHomeUser();
     app().goTo("home");
@@ -378,6 +386,60 @@
     return { premium: !!ok, status: data ? data.status : null, until: data ? data.current_period_end : null };
   }
 
+  // Salva o nome e o gênero ("h", "m" ou "" para não informar)
+  async function saveProfile({ name, gender }) {
+    const g = gender === "h" || gender === "m" ? gender : null;
+    const { error } = await client.from("profiles").update({ display_name: name, gender: g }).eq("id", session.user.id);
+    if (!error) { await loadProfile(); renderHomeUser(); }
+    return !error;
+  }
+
+  // Recorta no centro, reduz para 512 px e salva em JPEG (isso também apaga dados de localização da foto)
+  function toAvatarBlob(file) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const size = 512;
+        const c = document.createElement("canvas");
+        c.width = c.height = size;
+        const side = Math.min(img.width, img.height);
+        c.getContext("2d").drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+        c.toBlob((b) => (b ? resolve(b) : reject(new Error("blob"))), "image/jpeg", 0.85);
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error("img")); };
+      img.src = url;
+    });
+  }
+
+  async function uploadAvatar(file) {
+    if (!client || !session) return false;
+    if (!file || !/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 10 * 1024 * 1024) return false;
+    try {
+      const blob = await toAvatarBlob(file);
+      const path = `${session.user.id}/avatar.jpg`;
+      const up = await client.storage.from("avatars").upload(path, blob, { contentType: "image/jpeg", upsert: true });
+      if (up.error) return false;
+      const { error } = await client.from("profiles").update({ avatar_path: path }).eq("id", session.user.id);
+      if (error) return false;
+      await loadProfile();
+      return true;
+    } catch { return false; }
+  }
+
+  async function removeAvatar() {
+    if (!client || !session || !profile || !profile.avatar_path) return true;
+    try {
+      const rm = await client.storage.from("avatars").remove([profile.avatar_path]);
+      if (rm.error) return false;
+      const { error } = await client.from("profiles").update({ avatar_path: null }).eq("id", session.user.id);
+      if (error) return false;
+      await loadProfile();
+      return true;
+    } catch { return false; }
+  }
+
   async function saveName(name) {
     const { error } = await client.from("profiles").update({ display_name: name }).eq("id", session.user.id);
     if (!error) { await loadProfile(); renderHomeUser(); }
@@ -395,7 +457,8 @@
   }
 
   window.EntreNosAuth = {
-    registerPlay, getStreak, getPlan, saveName, deleteAccount,
+    registerPlay, getStreak, getPlan, saveName, saveProfile, uploadAvatar, removeAvatar, deleteAccount,
+    getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,
     enabled,

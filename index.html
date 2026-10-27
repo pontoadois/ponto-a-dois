@@ -332,7 +332,16 @@
         <div class="app">
           <div class="app-bar"><button type="button" class="icon-btn" data-goto="perfil" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Gerenciar perfil</h1></div>
           <form class="au-form" id="profileForm" novalidate>
+            <div class="pf-photo">
+              <span class="app-avatar app-avatar--xl" id="pfAvatar" aria-hidden="true"><span id="pfAvatarText">K</span></span>
+              <div class="pf-photo-actions">
+                <button type="button" class="au-link" id="pfPhotoBtn">Alterar foto</button>
+                <button type="button" class="au-link" id="pfPhotoRemove" hidden>Remover</button>
+              </div>
+              <input type="file" id="pfPhotoInput" accept="image/jpeg,image/png,image/webp" hidden />
+            </div>
             <div class="au-field"><label for="pfName">Como quer ser chamado(a)</label><div class="au-input"><input id="pfName" type="text" maxlength="40" autocomplete="given-name"></div></div>
+            <div class="au-field"><label id="pfGenderLbl">Gênero</label><div class="pf-seg" id="pfGender" role="radiogroup" aria-labelledby="pfGenderLbl"></div><span class="au-hint">Opcional. Serve só para já preencher o seu nome em "Ele" ou "Ela" na hora de jogar.</span></div>
             <div class="au-field"><label for="pfEmail">E-mail</label><div class="au-input"><input id="pfEmail" type="email" disabled></div></div>
             <div class="au-field"><label for="pfBirth">Data de nascimento</label><div class="au-input"><input id="pfBirth" type="text" disabled></div><span class="au-hint">A data de nascimento e o e-mail não podem ser alterados aqui.</span></div>
             <p class="au-error" id="pfError" role="alert" hidden></p>

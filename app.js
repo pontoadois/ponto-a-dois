@@ -33,6 +33,22 @@
   };
   const initialOf = () => nameOf().trim().charAt(0).toUpperCase() || "P";
 
+  // Mostra a foto de perfil (ou a inicial do nome) em todos os avatares
+  function paintAvatars() {
+    const a = auth();
+    const url = (a.getAvatarUrl && a.getAvatarUrl()) || "";
+    const letter = initialOf();
+    [["#avatarInitial", true], ["#navAvatar", false], ["#profAvatar", false], ["#pfAvatarText", true]].forEach(([sel, inner]) => {
+      const el = $(sel);
+      if (!el) return;
+      const box = inner ? el.parentElement : el;
+      box.style.backgroundImage = url ? `url("${url}")` : "";
+      el.textContent = url ? "" : letter;
+    });
+    const rm = $("#pfPhotoRemove");
+    if (rm) rm.hidden = !url;
+  }
+
   async function load() {
     const a = auth();
     if (!a || !a.getSession || !a.getSession()) return;
@@ -61,8 +77,7 @@
   /* ---------- Início ---------- */
   function renderInicio() {
     $("#helloName").textContent = "Olá, " + nameOf();
-    $("#avatarInitial").textContent = initialOf();
-    $("#navAvatar").textContent = initialOf();
+    paintAvatars();
     $("#streakNow").textContent = (streak && streak.current) || 0;
     $("#weekHome").innerHTML = weekHtml();
     $("#premiumHome").hidden = plan.premium;
@@ -103,8 +118,7 @@
 
   /* ---------- Perfil ---------- */
   function renderPerfil() {
-    $("#profAvatar").textContent = initialOf();
-    $("#navAvatar").textContent = initialOf();
+    paintAvatars();
     $("#profName").textContent = nameOf();
     $("#profPlan").textContent = plan.premium ? "Premium" : "Plano gratuito";
     $("#rowPlan small").textContent = plan.premium ? "Premium" : "Gratuito";
@@ -120,6 +134,45 @@
       $("#pfBirth").value = `${d}/${m}/${y}`;
     }
     $("#pfError").hidden = true;
+    pfGender = (p && p.gender) || "";
+    renderGender();
+    paintAvatars();
+  }
+
+  let pfGender = "";
+  function renderGender() {
+    const wrap = $("#pfGender");
+    wrap.innerHTML = "";
+    [["h", "Homem"], ["m", "Mulher"], ["", "Prefiro não informar"]].forEach(([v, label]) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pf-opt" + (pfGender === v ? " is-selected" : "");
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", pfGender === v ? "true" : "false");
+      b.textContent = label;
+      b.addEventListener("click", () => { pfGender = v; renderGender(); });
+      wrap.appendChild(b);
+    });
+  }
+
+  async function changePhoto(file) {
+    if (!file) return;
+    const btn = $("#pfPhotoBtn");
+    btn.disabled = true;
+    btn.textContent = "Enviando…";
+    const ok = await auth().uploadAvatar(file);
+    btn.disabled = false;
+    btn.textContent = "Alterar foto";
+    if (!ok) { app().showToast("Não foi possível enviar a foto. Use JPG, PNG ou WebP de até 10 MB."); return; }
+    paintAvatars();
+    app().showToast("Foto atualizada.");
+  }
+
+  async function removePhoto() {
+    const ok = await auth().removeAvatar();
+    if (!ok) { app().showToast("Não foi possível remover a foto agora."); return; }
+    paintAvatars();
+    app().showToast("Foto removida.");
   }
 
   async function saveProfile(e) {
@@ -130,7 +183,7 @@
     if (name.length < 2) { err.textContent = "Escreva pelo menos 2 letras."; err.hidden = false; return; }
     const btn = $("#pfSave");
     btn.disabled = true;
-    const ok = await auth().saveName(name);
+    const ok = await auth().saveProfile({ name, gender: pfGender });
     btn.disabled = false;
     if (!ok) { err.textContent = "Não foi possível salvar agora. Tente de novo."; err.hidden = false; return; }
     app().showToast("Perfil atualizado.");
@@ -254,6 +307,9 @@
   document.addEventListener("DOMContentLoaded", () => {
     bindPlans();
     $("#profileForm").addEventListener("submit", saveProfile);
+    $("#pfPhotoBtn").addEventListener("click", () => $("#pfPhotoInput").click());
+    $("#pfPhotoInput").addEventListener("change", (e) => { changePhoto(e.target.files[0]); e.target.value = ""; });
+    $("#pfPhotoRemove").addEventListener("click", removePhoto);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
     $$("[data-soon]").forEach((b) => b.addEventListener("click", () => app().showToast("Disponível em breve, junto com o pagamento.")));

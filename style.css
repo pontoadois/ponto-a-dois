@@ -1621,3 +1621,15 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .welcome-lbl { margin-bottom: 10px; color: var(--muted); font-size: 0.9rem; }
 .welcome-card .week-card { width: 100%; margin-bottom: 14px; }
 .free-panel .st-cta { position: static; padding: 0; border: 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ============================================================
+   GERENCIAR PERFIL: foto e gênero
+   ============================================================ */
+.app-avatar--xl { width: 96px; height: 96px; font-size: 2.2rem; cursor: default; }
+.app-avatar, .appnav-avatar { background-size: cover; background-position: center; }
+.pf-photo { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 4px; }
+.pf-photo-actions { display: flex; gap: 18px; align-items: center; }
+.pf-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.pf-opt { min-height: 48px; padding: 8px 6px; border-radius: 14px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.07); color: var(--white); font: inherit; font-size: 0.88rem; line-height: 1.2; cursor: pointer; }
+.pf-opt:hover { border-color: var(--glass-brd-hi); }
+.pf-opt.is-selected { border: 1.5px solid #f13b91; background: rgba(241, 59, 145, 0.18); }
