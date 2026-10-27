@@ -121,7 +121,6 @@
     paintAvatars();
     $("#profName").textContent = nameOf();
     $("#profPlan").textContent = plan.premium ? "Premium" : "Plano gratuito";
-    $("#rowPlan small").textContent = plan.premium ? "Premium" : "Gratuito";
   }
 
   function renderProfile() {
