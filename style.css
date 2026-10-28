@@ -12,11 +12,11 @@
   --wine-700: #320124;
   --wine-600: #40012a;
   --wine-500: #560437;
-  --red-500: #aa0e5f;
-  --red-400: #d41a87;
+  --red-500: #be1f72;
+  --red-400: #f13b91;
   --red-300: #ff80bd;
   --plum-500: #7519a6;
-  --plum-400: #9e1aca;
+  --plum-400: #a82dd0;
   --plum-300: #d88cff;
 
   /* Neutros */
@@ -1533,7 +1533,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .plans-links a { color: #ff80bd; display: inline-block; min-height: 28px; }
 
 /* Barra de navegação */
-.appnav { display: none; position: fixed; left: 0; right: 0; bottom: 0; height: 78px; z-index: 40; justify-content: space-between; align-items: center; padding: 0 28px calc(8px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: rgba(22, 7, 19, 0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-top: 1px solid rgba(224, 117, 255, 0.24); }
+.appnav { display: none; position: fixed; left: 0; right: 0; bottom: 0; height: 78px; z-index: 40; justify-content: space-between; align-items: center; padding: 0 28px calc(8px + env(safe-area-inset-bottom, 0px)); box-sizing: border-box; background: var(--glass-bg); -webkit-backdrop-filter: blur(22px) saturate(1.3); backdrop-filter: blur(22px) saturate(1.3); border-top: 1px solid var(--glass-brd); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
 body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[data-screen="plano"] .appnav, body[data-screen="perfil"] .appnav, body[data-screen="profile"] .appnav { display: flex; }
 .appnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 72px; min-height: 56px; background: none; border: 0; color: var(--muted); font-size: 0.75rem; cursor: pointer; }
 .appnav-item[aria-current="page"] { color: #ff80bd; }
@@ -1547,7 +1547,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
   .app--plans { max-width: 520px; }
 }
 @media (min-width: 1024px) {
-  .appnav { top: 0; bottom: auto; left: 0; right: auto; width: 280px; height: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; padding: 40px 24px; border-top: 0; border-right: 1px solid rgba(224, 117, 255, 0.24); }
+  .appnav { top: 0; bottom: auto; left: 0; right: auto; width: 280px; height: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; padding: 40px 24px; border-top: 0; border-right: 1px solid var(--glass-brd); box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.05); }
   .appnav-brand { display: block; font-family: var(--font-display); font-weight: 600; font-size: 2rem; margin-bottom: 20px; }
   .appnav-desk { display: flex; }
   .appnav-play { display: none; }
@@ -1676,8 +1676,8 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .secret-ico { width: 44px; height: 56px; flex-shrink: 0; border-radius: 10px; background: linear-gradient(155deg, #5b145d, #2a0f2a); border: 1px solid rgba(255, 215, 122, 0.6); display: flex; align-items: center; justify-content: center; color: #ffd77a; }
 .secret-txt { flex: 1; display: flex; flex-direction: column; gap: 2px; }
 .secret-txt small { color: var(--muted); font-size: 0.82rem; }
-.peek-btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid rgba(255, 215, 122, 0.4); background: transparent; color: #ffd77a; font: inherit; font-size: 0.9rem; cursor: pointer; }
-.peek-btn:hover { background: rgba(255, 215, 122, 0.08); }
+.peek-btn { color: #ffd77a; }
+.peek-btn:hover { color: #ffe3a8; }
 .shield-card { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
 .shield-ico { color: #ff80bd; display: flex; }
 .shield-txt { flex: 1; min-width: 200px; }
@@ -1691,3 +1691,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 
 /* Iniciar jogo ocupa a largura toda, como os outros botões */
 .free-panel .st-cta { max-width: none; width: 100%; align-self: stretch; }
+
+/* Botão "Comprar" do bloqueio: espaço nas laterais */
+.shield-card .btn { min-height: 48px; padding: 0 28px; }
+.peek-btn { padding-top: 15px; padding-bottom: 15px; } /* a borda de 1px já soma 2px: mesma altura dos outros botões grandes */
