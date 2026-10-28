@@ -6,10 +6,12 @@
 /* ---------- Tokens / Sistema de cores ---------- */
 :root {
   /* Paleta principal: ameixa profunda, rosa neon e violeta */
-  --wine-900: #160713;
-  --wine-800: #240b25;
-  --wine-700: #3a0d3c;
-  --wine-600: #5b145d;
+  /* Paleta de vinhos (teste): #1D011B, #24021F, #320124, #40012A, #560437 */
+  --wine-900: #1d011b;
+  --wine-800: #24021f;
+  --wine-700: #320124;
+  --wine-600: #40012a;
+  --wine-500: #560437;
   --red-500: #be1f72;
   --red-400: #f13b91;
   --red-300: #ff80bd;
@@ -18,9 +20,9 @@
   --plum-300: #d88cff;
 
   /* Neutros */
-  --ink-900: #0d0310;
-  --ink-800: #17071b;
-  --ink-700: #250b2b;
+  --ink-900: #1d011b;
+  --ink-800: #24021f;
+  --ink-700: #320124;
   --white: #fff7ff;
   --muted: rgba(255, 247, 255, 0.7);
   --muted-2: rgba(255, 247, 255, 0.42);
@@ -36,7 +38,7 @@
   --error: #ef5350;
 
   /* Tipografia */
-  --font-display: "Cormorant Garamond", Georgia, serif;
+  --font-display: "Fraunces", Georgia, serif;
   --font-body: "Outfit", system-ui, -apple-system, sans-serif;
 
   /* Espaçamento (base 8px) */
@@ -104,12 +106,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   position: fixed;
   inset: 0;
   z-index: -3;
-  background:
-    radial-gradient(120% 90% at 15% 0%, var(--wine-700) 0%, transparent 55%),
-    radial-gradient(120% 90% at 85% 100%, var(--plum-500) 0%, transparent 55%),
-    radial-gradient(100% 100% at 50% 50%, var(--wine-800) 0%, var(--ink-900) 70%);
-  background-size: 200% 200%, 200% 200%, 100% 100%;
-  animation: bgShift 18s var(--ease-soft) infinite alternate;
+  background: linear-gradient(180deg, #1d011b 0%, #24021f 40%, #320124 70%, #560437 100%);
 }
 
 @keyframes bgShift {
@@ -125,9 +122,9 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   opacity: 0.5;
   animation: orbFloat 16s var(--ease-soft) infinite alternate;
 }
-.orb-1 { width: 340px; height: 340px; background: var(--red-400); top: -8%; left: -10%; }
-.orb-2 { width: 300px; height: 300px; background: var(--plum-400); bottom: -10%; right: -8%; animation-delay: -6s; }
-.orb-3 { width: 220px; height: 220px; background: var(--red-500); top: 40%; left: 60%; animation-delay: -10s; opacity: 0.35; }
+.orb-1 { width: 340px; height: 340px; background: var(--red-400); top: -8%; left: -10%; opacity: 0.16; }
+.orb-2 { width: 460px; height: 320px; background: var(--wine-500); bottom: -14%; left: 25%; opacity: 0.7; animation-delay: -6s; }
+.orb-3 { display: none; }
 
 @keyframes orbFloat {
   0%   { transform: translate(0, 0) scale(1); }
@@ -329,7 +326,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   flex-direction: column;
   gap: var(--sp-5);
   padding: 32px;
-  background: linear-gradient(155deg, rgba(53, 12, 56, 0.72), rgba(17, 4, 23, 0.92));
+  background: linear-gradient(155deg, rgba(64, 1, 42, 0.72), rgba(29, 1, 27, 0.92));
   border: 1px solid rgba(218, 75, 225, 0.58);
   border-radius: 30px;
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 35px rgba(173, 29, 178, 0.18) inset;
@@ -1069,7 +1066,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .st-hero { display: flex; flex-direction: column; gap: 20px; }
 .st-title {
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: var(--font-display);
   font-weight: 600;
   font-size: 2.5rem;
   line-height: 1;
@@ -1110,7 +1107,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   gap: 10px;
 }
 .fan-card--c svg { width: 38px; height: 38px; }
-.fan-card--c span { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.25rem; font-weight: 600; color: #fff7ff; }
+.fan-card--c span { font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; color: #fff7ff; }
 .fan-card--l { align-items: flex-start; padding-left: 12%; }
 .fan-card--r { align-items: flex-end; padding-right: 12%; }
 .fan-card--l span { text-align: left; padding: 0; }
@@ -1124,7 +1121,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .st-label { font-size: 0.82rem; font-weight: 500; color: rgba(255, 247, 255, 0.72); letter-spacing: 0.02em; }
 .st-opt { font-weight: 400; color: rgba(255, 247, 255, 0.55); }
 .st-row { display: flex; justify-content: space-between; align-items: baseline; }
-.st-level { font-family: "Cormorant Garamond", Georgia, serif; font-size: 1.6rem; font-weight: 600; color: var(--red-300); }
+.st-level { font-family: var(--font-display); font-size: 1.6rem; font-weight: 600; color: var(--red-300); }
 
 .st-mode,
 .st-tile {
@@ -1202,7 +1199,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   padding: 12px;
   border-radius: 22px;
   border: 1px solid rgba(224, 117, 255, 0.24);
-  background: rgba(36, 11, 37, 0.72);
+  background: rgba(36, 2, 31, 0.78);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
 }
@@ -1264,7 +1261,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   transition: opacity var(--t-mid) var(--ease), visibility 0s var(--t-mid);
 }
 .modal.is-open { opacity: 1; visibility: visible; transition: opacity var(--t-mid) var(--ease), visibility 0s; }
-.modal-backdrop { position: absolute; inset: 0; background: rgba(10, 3, 12, 0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(29, 1, 27, 0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
 .modal-card {
   position: relative;
   width: 100%;
@@ -1284,7 +1281,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .modal.is-open .modal-card { transform: translateY(0) scale(1); }
 .modal-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 20px 10px 24px; flex-shrink: 0; }
 .modal-close { position: static; flex-shrink: 0; }
-.modal-title { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-size: 2rem; font-weight: 600; line-height: 1.1; }
+.modal-title { margin: 0; font-family: var(--font-display); font-size: 2rem; font-weight: 600; line-height: 1.1; }
 .modal-body { overflow-y: auto; overscroll-behavior: contain; padding: 4px 24px 18px; display: flex; flex-direction: column; gap: 22px; }
 .modal-foot { flex-shrink: 0; padding: 14px 24px calc(18px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid rgba(224, 117, 255, 0.15); }
 .modal-foot .btn { min-height: 52px; }
@@ -1329,12 +1326,12 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .au-back { align-self: flex-start; }
 .au-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; align-items: start; }
 .au-hero { display: flex; flex-direction: column; gap: 12px; }
-.au-brand { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.75rem; line-height: 1; letter-spacing: -0.01em; }
+.au-brand { font-family: var(--font-display); font-weight: 600; font-size: 2.75rem; line-height: 1; letter-spacing: -0.01em; }
 .au-tag { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--muted); max-width: 420px; }
 .au-fan { display: none; }
 
 .au-panel, .au-form { display: flex; flex-direction: column; gap: 22px; width: 100%; }
-.au-title { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.1rem; line-height: 1.05; }
+.au-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.05; }
 .au-sub { margin: 10px 0 0; font-size: 0.95rem; line-height: 1.5; color: var(--muted); }
 .au-sub b { color: var(--white); word-break: break-all; }
 
@@ -1437,7 +1434,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 
 .screen--app { justify-content: flex-start; align-items: stretch; padding-bottom: 120px; }
 .app { width: 100%; max-width: 560px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
-.app-h2 { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.75rem; line-height: 1.1; }
+.app-h2 { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.75rem; line-height: 1.1; }
 .app-bar { display: flex; align-items: center; gap: 12px; min-height: 44px; }
 .app-title { margin: 0; font-size: 1.25rem; font-weight: 600; }
 .app-card { border-radius: 20px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.06); padding: 18px 14px 14px; }
@@ -1463,9 +1460,9 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .app-side { display: flex; flex-direction: column; gap: 22px; }
 .reco { border-radius: 20px; border: 1px solid rgba(241, 59, 145, 0.5); background: linear-gradient(135deg, rgba(233, 30, 99, 0.28), rgba(156, 39, 176, 0.28)); padding: 22px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; text-align: left; }
 .reco-tag { padding: 4px 12px; border-radius: 999px; background: #fff7ff; color: #3a0d3c; font-size: 0.8rem; font-weight: 600; }
-.reco-title { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.1rem; line-height: 1.05; }
+.reco-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.05; }
 .reco p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--muted); max-width: 340px; }
-.premium-banner { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; width: 100%; border-radius: 18px; background: linear-gradient(100deg, rgba(255, 213, 128, 0.22), rgba(255, 128, 189, 0.22)); border: 1px solid rgba(255, 213, 128, 0.55); color: #ffe3a8; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.06em; cursor: pointer; }
+.premium-banner { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; width: 100%; border-radius: 999px; background: linear-gradient(100deg, rgba(255, 213, 128, 0.22), rgba(255, 128, 189, 0.22)); border: 1px solid rgba(255, 213, 128, 0.55); color: #ffe3a8; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.06em; cursor: pointer; }
 
 .game-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .game-tile { display: flex; flex-direction: column; justify-content: space-between; gap: 16px; min-height: 118px; padding: 16px; border-radius: 20px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.06); color: var(--white); text-align: left; cursor: pointer; transition: border-color var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
@@ -1483,7 +1480,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .recent-name { font-size: 0.95rem; font-weight: 500; }
 
 .streak-hero { border-radius: 20px; border: 1px solid rgba(241, 59, 145, 0.5); background: linear-gradient(135deg, rgba(233, 30, 99, 0.3), rgba(156, 39, 176, 0.28)); padding: 26px 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; text-align: left; }
-.streak-num { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 5.5rem; line-height: 1; }
+.streak-num { font-family: var(--font-display); font-weight: 600; font-size: 5.5rem; line-height: 1; }
 .streak-lbl { margin-top: 6px; font-size: 1.25rem; font-weight: 600; }
 .streak-hero p { margin: 8px 0 0; font-size: 0.88rem; line-height: 1.5; color: var(--muted); max-width: 200px; }
 .streak-flame { color: #ff80bd; filter: drop-shadow(0 0 22px rgba(241, 59, 145, 0.6)); flex-shrink: 0; }
@@ -1491,7 +1488,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .stat { display: flex; align-items: center; gap: 14px; padding: 16px; border-radius: 20px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.06); }
 .stat-ico { width: 44px; height: 44px; border-radius: 14px; background: rgba(241, 59, 145, 0.16); color: #ff80bd; display: flex; align-items: center; justify-content: center; }
 .stat-lbl { flex: 1; font-size: 1rem; text-align: left; }
-.stat-val { font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2rem; line-height: 1; }
+.stat-val { font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1; }
 .streak-hero + .app-h2, .app-h2 + .week-card, .app-h2 + .stat-list { margin-top: -6px; }
 
 .prof-head { display: flex; align-items: center; gap: 14px; text-align: left; }
@@ -1515,7 +1512,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .plans-hero { display: flex; justify-content: center; margin-top: 12px; }
 .plans-fan { max-width: 260px; margin: 0 auto; }
 .plans-main { display: flex; flex-direction: column; gap: 20px; }
-.plans-title { margin: 0; text-align: center; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.5rem; line-height: 1.05; }
+.plans-title { margin: 0; text-align: center; font-family: var(--font-display); font-weight: 600; font-size: 2.5rem; line-height: 1.05; }
 .plans-list { list-style: none; margin: 18px 0 0; padding: 0 6px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
 .plans-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 1rem; line-height: 1.4; }
 .plans-list li svg { width: 24px; height: 24px; padding: 4px; box-sizing: border-box; border-radius: 50%; background: rgba(241, 59, 145, 0.18); border: 1px solid rgba(241, 59, 145, 0.5); color: #ff80bd; flex-shrink: 0; margin-top: 1px; }
@@ -1541,7 +1538,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .appnav-item { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; min-width: 72px; min-height: 56px; background: none; border: 0; color: var(--muted); font-size: 0.75rem; cursor: pointer; }
 .appnav-item[aria-current="page"] { color: #ff80bd; }
 .appnav-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(100deg, #ff4e91, #a52ad3); color: var(--white); font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; justify-content: center; }
-.appnav-play { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); width: 64px; height: 64px; border-radius: 50%; border: 4px solid #160713; background: linear-gradient(100deg, #ff4e91, #a52ad3); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 28px rgba(241, 59, 145, 0.5); }
+.appnav-play { position: absolute; left: 50%; top: -26px; transform: translateX(-50%); width: 64px; height: 64px; border-radius: 50%; border: 4px solid #1d011b; background: linear-gradient(100deg, #ff4e91, #a52ad3); color: var(--white); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 28px rgba(241, 59, 145, 0.5); }
 .appnav-desk, .appnav-brand { display: none; }
 
 @media (min-width: 640px) {
@@ -1551,7 +1548,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 }
 @media (min-width: 1024px) {
   .appnav { top: 0; bottom: auto; left: 0; right: auto; width: 280px; height: 100%; flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 8px; padding: 40px 24px; border-top: 0; border-right: 1px solid rgba(224, 117, 255, 0.24); }
-  .appnav-brand { display: block; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2rem; margin-bottom: 20px; }
+  .appnav-brand { display: block; font-family: var(--font-display); font-weight: 600; font-size: 2rem; margin-bottom: 20px; }
   .appnav-desk { display: flex; }
   .appnav-play { display: none; }
   .appnav-item { flex-direction: row; justify-content: flex-start; gap: 14px; min-height: 48px; padding: 0 16px; border-radius: 14px; border: 1px solid transparent; font-size: 1rem; }
@@ -1593,7 +1590,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .plan-card { border-radius: 20px; border: 1px solid rgba(224, 117, 255, 0.24); background: rgba(255, 220, 255, 0.07); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
 .plan-card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 .plan-card-lbl { font-size: 0.8rem; color: var(--muted); }
-.plan-card-name { margin: 2px 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2rem; line-height: 1.05; }
+.plan-card-name { margin: 2px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 2rem; line-height: 1.05; }
 .plan-card-badge { padding: 4px 12px; border-radius: 999px; background: rgba(255, 247, 255, 0.12); font-size: 0.85rem; }
 .plan-card-badge.is-ok { background: rgba(76, 175, 80, 0.18); color: #7bd67f; border: 1px solid rgba(76, 175, 80, 0.5); }
 .plan-feat { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
@@ -1601,7 +1598,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .plan-feat li.is-on svg { color: #4caf50; }
 .plan-feat li.is-off { color: rgba(255, 247, 255, 0.48); }
 .plan-feat li.is-off svg { color: rgba(255, 247, 255, 0.48); }
-.plan-card--promo { background: linear-gradient(155deg, rgba(190, 31, 114, 0.35), rgba(53, 12, 56, 0.7)); border-color: rgba(241, 59, 145, 0.5); }
+.plan-card--promo { background: linear-gradient(155deg, rgba(190, 31, 114, 0.35), rgba(64, 1, 42, 0.7)); border-color: rgba(241, 59, 145, 0.5); }
 .plan-card--promo p { margin: 0; font-size: 0.95rem; color: var(--muted); line-height: 1.45; }
 .plan-card-tag { align-self: flex-start; padding: 3px 12px; border-radius: 999px; background: rgba(255, 215, 122, 0.16); border: 1px solid rgba(255, 215, 122, 0.5); color: #ffd77a; font-size: 0.8rem; }
 .plan-kv { display: flex; justify-content: space-between; gap: 12px; font-size: 0.95rem; padding: 4px 0; }
@@ -1613,7 +1610,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .welcome-card { align-items: center; text-align: center; gap: 8px; padding: 28px 20px 20px; }
 .welcome-flame { width: 68px; height: 68px; border-radius: 50%; background: linear-gradient(135deg, #f13b91, #a82dd0); display: flex; align-items: center; justify-content: center; margin-bottom: 4px; box-shadow: 0 0 28px rgba(241, 59, 145, 0.5); }
 .welcome-flame svg { width: 36px; height: 36px; }
-.welcome-title { margin: 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 2.2rem; line-height: 1.05; }
+.welcome-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 2.2rem; line-height: 1.05; }
 .welcome-sub { margin: 0 0 6px; color: var(--muted); font-size: 0.95rem; }
 .welcome-num { font-size: 3rem; font-weight: 500; line-height: 1; color: #ff80bd; }
 .welcome-lbl { margin-bottom: 10px; color: var(--muted); font-size: 0.9rem; }
@@ -1636,7 +1633,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
    FOTO DE PERFIL: ver e posicionar
    ============================================================ */
 .pf-avatar { position: relative; padding: 0; border: 0; cursor: pointer; color: inherit; font: inherit; }
-.pf-cam { position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; background: #7519a6; border: 2px solid #160713; display: flex; align-items: center; justify-content: center; color: #fff7ff; }
+.pf-cam { position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; background: #7519a6; border: 2px solid #1d011b; display: flex; align-items: center; justify-content: center; color: #fff7ff; }
 .photo-card { max-width: 460px; }
 .photo-view { width: min(360px, calc(100vw - 96px)); aspect-ratio: 1; margin: 6px auto 18px; border-radius: 24px; overflow: hidden; background: #0b0309; border: 1px solid rgba(224, 117, 255, 0.24); }
 .photo-view img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -1644,7 +1641,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .crop { position: relative; width: min(320px, calc(100vw - 96px)); aspect-ratio: 1; overflow: hidden; border-radius: 20px; background: #0b0309; touch-action: none; cursor: grab; user-select: none; -webkit-user-select: none; }
 .crop:active { cursor: grabbing; }
 .crop img { position: absolute; left: 50%; top: 50%; max-width: none; max-height: none; transform-origin: center; pointer-events: none; will-change: transform; }
-.crop-mask { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 999px rgba(10, 3, 12, 0.62); border: 2px solid rgba(255, 247, 255, 0.85); }
+.crop-mask { position: absolute; inset: 0; border-radius: 50%; pointer-events: none; box-shadow: 0 0 0 999px rgba(29, 1, 27, 0.62); border: 2px solid rgba(255, 247, 255, 0.85); }
 .crop-zoom { display: flex; align-items: center; gap: 12px; width: min(320px, calc(100vw - 96px)); color: var(--muted); font-size: 1.3rem; }
 .crop-zoom input { flex: 1; accent-color: #f13b91; }
 .photo-hint { margin: 0; font-size: 0.85rem; color: var(--muted); text-align: center; }
@@ -1657,10 +1654,10 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 /* ============================================================
    TERMÔMETRO, PONTOS E MOEDAS (Início)
    ============================================================ */
-.heat-card { display: flex; flex-direction: column; gap: 12px; background: linear-gradient(155deg, rgba(190, 31, 114, 0.28), rgba(53, 12, 56, 0.7)); border-color: rgba(241, 59, 145, 0.4); }
+.heat-card { display: flex; flex-direction: column; gap: 12px; background: linear-gradient(155deg, rgba(190, 31, 114, 0.28), rgba(64, 1, 42, 0.7)); border-color: rgba(241, 59, 145, 0.4); }
 .heat-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .heat-lbl { font-size: 0.8rem; color: var(--muted); }
-.heat-names { margin: 2px 0 0; font-family: "Cormorant Garamond", Georgia, serif; font-weight: 600; font-size: 1.7rem; line-height: 1.05; }
+.heat-names { margin: 2px 0 0; font-family: var(--font-display); font-weight: 600; font-size: 1.7rem; line-height: 1.05; }
 .heat-stage { padding: 3px 12px; border-radius: 999px; background: rgba(255, 215, 122, 0.14); border: 1px solid rgba(255, 215, 122, 0.5); color: #ffd77a; font-size: 0.78rem; text-align: center; }
 .heat-row { display: flex; align-items: center; gap: 10px; }
 .heat-ico { color: #ff80bd; display: flex; }
@@ -1691,3 +1688,6 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .welcome-card .app-card { width: 100%; text-align: left; }
 .done-heat-top { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 8px; font-size: 0.9rem; }
 .done-heat-top span { color: var(--muted); }
+
+/* Iniciar jogo ocupa a largura toda, como os outros botões */
+.free-panel .st-cta { max-width: none; width: 100%; align-self: stretch; }
