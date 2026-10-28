@@ -24,6 +24,7 @@
     `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PATHS[k]}"/></svg>`;
 
   let streak = null;
+  let game = null; // pontos, moedas, termômetro e bloqueios (vêm do servidor)
   let plan = { premium: false };
 
   const nameOf = () => {
@@ -53,7 +54,7 @@
     const a = auth();
     if (!a || !a.getSession || !a.getSession()) return;
     try {
-      [streak, plan] = await Promise.all([a.getStreak(), a.getPlan()]);
+      [streak, plan, game] = await Promise.all([a.getStreak(), a.getPlan(), a.getGame ? a.getGame() : null]);
     } catch { /* sem conexão: mostra o que tiver */ }
   }
 
@@ -85,7 +86,8 @@
     // Plano e nomes: a seção "Jogo livre" mostra a coroa nas categorias premium e já traz o nome do perfil
     const p = auth().getProfile && auth().getProfile();
     app().setPremium(plan.premium);
-    app().prefillPlayers(p && p.display_name ? p.display_name.split(" ")[0] : "", p && p.gender);
+    app().prefillPlayers(p && p.display_name ? p.display_name.split(" ")[0] : "", p && p.gender, p && p.spouse_name);
+    renderHeat();
 
     const recents = app().getRecent();
     $("#recentWrap").hidden = !recents.length;
@@ -102,6 +104,152 @@
     });
   }
 
+  /* ---------- Termômetro, pontos e moedas ---------- */
+  const STAGES = ["Casal Próspero", "Companheiros de Aliança", "Intimidade Fortalecida"];
+
+  function heatMessage(g) {
+    if (!g.points && !g.heat) return "Comecem a jogar para esquentar o termômetro.";
+    if (g.heat >= 70) return "Em chamas! Vocês estão em sintonia.";
+    if (g.heat >= 40) return "Quentinho: vocês têm jogado juntos.";
+    if (g.heat > 10) return "Esfriando um pouco. Que tal reacender hoje?";
+    return "Está frio por aqui, mas uma Conexão Rápida reacende em 5 minutos.";
+  }
+
+  function renderHeat() {
+    const g = game;
+    const card = $("#heatCard");
+    card.hidden = !g;
+    $("#quickPlay").hidden = !g;
+    $("#secretCard").hidden = !g;
+    if (!g) { $("#peekBtn").hidden = true; return; }
+    const p = auth().getProfile && auth().getProfile();
+    const first = ((p && p.display_name) || "").split(" ")[0];
+    const spouse = p && p.spouse_name;
+    $(".heat-lbl", card).textContent = spouse ? "Termômetro de" : "Termômetro";
+    $("#heatNames").textContent = spouse && first ? `${first} e ${spouse}` : "do casal";
+    $("#heatStage").textContent = STAGES[g.stage - 1];
+    $("#heatFill").style.width = g.heat + "%";
+    $("#heatPct").textContent = g.heat + "%";
+    $("#heatBar").setAttribute("aria-valuenow", g.heat);
+    $("#heatMsg").textContent = heatMessage(g);
+    $("#stPoints").textContent = g.points;
+    $("#stCoins").textContent = g.coins;
+    $("#stFreezes").textContent = g.freezes;
+    $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio" : "bloqueios";
+    const next = g.next_at ? `Faltam ${g.next_at - g.points} pontos para ${STAGES[g.stage]}.` : "Vocês chegaram ao estágio mais alto. Que bonito!";
+    $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
+    const add = $("#addSpouse");
+    if (add) add.addEventListener("click", () => app().goTo("profile"));
+    $("#quickPlay").lastChild.textContent = g.quick_done ? "Conexão Rápida · jogar de novo" : "Conexão Rápida · 5 min";
+    const sc = $("#secretCard");
+    sc.classList.toggle("is-done", g.secret_done);
+    $("#secretTitle").textContent = g.secret_done ? "Carta secreta de hoje: feita" : "Carta secreta de hoje";
+    $("#secretSub").textContent = g.secret_done ? "Voltem amanhã para uma nova" : "Uma prévia do conteúdo Premium";
+    const peek = $("#peekBtn");
+    peek.hidden = plan.premium || g.peeks_left <= 0;
+    $("#peekLbl").textContent = `Espiar outra carta premium · ${g.cfg.peek_cost} moedas`;
+  }
+
+  const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  async function playQuick() {
+    const a = auth();
+    try { await a.loadContent(); } catch { app().showToast("Não foi possível carregar as cartas. Verifique a conexão."); return; }
+    const pool = shuffle(D.cards.filter((c) => c.int === "leve" && !c.forGender && !(c.tags || []).includes("fim") && c.fmt !== "missao"));
+    const picked = [], seen = new Set();
+    pool.forEach((c) => { if (picked.length < 3 && !seen.has(c.cat)) { seen.add(c.cat); picked.push(c); } });
+    pool.forEach((c) => { if (picked.length < 3 && !picked.includes(c)) picked.push(c); });
+    if (picked.length < 3) { app().showToast("Não há cartas suficientes agora."); return; }
+    app().playPreset({
+      mode: "rapida", cards: picked, reserve: pool.filter((c) => !picked.includes(c)).slice(0, 12),
+      onEnd: () => a.completeQuick(),
+      afterEnd: (r) => showDone("quick", r),
+    });
+  }
+
+  async function openSecret() {
+    if (game && game.secret_done) { app().showToast("Vocês já fizeram a carta secreta de hoje. Voltem amanhã!"); return; }
+    if (!app().namesOk()) return;
+    const r = await auth().getSecret();
+    if (!r || !r.card) { app().showToast("Não foi possível abrir a carta secreta agora."); return; }
+    if (r.done) { app().showToast("Vocês já fizeram a carta secreta de hoje. Voltem amanhã!"); return; }
+    app().playPreset({
+      mode: "secreta", cards: [r.card], reserve: [], noOther: "A carta secreta é uma só por dia.",
+      onEnd: () => auth().completeSecret(),
+      afterEnd: (res) => showDone("secret", res),
+    });
+  }
+
+  function askPeek() {
+    if (!game) return;
+    const c = game.cfg;
+    if (game.coins < c.peek_cost) {
+      app().showToast(`Você precisa de ${c.peek_cost} moedas. A Conexão Rápida dá ${c.coins_quick} por dia.`);
+      return;
+    }
+    if (!app().namesOk()) return;
+    $("#pkText").textContent = `Você vai gastar ${c.peek_cost} moedas para ver uma carta do conteúdo Premium. Hoje ainda dá para espiar ${game.peeks_left} ${game.peeks_left === 1 ? "carta" : "cartas"}, e você tem ${game.coins} moedas.`;
+    app().openModal("peek");
+  }
+
+  async function doPeek() {
+    const btn = $("#pkGo");
+    btn.disabled = true;
+    const r = await auth().peekCard();
+    btn.disabled = false;
+    app().closeModal();
+    if (!r || !r.card) {
+      const why = { coins: "Você não tem moedas suficientes.", limit: "Você já espiou as cartas de hoje. Volte amanhã!", premium: "Com o Premium todas as cartas já estão liberadas.", empty: "Não há cartas para espiar agora." };
+      app().showToast((r && why[r.reason]) || "Não foi possível espiar agora.");
+      return;
+    }
+    app().playPreset({
+      mode: "espiar", cards: [r.card], reserve: [], noOther: "Esta prévia é de uma carta só.",
+      onEnd: null,
+      afterEnd: async () => { await load(); renderInicio(); app().showToast("Gostaram? Com o Premium todas ficam liberadas."); },
+    });
+  }
+
+  // Recompensa depois de uma atividade (os números vêm do servidor)
+  async function showDone(kind, res) {
+    const before = game;
+    await load();
+    renderInicio();
+    const granted = res && res.granted;
+    const rows = [];
+    let title = kind === "quick" ? "Conexão feita!" : "Carta secreta feita!";
+    let sub = "Vocês dedicaram um tempo um ao outro hoje.";
+    if (granted) {
+      rows.push(["Pontos de conexão", "+" + res.points]);
+      if (res.coins) rows.push(["Moedas", "+" + res.coins]);
+    } else {
+      title = "Que bom jogar de novo!";
+      sub = "Os pontos desta atividade de hoje já foram contados.";
+    }
+    if (streak) rows.push(["Ofensiva", `${streak.current} ${streak.current === 1 ? "dia seguido" : "dias seguidos"}`]);
+    if (granted && before && game && game.stage > before.stage) sub = `Vocês chegaram a um novo estágio: ${STAGES[game.stage - 1]}!`;
+    $("#doneTitle").textContent = title;
+    $("#doneSub").textContent = sub;
+    $("#doneList").innerHTML = rows.map(([k, v]) => `<div class="plan-kv"><span>${k}</span><b>${v}</b></div>`).join("");
+    const to = game ? game.heat : 0;
+    const from = granted ? res.heat_before : to;
+    $("#doneHeatTxt").textContent = granted && from !== to ? `${from}% → ${to}%` : `${to}%`;
+    $("#doneHeatFill").style.width = from + "%";
+    app().openModal("done");
+    requestAnimationFrame(() => requestAnimationFrame(() => { $("#doneHeatFill").style.width = to + "%"; }));
+  }
+
+  async function buyFreeze() {
+    if (!game) return;
+    const btn = $("#buyFreeze");
+    btn.disabled = true;
+    const r = await auth().buyFreeze();
+    if (r && r.ok) app().showToast("Bloqueio de ofensiva comprado.");
+    else app().showToast({ coins: `Você precisa de ${game.cfg.freeze_cost} moedas.`, max: "Você já tem o máximo de bloqueios." }[r && r.reason] || "Não foi possível comprar agora.");
+    await load();
+    renderStreak();
+  }
+
   /* ---------- Sequência ---------- */
   function renderStreak() {
     const n = (streak && streak.current) || 0;
@@ -113,6 +261,12 @@
       [(streak && streak.month_days) || 0, "Dias jogados neste mês", "heart"],
       [(streak && streak.total_days) || 0, "Dias jogados no total", "calendar"],
     ];
+    if (game) {
+      $("#shieldCount").textContent = `${game.freezes} de ${game.cfg.freeze_max}`;
+      const buy = $("#buyFreeze");
+      buy.textContent = `Comprar · ${game.cfg.freeze_cost} moedas`;
+      buy.disabled = game.freezes >= game.cfg.freeze_max;
+    }
     $("#statList").innerHTML = stats.map(([v, l, k]) => `<div class="stat"><span class="stat-ico">${svg(k, 24)}</span><span class="stat-lbl">${l}</span><span class="stat-val">${v}</span></div>`).join("");
   }
 
@@ -127,6 +281,7 @@
     const p = auth().getProfile();
     const s = auth().getSession();
     $("#pfName").value = (p && p.display_name) || "";
+    $("#pfSpouse").value = (p && p.spouse_name) || "";
     $("#pfEmail").value = s ? s.user.email : "";
     if (p && p.birth_date) {
       const [y, m, d] = p.birth_date.split("-");
@@ -273,7 +428,7 @@
     if (name.length < 2) { err.textContent = "Escreva pelo menos 2 letras."; err.hidden = false; return; }
     const btn = $("#pfSave");
     btn.disabled = true;
-    const ok = await auth().saveProfile({ name, gender: pfGender });
+    const ok = await auth().saveProfile({ name, gender: pfGender, spouse: $("#pfSpouse").value });
     btn.disabled = false;
     if (!ok) { err.textContent = "Não foi possível salvar agora. Tente de novo."; err.hidden = false; return; }
     app().showToast("Perfil atualizado.");
@@ -352,16 +507,19 @@
     try { seen = localStorage.getItem(WELCOME_KEY); } catch { /* ignore */ }
     if (seen === day || welcomedDay === day) return;
     welcomedDay = day;
-    await a.registerPlay(); // entrar no app já conta o dia na sequência
+    const reg = await a.registerPlay(); // entrar no app já conta o dia na sequência (e dá as moedas do dia)
     let fresh = null;
     try { fresh = await a.getStreak(); } catch { /* ignore */ }
     if (!fresh) return; // sem conexão: não mostra nada e tenta de novo na próxima vez
     streak = fresh;
+    try { game = await a.getGame(); } catch { /* ignore */ }
     try { localStorage.setItem(WELCOME_KEY, day); } catch { /* ignore */ }
     renderInicio();
     const n = streak.current || 1;
     $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
     $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
+    if (reg && reg.freezes_used) $("#welSub").textContent = "Um bloqueio de ofensiva protegeu a sua sequência. Que bom ter vocês de volta!";
+    else if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas de conexão.`;
     $("#welNum").textContent = n;
     $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
     $("#welWeek").innerHTML = weekHtml();
@@ -397,6 +555,11 @@
   document.addEventListener("DOMContentLoaded", () => {
     bindPlans();
     $("#profileForm").addEventListener("submit", saveProfile);
+    $("#quickPlay").addEventListener("click", playQuick);
+    $("#secretCard").addEventListener("click", openSecret);
+    $("#peekBtn").addEventListener("click", askPeek);
+    $("#pkGo").addEventListener("click", doPeek);
+    $("#buyFreeze").addEventListener("click", buyFreeze);
     $("#pfPhotoBtn").addEventListener("click", () => $("#pfPhotoInput").click());
     $("#pfPhotoInput").addEventListener("change", (e) => { openCropper(e.target.files[0]); e.target.value = ""; });
     $("#pfAvatar").addEventListener("click", onAvatarClick);

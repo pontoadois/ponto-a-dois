@@ -77,7 +77,7 @@
     if (!session) { profile = null; avatarUrl = null; return; }
     const { data } = await client
       .from("profiles")
-      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path")
+      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path, spouse_name")
       .eq("id", session.user.id)
       .maybeSingle();
     profile = data || null;
@@ -164,6 +164,19 @@
     if (D) { D.cards.length = 0; D.positions.length = 0; }
   }
 
+  // Converte uma linha do banco no formato de carta usado pelo jogo
+  function rowToCard(r) {
+    const card = { id: r.id, cat: r.cat, int: r.intensity, fmt: r.fmt, text: r.body };
+    if (r.options) card.options = r.options;
+    if (r.seconds) card.seconds = r.seconds;
+    if (r.truth) { card.truth = r.truth; card.dare = r.dare; }
+    if (r.dare_seconds) card.dareSeconds = r.dare_seconds;
+    if (r.who) card.who = r.who;
+    if (r.tags && r.tags.length) card.tags = r.tags;
+    if (r.for_gender && r.for_gender !== "ambos") card.forGender = r.for_gender;
+    return card;
+  }
+
   async function loadContent(force) {
     if (!client || !session) return false;
     if (contentLoaded && !force) return true;
@@ -173,17 +186,7 @@
     ]);
     if (c.error || p.error) throw new Error((c.error || p.error).message);
     D.cards.length = 0;
-    (c.data || []).forEach((r) => {
-      const card = { id: r.id, cat: r.cat, int: r.intensity, fmt: r.fmt, text: r.body };
-      if (r.options) card.options = r.options;
-      if (r.seconds) card.seconds = r.seconds;
-      if (r.truth) { card.truth = r.truth; card.dare = r.dare; }
-      if (r.dare_seconds) card.dareSeconds = r.dare_seconds;
-      if (r.who) card.who = r.who;
-      if (r.tags && r.tags.length) card.tags = r.tags;
-      if (r.for_gender && r.for_gender !== "ambos") card.forGender = r.for_gender;
-      D.cards.push(card);
-    });
+    (c.data || []).forEach((r) => D.cards.push(rowToCard(r)));
     D.positions.length = 0;
     (p.data || []).forEach((r) => D.positions.push({ name: r.name, int: r.intensity, image: r.image || "", desc: r.description || "" }));
     contentLoaded = true;
@@ -363,16 +366,39 @@
   const spToday = () => new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
 
   async function registerPlay() {
-    if (!client || !session) return;
+    if (!client || !session) return null;
     const day = spToday();
-    if (playedKey === day) return;
+    if (playedKey === day) return null;
     playedKey = day;
-    // Só a data fica guardada; se o dia já existe, nada muda
+    // O servidor registra o dia, aplica um bloqueio de ofensiva se for preciso e dá as moedas do dia
     try {
-      await client.from("daily_activity").upsert({ user_id: session.user.id, day }, { onConflict: "user_id,day", ignoreDuplicates: true });
-    } catch { playedKey = null; /* tenta de novo na próxima vez */ }
+      const { data, error } = await client.rpc("register_day");
+      if (error) throw error;
+      return data;
+    } catch { playedKey = null; /* tenta de novo na próxima vez */ return null; }
   }
 
+  /* ---------- Pontos, moedas, termômetro (tudo calculado no servidor) ---------- */
+  async function rpc(name) {
+    if (!client || !session) return null;
+    try {
+      const { data, error } = await client.rpc(name);
+      return error ? null : data;
+    } catch { return null; }
+  }
+  const getGame = () => rpc("game_state");
+  const completeQuick = () => rpc("complete_quick");
+  const completeGame = () => rpc("complete_game");
+  const completeSecret = () => rpc("complete_secret");
+  const buyFreeze = () => rpc("buy_freeze");
+  async function getSecret() {
+    const r = await rpc("get_secret_card");
+    return r && r.ok ? { card: rowToCard(r.card), done: !!r.done } : r;
+  }
+  async function peekCard() {
+    const r = await rpc("peek_card");
+    return r && r.ok ? { ...r, card: rowToCard(r.card) } : r;
+  }
   async function getStreak() {
     if (!client || !session) return null;
     const { data, error } = await client.rpc("my_streak");
@@ -387,9 +413,10 @@
   }
 
   // Salva o nome e o gênero ("h", "m" ou "" para não informar)
-  async function saveProfile({ name, gender }) {
+  async function saveProfile({ name, gender, spouse }) {
     const g = gender === "h" || gender === "m" ? gender : null;
-    const { error } = await client.from("profiles").update({ display_name: name, gender: g }).eq("id", session.user.id);
+    const sp = String(spouse || "").trim().slice(0, 16) || null;
+    const { error } = await client.from("profiles").update({ display_name: name, gender: g, spouse_name: sp }).eq("id", session.user.id);
     if (!error) { await loadProfile(); renderHomeUser(); }
     return !error;
   }
@@ -461,7 +488,7 @@
   }
 
   window.EntreNosAuth = {
-    registerPlay, getStreak, getPlan, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

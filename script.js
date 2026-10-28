@@ -391,19 +391,32 @@
   // Começa uma partida direto do Início. "cats" (opcional) vale só para esta partida.
   function play(mode, cats) {
     if (!namesOk()) return;
+    state.preset = null;
     state.settings.mode = mode === "noite" ? "noite" : "livre";
     state.playCats = Array.isArray(cats) && cats.length ? cats : null;
     saveSettings();
     navigate("game");
   }
 
-  // Preenche o nome do perfil no campo certo, se ainda estiver vazio
-  function prefillPlayers(name, gender) {
-    const key = gender === "h" ? "player1" : gender === "m" ? "player2" : null;
-    if (!key || !name || state.settings[key]) return;
-    state.settings[key] = String(name).trim().slice(0, 16);
-    saveSettings();
-    renderSetup();
+  // Partidas prontas (Conexão Rápida, Carta Secreta, prévia de carta premium) usam a mesma tela de jogo.
+  // preset = { mode, cards, reserve, noOther, onEnd, afterEnd }
+  function playPreset(preset) {
+    if (!namesOk()) return false;
+    state.preset = preset;
+    state.playCats = null;
+    navigate("game");
+    return true;
+  }
+
+  // Preenche o seu nome e o do cônjuge nos campos certos (Ele = homem, Ela = mulher), se ainda estiverem vazios
+  function prefillPlayers(name, gender, spouse) {
+    const mine = gender === "h" ? "player1" : gender === "m" ? "player2" : null;
+    const other = gender === "h" ? "player2" : gender === "m" ? "player1" : null;
+    let changed = false;
+    [[mine, name], [other, spouse]].forEach(([key, val]) => {
+      if (key && val && !state.settings[key]) { state.settings[key] = String(val).trim().slice(0, 16); changed = true; }
+    });
+    if (changed) { saveSettings(); renderSetup(); }
   }
 
   /* ============================================================
@@ -614,29 +627,38 @@
         return;
       }
     }
-    state.mode = state.settings.mode === "noite" ? "noite" : "livre";
-    state.deck = state.mode === "noite" ? buildGuidedDeck() : buildFreeDeck();
+    const pre = state.preset || null;
+    state.mode = pre ? pre.mode : state.settings.mode === "noite" ? "noite" : "livre";
+    state.presetReserve = pre ? (pre.reserve || []).slice() : [];
+    state.deck = pre ? pre.cards.slice() : state.mode === "noite" ? buildGuidedDeck() : buildFreeDeck();
     if (state.deck.length === 0) {
       showToast("Nenhuma carta disponível para essas escolhas. Ajuste as categorias ou os níveis.");
       goTo("inicio");
       return;
     }
-    // Jogo começou: conta o dia na sequência e guarda em "jogados recentemente"
+    // Jogo começou: conta o dia na sequência (o servidor também dá os pontos do jogo)
     if (A && A.registerPlay) A.registerPlay();
-    rememberRecent();
+    if (!pre) {
+      if (A && A.completeGame) A.completeGame();
+      rememberRecent();
+    }
     state.drawIndex = 0;
     state.round = 1;
     state.turnsPlayed = 0;
     state.turn = 1;
+    // Carta só para ela (ou só para ele): começa pela vez de quem pode jogá-la
+    if (pre && state.deck[0] && !genderOk(state.deck[0], genderOf(1))) state.turn = 2;
     state.ended = false;
     state.currentCard = null;
     setEndUi(false);
+    if (pre) $("#nextLabel").textContent = "Fizemos";
     drawCard(true);
   }
 
   function drawCard(noAnim) {
     let c = pullCard();
     if (!c) {
+      if (state.preset) { finishPreset(); return; }
       if (state.mode === "noite") { showEnd(); return; }
       // Modo livre: reembaralha sem repetir a carta anterior
       state.deck = buildFreeDeck(state.currentCard);
@@ -973,7 +995,13 @@
   }
 
   function updateHUD() {
-    $("#roundCount").textContent = state.round;
+    const lbl = $("#roundLabel");
+    if (state.preset) {
+      const total = state.deck.length;
+      lbl.innerHTML = `${total > 1 ? "Carta" : "Sua carta"} <b id="roundCount">${total > 1 ? Math.min(state.drawIndex, total) : ""}</b>${total > 1 ? " de " + total : ""}`;
+    } else {
+      lbl.innerHTML = `Rodada <b id="roundCount">${state.round}</b>`;
+    }
   }
 
   function updateTurn() {
@@ -1017,8 +1045,23 @@
       showToast("Que a noite continue por aí.");
       return;
     }
+    if (state.preset && state.drawIndex >= state.deck.length) { finishPreset(); return; }
     nextTurn();
     drawCard();
+  }
+
+  // Fim de uma partida pronta: o servidor dá os pontos, volta ao Início e mostra a recompensa
+  async function finishPreset() {
+    const p = state.preset;
+    if (!p || state.finishing) return;
+    state.finishing = true; // evita concluir duas vezes enquanto o servidor responde
+    let res = null;
+    try { res = p.onEnd ? await p.onEnd() : null; } catch { res = null; }
+    state.finishing = false;
+    clearWidgets();
+    state.preset = null;
+    goTo("inicio");
+    if (p.afterEnd) setTimeout(() => p.afterEnd(res), 350);
   }
 
   // "Outra": troca a carta para a mesma pessoa (não avança a vez).
@@ -1026,6 +1069,17 @@
   function actionAnother() {
     if (!lock()) return;
     if (state.ended) return;
+    if (state.preset) {
+      const list = state.presetReserve || [];
+      const gi = list.findIndex((x) => genderOk(x, genderOf(state.turn)));
+      if (gi < 0) { showToast(state.preset.noOther || "Não há outra carta para trocar."); return; }
+      const repl = list.splice(gi, 1)[0];
+      state.deck[state.drawIndex - 1] = repl;
+      state.currentCard = repl;
+      renderCard(repl);
+      updateTurn();
+      return;
+    }
     if (state.mode === "noite") {
       const cur = state.currentCard;
       const list = (cur && state.reserve[cur.stage]) || [];
@@ -1162,7 +1216,7 @@
     $(".screen--home").classList.add("is-active");
   }
 
-  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent, play, prefillPlayers, setPremium };
+  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent, play, playPreset, namesOk, prefillPlayers, setPremium };
 
   document.addEventListener("DOMContentLoaded", init);
 })();
