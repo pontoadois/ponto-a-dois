@@ -227,40 +227,58 @@
 
       <!-- ============ APP: INÍCIO ============ -->
       <section class="screen screen--app" data-screen="inicio">
-        <div class="app">
-          <header class="app-top">
-            <button type="button" class="app-avatar" data-goto="perfil" aria-label="Abrir perfil"><span id="avatarInitial">K</span></button>
-            <div class="app-hello"><b id="helloName">Olá</b><span>Continue de onde pararam</span></div>
-            <button type="button" class="help-btn" data-open-modal="howto" aria-label="Como jogar" title="Como jogar">?</button>
-            <button type="button" class="streak-pill" data-goto="streak" aria-label="Ver sequência"><svg width="20" height="20" viewBox="0 0 24 24" fill="rgba(255,128,189,.25)" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span id="streakNow">0</span></button>
-          </header>
-          <div class="app-card week-card" id="weekHome" aria-label="Sua semana"></div>
-                    <div class="app-card heat-card" id="heatCard">
-            <div class="heat-top"><div><span class="heat-lbl">Termômetro</span><h2 class="heat-names" id="heatNames">do casal</h2></div><span class="heat-stage" id="heatStage"></span></div>
-            <div class="heat-row"><span class="heat-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg></span><div class="heat-bar" id="heatBar" role="progressbar" aria-label="Termômetro do casal" aria-valuemin="0" aria-valuemax="100"><i id="heatFill"></i></div><b id="heatPct">0%</b></div>
-            <p class="heat-msg" id="heatMsg"></p>
-            <div class="heat-chips"><span class="chip-st"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg><b id="stPoints">0</b> pontos</span><span class="chip-st"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12h6 M12 9v6"/></svg><b id="stCoins">0</b> moedas</span><span class="chip-st"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><b id="stFreezes">0</b> <span id="stFreezesLbl">bloqueios</span></span></div>
-            <p class="heat-next" id="heatNext"></p>
-          </div>
-          <button type="button" class="btn btn--primary btn--lg btn--block" id="quickPlay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>Conexão Rápida · 5 min</button>
-          <div class="app-main">
-            <section class="reco">
-              <span class="reco-tag">Recomendado</span>
-              <h2 class="reco-title">Noite de Encontro</h2>
-              <p>Uma sessão guiada de uns 20 minutos, que começa leve e vai esquentando aos poucos.</p>
-              <button type="button" class="btn btn--primary btn--lg btn--block" id="recoPlay"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3l14 9-14 9z"/></svg>Jogar</button>
-            </section>
-            <div class="app-side">
-              <button type="button" class="secret-card" id="secretCard"><span class="secret-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/></svg></span><span class="secret-txt"><b id="secretTitle">Carta secreta de hoje</b><small id="secretSub">Uma prévia do conteúdo Premium</small></span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
-              <button type="button" class="btn btn--ghost btn--lg btn--block peek-btn" id="peekBtn" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12h6 M12 9v6"/></svg><span id="peekLbl">Espiar outra carta premium</span></button>
-              <button type="button" class="premium-banner" data-goto="planos" id="premiumHome"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
-              <div id="recentWrap" hidden>
-                <h2 class="app-h2">Jogados recentemente</h2>
-                <div class="recent-list" id="recentList"></div>
-              </div>
-            </div>
-          </div>
-          <h2 class="app-h2">Jogo livre</h2>
+        <div class="app app--home">
+          <header class="app-top home-top">
+<button type="button" class="app-avatar app-avatar--home" data-goto="profile" aria-label="Gerenciar perfil"><span id="avatarInitial">K</span></button>
+<div class="app-hello"><b id="helloName">Olá</b><span>Que bom ter você por aqui! <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></span></div>
+<div class="top-actions">
+<button type="button" class="help-btn" data-open-modal="howto" aria-label="Como jogar" title="Como jogar">?</button>
+<button type="button" class="streak-pill" data-goto="streak" aria-label="Ver sequência"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span id="streakNow">0</span></button>
+<button type="button" class="week-link" data-goto="streak"><span class="week-link-txt"><b>Sequência do casal</b><small id="weekLinkSub">Veja a sua semana</small></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+</div>
+</header>
+<div class="app-card week-card week-card--home" id="weekHome" aria-label="Sua semana"></div>
+<section class="heat-card" id="heatCard">
+<svg class="heat-art" viewBox="0 0 220 190" fill="none" aria-hidden="true"><path d="M110 178C22 116-10 64 42 26 73 3 102 24 110 46c8-22 37-43 68-20 52 38 20 90-68 152Z" stroke="currentColor" stroke-width="3"/><path d="M110 150C48 104 28 68 62 44c20-14 41-2 48 16 7-18 28-30 48-16 34 24 14 60-48 106Z" stroke="currentColor" stroke-width="2" opacity=".5"/></svg>
+<div class="heat-head">
+<span class="heat-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+<div class="heat-head-txt"><span class="heat-lbl" id="heatLbl">Termômetro do casal</span><h2 class="heat-stage-name" id="heatStage">Casal Próspero</h2><p class="heat-sub" id="heatMsg"></p></div>
+<button type="button" class="btn btn--ghost heat-levels" id="levelsBtn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg><span>Ver próximos níveis</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+</div>
+<div class="heat-body">
+<div class="heat-gauge" id="heatGauge" role="img" aria-label="Termômetro" style="--p:0"><span><b id="heatPct">0%</b><small>termômetro</small></span></div>
+<div class="heat-metrics">
+<div class="heat-bar" id="heatBar" role="progressbar" aria-label="Progresso para o próximo nível" aria-valuemin="0" aria-valuemax="100"><i id="heatFill"></i></div>
+<div class="heat-chips">
+<span class="chip-st"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01z"/></svg><span><b id="stPoints">0</b><small>pontos conquistados</small></span></span>
+<span class="chip-st"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span><b id="stNext">0</b><small id="stNextLbl">para o próximo nível</small></span></span>
+<span class="chip-st"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span><b id="stFreezes">0</b><small id="stFreezesLbl">bloqueios de ofensiva</small></span></span>
+<span class="chip-st chip-st--gold"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12h6 M12 9v6"/></svg><span><b id="stCoins">0</b><small>moedas</small></span></span>
+</div>
+<p class="heat-next"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75"/></svg><span id="heatNext"></span></p>
+</div>
+</div>
+</section>
+<div class="exp-row">
+<article class="exp-card exp-card--quick">
+<svg class="exp-art" viewBox="0 0 150 110" fill="none" aria-hidden="true"><path d="M95 98C46 66 30 40 56 20c16-12 33-3 39 10 6-13 23-22 39-10 26 20 10 46-39 78Z" fill="rgba(241,59,145,.22)" stroke="#ff80bd" stroke-width="2"/><path d="M99 36 82 62h14l-4 22 20-28H98l1-20Z" fill="#fff7ff" opacity=".92"/><path d="M26 30l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#ff80bd" opacity=".8"/></svg>
+<div class="exp-top"><span class="exp-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><div class="exp-txt"><span class="exp-eyebrow">Experiência rápida</span><h2 class="exp-title">Conexão Rápida</h2><p>3 cartas leves, em uns 5 minutos, para se reconectarem agora.</p></div></div>
+<button type="button" class="btn btn--primary btn--lg btn--block exp-btn" id="quickPlay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg><span id="quickLbl">Jogar agora</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+</article>
+<article class="exp-card exp-card--night">
+<svg class="exp-art" viewBox="0 0 150 110" fill="none" aria-hidden="true"><path d="M92 14a42 42 0 1 0 40 58 34 34 0 0 1-40-58Z" fill="#d9a7ff" opacity=".42" stroke="#e8c8ff" stroke-width="2"/><circle cx="30" cy="30" r="2.5" fill="#ffd77a"/><circle cx="56" cy="14" r="1.8" fill="#fff7ff"/><path d="M118 20l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffd77a"/></svg>
+<div class="exp-top"><span class="exp-ico exp-ico--night"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span><div class="exp-txt"><span class="exp-eyebrow">Experiência especial</span><h2 class="exp-title">Noite de Encontro</h2><p>Uma sessão guiada de uns 20 minutos, que começa leve e vai esquentando aos poucos.</p></div></div>
+<button type="button" class="btn btn--ghost btn--lg btn--block exp-btn" id="recoPlay"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 14 9-14 9z" fill="currentColor"/></svg><span>Jogar</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+</article>
+</div>
+<button type="button" class="secret-card" id="secretCard"><svg class="secret-art" viewBox="0 0 160 90" fill="none" aria-hidden="true"><rect x="30" y="22" width="100" height="60" rx="8" fill="rgba(241,59,145,.16)" stroke="#ff80bd" stroke-width="2"/><path d="M32 26l48 34 48-34" stroke="#ff80bd" stroke-width="2"/><path d="M80 78c-9-6-11-11-8-14 2-2 6-1 8 2 2-3 6-4 8-2 3 3 1 8-8 14Z" fill="#f13b91"/></svg><span class="secret-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z"/></svg></span><span class="secret-txt"><b id="secretTitle">Carta secreta do dia</b><small id="secretSub">Uma prévia do conteúdo Premium</small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+<button type="button" class="btn btn--ghost btn--lg btn--block peek-btn" id="peekBtn" hidden><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12h6 M12 9v6"/></svg><span id="peekLbl">Espiar outra carta premium</span></button>
+<button type="button" class="premium-banner" data-goto="planos" id="premiumHome"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14"/></svg>SEJA PREMIUM</button>
+<div id="recentWrap" hidden>
+<h2 class="app-h2">Jogados recentemente</h2>
+<div class="recent-list" id="recentList"></div>
+</div>
+<h2 class="app-h2">Jogo livre</h2>
           <p class="app-sub">Escolham as categorias e o clima.</p>
           <div class="st-panel free-panel">
             <div class="st-block">
@@ -326,9 +344,9 @@
       <!-- ============ APP: PERFIL E MENU ============ -->
       <section class="screen screen--app" data-screen="perfil">
         <div class="app">
-          <div class="prof-head"><span class="app-avatar app-avatar--lg" id="profAvatar">K</span><div><b id="profName">Perfil</b><span id="profPlan">Plano gratuito</span></div></div>
+          <h1 class="app-h2 screen-title">Configurações</h1>
+<button type="button" class="prof-head" id="rowProfile" aria-label="Gerenciar perfil"><span class="app-avatar app-avatar--lg" id="profAvatar">K</span><span class="prof-head-txt"><b id="profName">Perfil</b><span id="profPlan">Plano gratuito</span><small>Gerenciar perfil</small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
           <div class="menu-group"><span class="menu-label">Geral</span>
-            <button class="menu-row" id="rowProfile" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2 M8 7a4 4 0 1 0 8 0 4 4 0 1 0-8 0"/></svg></span><span class="menu-txt"><span>Gerenciar perfil</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
             <button class="menu-row" id="rowPlan" type="button"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg></span><span class="menu-txt"><span>Meu plano e assinatura</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
             <a class="menu-row" id="rowSupport" href="mailto:kayofellipefer@gmail.com"><span class="menu-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20 M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3 M12 17h.01"/></svg></span><span class="menu-txt"><span>Suporte</span><small></small></span><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
           </div>
@@ -563,12 +581,15 @@
 
     <!-- ============ BARRA DE NAVEGAÇÃO DO APP ============ -->
     <nav class="appnav" id="appNav" aria-label="Navegação principal">
-      <div class="appnav-brand">Ponto a Dois</div>
-      <button type="button" class="appnav-item" data-goto="inicio" data-nav="inicio"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Jogos</span></button>
-      <button type="button" class="appnav-item" data-goto="streak" data-nav="streak"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span>Sequência</span></button>
-      <button type="button" class="appnav-item" data-goto="plano" data-nav="plano"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg><span>Plano</span></button>
-      <button type="button" class="appnav-item" data-goto="perfil" data-nav="perfil"><span class="appnav-avatar" id="navAvatar">K</span><span>Perfil</span></button>
-    </nav>
+<div class="appnav-brand"><span class="appnav-logo"><svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff4e91"/><stop offset="1" stop-color="#a52ad3"/></linearGradient></defs><path d="M24 41C9 31 4 22 8.5 14.5 12 9 19 9 24 15c5-6 12-6 15.5-.5C44 22 39 31 24 41Z" stroke="url(#lg)" stroke-width="3" stroke-linejoin="round"/><path d="M24 33C15 26.5 13 21.5 15.5 18c2-2.8 6-2.6 8.5 1 2.5-3.600 6.500-3.800 8.500-1 2.500 3.500.500 8.500-8.500 15Z" stroke="url(#lg)" stroke-width="2.4" stroke-linejoin="round" opacity=".75"/></svg></span><span class="appnav-brand-txt"><b>Ponto a Dois</b><small>Mais conexão, todos os dias</small></span></div>
+<button type="button" class="appnav-item" data-goto="inicio" data-nav="inicio"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8 M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Jogos</span></button>
+<button type="button" class="appnav-item" data-goto="streak" data-nav="streak"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span>Sequência</span></button>
+<button type="button" class="appnav-item" data-goto="plano" data-nav="plano"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20"/></svg><span>Plano</span></button>
+<div class="appnav-foot">
+<button type="button" class="appnav-user" data-goto="profile" aria-label="Gerenciar perfil"><span class="appnav-avatar" id="navAvatar">K</span><span class="appnav-uname" id="navName">Perfil</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+<button type="button" class="appnav-item" data-goto="perfil" data-nav="perfil"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg><span>Configurações</span></button>
+</div>
+</nav>
 
     <!-- ============ MODAL: COMO JOGAR ============ -->
     <div class="modal" id="modalHowto" data-modal="howto" role="dialog" aria-modal="true" aria-labelledby="howtoTitle" aria-hidden="true">
@@ -740,6 +761,19 @@
           <button type="button" class="btn btn--ghost btn--block" data-close-modal>Agora não</button>
           <button type="button" class="btn btn--primary btn--block" id="pkGo">Espiar</button>
         </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: ESTÁGIOS DO CASAL ============ -->
+    <div class="modal" id="modalLevels" data-modal="levels" role="dialog" aria-modal="true" aria-labelledby="lvTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass photo-card">
+        <header class="modal-head">
+          <h2 class="modal-title" id="lvTitle">Estágios do casal</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="levels-body"><p class="levels-intro">Os pontos de conexão só sobem. Cada atividade que vocês fazem juntos aproxima o casal do próximo estágio.</p><div class="levels-list" id="levelsList"></div></div>
+        <footer class="modal-foot"><button type="button" class="btn btn--primary btn--block" data-close-modal>Entendi</button></footer>
       </div>
     </div>
 

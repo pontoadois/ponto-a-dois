@@ -16,6 +16,7 @@
     crown: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14",
     heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     calendar: "M8 2v4 M16 2v4 M3 10h18 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
+    heartFill: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     card: "M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20",
     check: "M20 6 9 17l-5-5",
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
@@ -46,6 +47,8 @@
       box.style.backgroundImage = url ? `url("${url}")` : "";
       el.textContent = url ? "" : letter;
     });
+    const nn = $("#navName");
+    if (nn) nn.textContent = nameOf();
     const rm = $("#pfPhotoRemove");
     if (rm) rm.hidden = !url;
   }
@@ -60,7 +63,7 @@
 
   /* ---------- Semana (domingo a sábado) ---------- */
   const DOW = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-  function weekHtml() {
+  function weekHtml(home) {
     const today = (streak && streak.today) || new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
     const played = new Set((streak && streak.week) || []);
     const base = new Date(today + "T12:00:00");
@@ -69,8 +72,13 @@
       const d = new Date(base);
       d.setDate(base.getDate() - dow + i);
       const iso = d.toISOString().slice(0, 10);
-      const cls = played.has(iso) ? "is-on" : iso === today ? "is-today" : "";
-      const icon = played.has(iso) || iso === today ? svg("flame", 20, 1.9, played.has(iso) ? "rgba(255,247,255,.3)" : "none") : "";
+      let cls = played.has(iso) ? "is-on" : iso === today ? "is-today" : "";
+      let icon = played.has(iso) || iso === today ? svg("flame", 20, 1.9, played.has(iso) ? "rgba(255,247,255,.3)" : "none") : "";
+      if (home) {
+        // Início: check nos dias em que jogaram; coração e destaque no dia de hoje
+        if (iso === today) { cls = "is-today"; icon = svg("heartFill", 20, 1.9, "currentColor"); }
+        else if (played.has(iso)) icon = svg("check", 20, 2.6);
+      }
       return `<div class="wk-day ${cls}"><span class="wk-dot">${icon}</span>${name}</div>`;
     }).join("");
   }
@@ -80,7 +88,9 @@
     $("#helloName").textContent = "Olá, " + nameOf();
     paintAvatars();
     $("#streakNow").textContent = (streak && streak.current) || 0;
-    $("#weekHome").innerHTML = weekHtml();
+    $("#weekHome").innerHTML = weekHtml(true);
+    const nDays = ((streak && streak.week) || []).length;
+    $("#weekLinkSub").textContent = nDays ? `${nDays} ${nDays === 1 ? "dia" : "dias"} de conexão nesta semana` : "Comecem a sequência de vocês";
     $("#premiumHome").hidden = plan.premium;
 
     // Plano e nomes: a seção "Jogo livre" mostra a coroa nas categorias premium e já traz o nome do perfil
@@ -115,39 +125,60 @@
     return "Está frio por aqui, mas uma Conexão Rápida reacende em 5 minutos.";
   }
 
+  const STAGE_INFO = [
+    ["Casal Próspero", "O começo da jornada: vocês estão construindo o hábito de se encontrar."],
+    ["Companheiros de Aliança", "Constância e cumplicidade: o carinho de cada dia fortalece a aliança."],
+    ["Intimidade Fortalecida", "Conexão profunda: a confiança e o desejo crescendo juntos."],
+  ];
+
   function renderHeat() {
     const g = game;
-    const card = $("#heatCard");
-    card.hidden = !g;
-    $("#quickPlay").hidden = !g;
+    $("#heatCard").hidden = !g;
+    $(".exp-card--quick").hidden = !g; // a Noite de Encontro não depende do servidor de pontos e fica sempre visível
     $("#secretCard").hidden = !g;
     if (!g) { $("#peekBtn").hidden = true; return; }
     const p = auth().getProfile && auth().getProfile();
     const first = ((p && p.display_name) || "").split(" ")[0];
     const spouse = p && p.spouse_name;
-    $(".heat-lbl", card).textContent = spouse ? "Termômetro de" : "Termômetro";
-    $("#heatNames").textContent = spouse && first ? `${first} e ${spouse}` : "do casal";
+    $("#heatLbl").textContent = spouse && first ? `Termômetro de ${first} e ${spouse}` : "Termômetro do casal";
     $("#heatStage").textContent = STAGES[g.stage - 1];
-    $("#heatFill").style.width = g.heat + "%";
-    $("#heatPct").textContent = g.heat + "%";
-    $("#heatBar").setAttribute("aria-valuenow", g.heat);
     $("#heatMsg").textContent = heatMessage(g);
+    $("#heatPct").textContent = g.heat + "%";
+    $("#heatGauge").style.setProperty("--p", g.heat);
+    // A barra mostra o caminho até o próximo estágio (os pontos nunca diminuem)
+    const span = g.next_at ? g.next_at - g.stage_start : 1;
+    const pct = g.next_at ? Math.min(100, Math.round(((g.points - g.stage_start) / span) * 100)) : 100;
+    $("#heatFill").style.width = pct + "%";
+    $("#heatBar").setAttribute("aria-valuenow", pct);
     $("#stPoints").textContent = g.points;
-    $("#stCoins").textContent = g.coins;
+    $("#stNext").textContent = g.next_at ? g.next_at - g.points : "Máximo";
+    $("#stNextLbl").textContent = g.next_at ? "para o próximo nível" : "estágio mais alto";
     $("#stFreezes").textContent = g.freezes;
-    $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio" : "bloqueios";
-    const next = g.next_at ? `Faltam ${g.next_at - g.points} pontos para ${STAGES[g.stage]}.` : "Vocês chegaram ao estágio mais alto. Que bonito!";
+    $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
+    $("#stCoins").textContent = g.coins;
+    const next = g.next_at ? `Faltam ${g.next_at - g.points} pontos para o próximo nível. Continuem juntos!` : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
     if (add) add.addEventListener("click", () => app().goTo("profile"));
-    $("#quickPlay").lastChild.textContent = g.quick_done ? "Conexão Rápida · jogar de novo" : "Conexão Rápida · 5 min";
+    $("#quickLbl").textContent = g.quick_done ? "Jogar de novo" : "Jogar agora";
     const sc = $("#secretCard");
     sc.classList.toggle("is-done", g.secret_done);
-    $("#secretTitle").textContent = g.secret_done ? "Carta secreta de hoje: feita" : "Carta secreta de hoje";
+    $("#secretTitle").textContent = g.secret_done ? "Carta secreta do dia: feita" : "Carta secreta do dia";
     $("#secretSub").textContent = g.secret_done ? "Voltem amanhã para uma nova" : "Uma prévia do conteúdo Premium";
     const peek = $("#peekBtn");
     peek.hidden = plan.premium || g.peeks_left <= 0;
     $("#peekLbl").textContent = `Espiar outra carta premium · ${g.cfg.peek_cost} moedas`;
+  }
+
+  function openLevels() {
+    if (!game) return;
+    const at = [0, game.cfg.stage2_at, game.cfg.stage3_at];
+    $("#levelsList").innerHTML = STAGE_INFO.map(([name, desc], i) => {
+      const cur = game.stage === i + 1, done = game.stage > i + 1;
+      const icon = done ? svg("check", 20, 2.4) : cur ? svg("heartFill", 18, 1.9, "currentColor") : svg("lock", 18);
+      return `<div class="lv-row ${cur ? "is-current" : ""} ${done ? "is-done" : ""}"><span class="lv-ico">${icon}</span><span class="lv-txt"><span class="lv-name">${name}</span><span class="lv-sub">${i ? "A partir de " + at[i] + " pontos. " : ""}${desc}</span></span>${cur ? '<span class="lv-tag">Atual</span>' : ""}</div>`;
+    }).join("");
+    app().openModal("levels");
   }
 
   const shuffle = (arr) => { const a = arr.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -556,6 +587,7 @@
     bindPlans();
     $("#profileForm").addEventListener("submit", saveProfile);
     $("#quickPlay").addEventListener("click", playQuick);
+    $("#levelsBtn").addEventListener("click", openLevels);
     $("#secretCard").addEventListener("click", openSecret);
     $("#peekBtn").addEventListener("click", askPeek);
     $("#pkGo").addEventListener("click", doPeek);
