@@ -119,12 +119,17 @@
      Imagens das posições: preencha a URL base e, no banco, a coluna
      "image" de cada posição com o nome do arquivo.
        positionImageBase = "https://seusite.com/posicoes/";            */
+  /* Capas das categorias do Jogo Livre: quando a imagem existir, informe o caminho aqui.
+     Exemplo: { diversao: "img/capas/diversao.webp", carinho: "img/capas/carinho.webp" }
+     Categorias sem imagem ficam como estão. */
+  const categoryArt = {};
+
   const cards = [];
   const positions = [];
   const positionImageBase = "";
 
   window.EntreNosData = {
-    categories, premiumCats, intensities, intLabels, formats, stages,
+    categories, premiumCats, categoryArt, intensities, intLabels, formats, stages,
     cards, positions, positionImageBase,
   };
 })();

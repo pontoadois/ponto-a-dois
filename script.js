@@ -280,6 +280,7 @@
     CATEGORIES.forEach((cat) => {
       const on = state.settings.categories.includes(cat.id);
       const locked = !isPremium && PREMIUM_CATS.includes(cat.id);
+      const art = (D.categoryArt || {})[cat.id] || "";
       const tile = document.createElement("button");
       tile.type = "button";
       tile.className = "st-tile" + (on ? " is-selected" : "");
@@ -289,7 +290,9 @@
         ${locked ? `<span class="st-crown" title="Parte do conteúdo é premium">${CROWN_SVG}</span>` : ""}
         <span class="st-tile-ico">${cat.icon}</span>
         <span class="st-tile-name">${cat.name}</span>
-        <span class="st-tile-sub">${cat.sub || ""}</span>`;
+        <span class="st-tile-sub">${cat.sub || ""}</span>
+        ${art ? `<img class="tile-art" src="${art}" alt="" loading="lazy" decoding="async">` : ""}`;
+      if (art) tile.classList.add("has-art");
       tile.addEventListener("click", () => toggleCategory(cat.id));
       catWrap.appendChild(tile);
     });
