@@ -15,6 +15,7 @@
 
   let session = null;
   let profile = null;
+  let onboard; // formulário inicial: undefined = não sei ainda, null = pendente, objeto = respondido
   let avatarUrl = null; // endereço temporário da foto (a pasta é privada)
   let pending = null; // tela que a pessoa queria abrir antes de entrar
 
@@ -74,7 +75,7 @@
 
   /* ---------- Sessão e perfil ---------- */
   async function loadProfile() {
-    if (!session) { profile = null; avatarUrl = null; return; }
+    if (!session) { profile = null; avatarUrl = null; onboard = undefined; return; }
     const { data } = await client
       .from("profiles")
       .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path, spouse_name")
@@ -82,6 +83,14 @@
       .maybeSingle();
     profile = data || null;
     avatarUrl = null;
+    onboard = undefined;
+    if (profile) {
+      // O formulário inicial está pendente enquanto não existir uma resposta salva
+      try {
+        const o = await client.from("onboarding").select("answers, start_heat, strength, focus, cats, recommend, levels, completed_at").eq("user_id", session.user.id).maybeSingle();
+        onboard = o.error ? undefined : o.data || null;
+      } catch { onboard = undefined; /* sem conexão: não trava a pessoa */ }
+    }
     if (profile && profile.avatar_path) {
       try {
         const r = await client.storage.from("avatars").createSignedUrl(profile.avatar_path, 86400);
@@ -95,6 +104,7 @@
     if (!session) return "login";
     if (!profile) return null;
     if (!profile.birth_date || !profile.terms_accepted_at) { prefillComplete(); return "complete"; }
+    if (onboard === null) return "onboarding";
     return null;
   }
 
@@ -128,7 +138,7 @@
 
   async function signOut() {
     await client.auth.signOut();
-    session = null; profile = null; avatarUrl = null; pending = null;
+    session = null; profile = null; avatarUrl = null; onboard = undefined; pending = null;
     clearContent();
     renderHomeUser();
     app().goTo("home");
@@ -138,6 +148,7 @@
   function proceed() {
     const need = needs();
     if (need === "complete") { prefillComplete(); app().goTo("complete"); return; }
+    if (need === "onboarding") { app().goTo("onboarding"); return; }
     const target = pending || sessionStorage.getItem("en_next") || "inicio";
     pending = null;
     sessionStorage.removeItem("en_next");
@@ -153,7 +164,11 @@
     if (!session) return;
     const returningFromOAuth = !!sessionStorage.getItem("en_next");
     if (["login", "signup"].includes(screen) || (returningFromOAuth && screen === "home")) proceed();
-    else if (event === "INITIAL" && screen === "home" && !needs()) app().goTo("inicio"); // quem já está logado entra direto no app
+    else if (event === "INITIAL" && screen === "home") {
+      const n = needs();
+      if (!n) app().goTo("inicio"); // quem já está logado entra direto no app
+      else if (n === "onboarding") app().goTo("onboarding"); // formulário inicial ainda pendente
+    }
   }
 
   /* ---------- Conteúdo do jogo (vem do banco, só para quem tem idade verificada) ---------- */
@@ -471,6 +486,17 @@
     } catch { return false; }
   }
 
+  // Envia as respostas do formulário inicial; o servidor valida, calcula o termômetro inicial e salva
+  async function submitOnboarding(answers) {
+    if (!client || !session) return null;
+    try {
+      const { data, error } = await client.rpc("submit_onboarding", { a: answers });
+      if (error || !data || !data.ok) return data && data.reason ? data : null;
+      await loadProfile(); // traz de volta a linha salva (onboard deixa de ser "pendente")
+      return data;
+    } catch { return null; }
+  }
+
   async function saveName(name) {
     const { error } = await client.from("profiles").update({ display_name: name }).eq("id", session.user.id);
     if (!error) { await loadProfile(); renderHomeUser(); }
@@ -488,7 +514,7 @@
   }
 
   window.EntreNosAuth = {
-    registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

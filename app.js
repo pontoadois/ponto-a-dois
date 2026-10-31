@@ -96,6 +96,8 @@
     // Plano e nomes: a seção "Jogo livre" mostra a coroa nas categorias premium e já traz o nome do perfil
     const p = auth().getProfile && auth().getProfile();
     app().setPremium(plan.premium);
+    const onbPrefs = auth().getOnboarding && auth().getOnboarding();
+    if (onbPrefs) app().applyPersonalization(onbPrefs, false);
     app().prefillPlayers(p && p.display_name ? p.display_name.split(" ")[0] : "", p && p.gender, p && p.spouse_name);
     renderHeat();
 
@@ -117,7 +119,22 @@
   /* ---------- Termômetro, pontos e moedas ---------- */
   const STAGES = ["Casal Próspero", "Companheiros de Aliança", "Intimidade Fortalecida"];
 
-  function heatMessage(g) {
+  // Rótulos usados na avaliação inicial (vêm do formulário)
+  const AREA_TXT = {
+    conexao: "conexão emocional", comunicacao: "comunicação", tempo: "tempo a dois", fe: "vida de fé",
+    diversao: "diversão e leveza", carinho: "carinho e romance", intimidade: "intimidade",
+    habito: "hábito de tempo a dois", prep: "preparação para um relacionamento", self: "autoconhecimento",
+  };
+
+  function heatMessage(g, onb) {
+    // Nos primeiros dias, mostra a avaliação inicial feita a partir do formulário
+    if (onb && g.points < 30) {
+      const parts = [];
+      if (onb.strength && AREA_TXT[onb.strength]) parts.push(`Ponto forte: ${AREA_TXT[onb.strength]}.`);
+      const f = (onb.focus || []).find((x) => AREA_TXT[x] && x !== onb.strength);
+      if (f) parts.push(`Foco inicial: ${AREA_TXT[f]}.`);
+      if (parts.length) return "Avaliação inicial. " + parts.join(" ");
+    }
     if (!g.points && !g.heat) return "Comecem a jogar para esquentar o termômetro.";
     if (g.heat >= 70) return "Em chamas! Vocês estão em sintonia.";
     if (g.heat >= 40) return "Quentinho: vocês têm jogado juntos.";
@@ -133,6 +150,10 @@
 
   function renderHeat() {
     const g = game;
+    const onb = auth().getOnboarding && auth().getOnboarding();
+    // Atividade recomendada, conforme as respostas do formulário (a Noite de Encontro não depende dos pontos)
+    $("#recoQuick").hidden = !(onb && onb.recommend === "quick");
+    $("#recoNight").hidden = !(onb && onb.recommend === "night");
     $("#heatCard").hidden = !g;
     $(".exp-card--quick").hidden = !g; // a Noite de Encontro não depende do servidor de pontos e fica sempre visível
     $("#secretCard").hidden = !g;
@@ -142,7 +163,7 @@
     const spouse = p && p.spouse_name;
     $("#heatLbl").textContent = spouse && first ? `Termômetro de ${first} e ${spouse}` : "Termômetro do casal";
     $("#heatStage").textContent = STAGES[g.stage - 1];
-    $("#heatMsg").textContent = heatMessage(g);
+    $("#heatMsg").textContent = heatMessage(g, onb);
     $("#heatPct").textContent = g.heat + "%";
     $("#heatGauge").style.setProperty("--p", g.heat);
     // A barra mostra o caminho até o próximo estágio (os pontos nunca diminuem)
@@ -187,7 +208,13 @@
     const a = auth();
     try { await a.loadContent(); } catch { app().showToast("Não foi possível carregar as cartas. Verifique a conexão."); return; }
     const pool = shuffle(D.cards.filter((c) => c.int === "leve" && !c.forGender && !(c.tags || []).includes("fim") && c.fmt !== "missao"));
+    const onb = a.getOnboarding && a.getOnboarding();
     const picked = [], seen = new Set();
+    // Primeiro, uma carta de cada categoria que a pessoa quer trabalhar; depois, as outras categorias
+    ((onb && onb.cats) || []).forEach((cat) => {
+      const c = pool.find((x) => x.cat === cat && !picked.includes(x));
+      if (c && picked.length < 3) { picked.push(c); seen.add(c.cat); }
+    });
     pool.forEach((c) => { if (picked.length < 3 && !seen.has(c.cat)) { seen.add(c.cat); picked.push(c); } });
     pool.forEach((c) => { if (picked.length < 3 && !picked.includes(c)) picked.push(c); });
     if (picked.length < 3) { app().showToast("Não há cartas suficientes agora."); return; }

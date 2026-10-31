@@ -401,6 +401,27 @@
     navigate("game");
   }
 
+  // Preferências iniciais vindas do formulário (categorias e níveis do Jogo livre).
+  // Entram quando o formulário é concluído e uma vez em cada aparelho novo; depois a pessoa muda como quiser.
+  function applyPersonalization(onb, force) {
+    if (!onb) return;
+    const A = window.EntreNosAuth;
+    const sess = A && A.getSession && A.getSession();
+    const uid = sess ? sess.user.id : "local";
+    const FLAG = "ponto-a-dois-onb-applied";
+    let done = null;
+    try { done = localStorage.getItem(FLAG); } catch { /* ignore */ }
+    if (!force && done === uid) return;
+    const ids = CATEGORIES.map((c) => c.id);
+    const cats = (onb.cats || []).filter((id) => ids.includes(id));
+    if (cats.length) state.settings.categories = cats;
+    const lv = (onb.levels || []).filter((i) => INT_ORDER.includes(i));
+    if (lv.length) state.settings.intensities = lv;
+    saveSettings();
+    renderSetup();
+    try { localStorage.setItem(FLAG, uid); } catch { /* ignore */ }
+  }
+
   // Partidas prontas (Conexão Rápida, Carta Secreta, prévia de carta premium) usam a mesma tela de jogo.
   // preset = { mode, cards, reserve, noOther, onEnd, afterEnd }
   function playPreset(preset) {
@@ -1219,7 +1240,7 @@
     $(".screen--home").classList.add("is-active");
   }
 
-  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent, play, playPreset, namesOk, prefillPlayers, setPremium };
+  window.EntreNosApp = { goTo, navigate, showToast, openModal, closeModal, applyPlay, getRecent, play, playPreset, namesOk, prefillPlayers, setPremium, applyPersonalization };
 
   document.addEventListener("DOMContentLoaded", init);
 })();

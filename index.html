@@ -200,6 +200,30 @@
         </div>
       </section>
 
+      <!-- ============ FORMULÁRIO INICIAL (aparece uma vez, logo após o cadastro) ============ -->
+      <section class="screen screen--auth screen--onb" data-screen="onboarding">
+        <div class="ob">
+          <div class="au-brand ob-brand">Ponto a Dois</div>
+          <form class="ob-panel" id="obForm" novalidate>
+            <div class="ob-progress">
+              <div class="ob-bar" id="obBarWrap" role="progressbar" aria-label="Progresso do formulário" aria-valuemin="1" aria-valuenow="1" aria-valuemax="7"><i id="obBar"></i></div>
+              <span class="ob-count" id="obCount">Pergunta 1 de 7</span>
+            </div>
+            <div>
+              <h1 class="ob-title" id="obTitle"></h1>
+              <p class="ob-hint" id="obHint" hidden></p>
+            </div>
+            <div class="ob-options" id="obOptions" role="radiogroup" aria-labelledby="obTitle"></div>
+            <p class="au-error" id="obError" role="alert" hidden></p>
+            <div class="ob-nav">
+              <button type="button" class="btn btn--ghost btn--lg" id="obBack" hidden>Voltar</button>
+              <button type="submit" class="btn btn--primary btn--lg" id="obNext" disabled>Continuar</button>
+            </div>
+            <p class="au-switch"><button type="button" class="au-link" id="obLogout">Sair desta conta</button></p>
+          </form>
+        </div>
+      </section>
+
 
       <!-- ============ TELA: NOVA SENHA ============ -->
       <section class="screen screen--auth" data-screen="newpass">
@@ -264,11 +288,13 @@
 <div class="exp-row">
 <article class="exp-card exp-card--quick">
 <svg class="exp-art" viewBox="0 0 150 110" fill="none" aria-hidden="true"><path d="M95 98C46 66 30 40 56 20c16-12 33-3 39 10 6-13 23-22 39-10 26 20 10 46-39 78Z" fill="rgba(241,59,145,.22)" stroke="#ff80bd" stroke-width="2"/><path d="M99 36 82 62h14l-4 22 20-28H98l1-20Z" fill="#fff7ff" opacity=".92"/><path d="M26 30l3 8 8 3-8 3-3 8-3-8-8-3 8-3z" fill="#ff80bd" opacity=".8"/></svg>
+<span class="exp-reco" id="recoQuick" hidden>Recomendado para vocês</span>
 <div class="exp-top"><span class="exp-ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><div class="exp-txt"><span class="exp-eyebrow">Experiência rápida</span><h2 class="exp-title">Conexão Rápida</h2><p>3 cartas leves, em uns 5 minutos, para se reconectarem agora.</p></div></div>
 <button type="button" class="btn btn--primary btn--lg btn--block exp-btn" id="quickPlay"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg><span id="quickLbl">Jogar agora</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </article>
 <article class="exp-card exp-card--night">
 <svg class="exp-art" viewBox="0 0 150 110" fill="none" aria-hidden="true"><path d="M92 14a42 42 0 1 0 40 58 34 34 0 0 1-40-58Z" fill="#d9a7ff" opacity=".42" stroke="#e8c8ff" stroke-width="2"/><circle cx="30" cy="30" r="2.5" fill="#ffd77a"/><circle cx="56" cy="14" r="1.8" fill="#fff7ff"/><path d="M118 20l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#ffd77a"/></svg>
+<span class="exp-reco" id="recoNight" hidden>Recomendado para vocês</span>
 <div class="exp-top"><span class="exp-ico exp-ico--night"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span><div class="exp-txt"><span class="exp-eyebrow">Experiência especial</span><h2 class="exp-title">Noite de Encontro</h2><p>Uma sessão guiada de uns 20 minutos, que começa leve e vai esquentando aos poucos.</p></div></div>
 <button type="button" class="btn btn--ghost btn--lg btn--block exp-btn" id="recoPlay"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 3 14 9-14 9z" fill="currentColor"/></svg><span>Jogar</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </article>
@@ -793,6 +819,7 @@
     <script src="script.js"></script>
     <script src="auth.js"></script>
     <script src="app.js"></script>
+    <script src="onboarding.js"></script>
 
   </body>
 </html>

@@ -1873,3 +1873,36 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
   .st-tile.has-art .st-tile-name, .st-tile.has-art .st-tile-sub { max-width: 64%; }
   .st-tile.has-art .st-check, .st-tile.has-art .st-crown { z-index: 2; }
 }
+
+/* ============================================================
+   FORMULÁRIO INICIAL DE PERSONALIZAÇÃO
+   ============================================================ */
+.screen--onb { justify-content: center; }
+.ob { width: 100%; max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 22px; }
+.ob-brand { text-align: center; font-size: 2rem; }
+.ob-panel { display: flex; flex-direction: column; gap: 22px; padding: 26px 20px; border-radius: 26px; border: 1px solid var(--glass-brd); background: var(--glass-bg); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.ob-progress { display: flex; flex-direction: column; gap: 8px; }
+.ob-bar { height: 8px; border-radius: 999px; background: rgba(255, 247, 255, 0.12); overflow: hidden; }
+.ob-bar i { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #f13b91, #a82dd0); transition: width 0.35s ease; }
+.ob-count { font-size: 0.82rem; color: var(--muted); }
+.ob-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.7rem; line-height: 1.15; outline: none; }
+.ob-hint { margin: 8px 0 0; font-size: 0.9rem; line-height: 1.45; color: var(--muted); }
+.ob-options { display: flex; flex-direction: column; gap: 10px; }
+.ob-opt { display: flex; align-items: center; gap: 14px; width: 100%; min-height: 56px; padding: 12px 16px; border-radius: 16px; border: 1px solid var(--glass-brd); background: rgba(255, 220, 255, 0.05); color: var(--white); font: inherit; text-align: left; cursor: pointer; transition: border-color 0.15s, background 0.15s; }
+.ob-opt:hover { border-color: rgba(239, 143, 255, 0.48); }
+.ob-opt:focus-visible { outline: 2px solid #ff80bd; outline-offset: 2px; }
+.ob-opt.is-selected { border: 1.5px solid #f13b91; background: rgba(241, 59, 145, 0.16); padding: 11.5px 15.5px; }
+.ob-mark { position: relative; width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%; border: 2px solid rgba(255, 247, 255, 0.45); }
+.ob-opt[role="checkbox"] .ob-mark { border-radius: 7px; }
+.ob-opt.is-selected .ob-mark { background: #f13b91; border-color: #f13b91; }
+.ob-opt.is-selected .ob-mark::after { content: ""; position: absolute; left: 6px; top: 2px; width: 5px; height: 10px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.ob-opt-txt { display: flex; flex-direction: column; gap: 2px; }
+.ob-opt-s { font-size: 0.82rem; color: var(--muted); }
+.ob-nav { display: flex; gap: 12px; }
+.ob-nav .btn { flex: 1; }
+.ob-nav #obNext { flex: 2; }
+.ob-nav .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (min-width: 640px) { .ob-panel { padding: 32px 34px; } .ob-title { font-size: 2.05rem; } }
+
+/* Etiqueta da atividade recomendada (a partir do formulário) */
+.exp-reco { position: relative; align-self: flex-start; padding: 3px 12px; border-radius: 999px; background: #fff7ff; color: #5b145d; font-size: 0.72rem; font-weight: 600; }
