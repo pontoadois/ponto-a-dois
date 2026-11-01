@@ -1865,13 +1865,29 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
   .pm-btn { width: 100%; justify-content: center; }
 }
 
-/* Capas das categorias (só aparecem quando existe imagem em categoryArt, no cards.js) */
-.st-tile.has-art { position: relative; overflow: hidden; }
+/* Capas das categorias: o casal de raposas no canto direito de cada cartão */
+.free-tiles { grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 640px) { .free-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.st-tile.has-art { position: relative; overflow: hidden; min-height: 128px; background: linear-gradient(110deg, #1c0119 0%, #26021f 55%, #30052a 100%); }
+.st-tile.has-art.is-selected { background: linear-gradient(110deg, #2a0426 0%, #2d0426 55%, #34062e 100%); box-shadow: 0 0 0 1px rgba(241, 59, 145, 0.22), 0 0 22px rgba(241, 59, 145, 0.22); }
 .st-tile .tile-art { display: none; }
-@media (min-width: 600px) {
-  .st-tile.has-art .tile-art { display: block; position: absolute; right: 0; bottom: 0; width: 36%; height: 100%; object-fit: cover; object-position: 50% 0; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 34%); mask-image: linear-gradient(to right, transparent 0, #000 34%); }
-  .st-tile.has-art .st-tile-name, .st-tile.has-art .st-tile-sub { max-width: 64%; }
-  .st-tile.has-art .st-check, .st-tile.has-art .st-crown { z-index: 2; }
+.st-tile.has-art .tile-art { display: block; position: absolute; right: 0; bottom: 0; height: 100%; width: auto; max-width: 62%; object-fit: cover; object-position: right bottom; pointer-events: none; user-select: none; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 26%); mask-image: linear-gradient(to right, transparent 0, #000 26%); }
+.st-tile.has-art .st-tile-name, .st-tile.has-art .st-tile-sub { position: relative; z-index: 1; max-width: 52%; }
+.st-tile.has-art .st-tile-ico { position: relative; z-index: 1; }
+.st-tile.has-art .st-check, .st-tile.has-art .st-crown { z-index: 2; }
+
+/* Página de boas-vindas: o casal de raposas sentado, de cada lado do texto */
+.screen--home { overflow-x: hidden; }
+.home-art { position: absolute; left: 50%; bottom: 0; z-index: 0; width: min(100%, 1920px); height: min(80vh, 50vw); transform: translateX(-50%); pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, #000 62%, transparent 100%), linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 62%, transparent 100%), linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
+  -webkit-mask-composite: source-in; mask-composite: intersect; }
+.home-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; user-select: none; }
+.screen--home .home-inner { position: relative; z-index: 1; }
+@media (max-width: 760px) {
+  .home-art { left: 0; width: 100%; transform: none; height: auto; aspect-ratio: 1100 / 713; -webkit-mask-image: linear-gradient(to top, #000 70%, transparent 100%); mask-image: linear-gradient(to top, #000 70%, transparent 100%); }
+  .home-art img { height: auto; }
+  .screen--home .home-inner { padding-bottom: calc(100vw * 0.5); } /* o texto e os botões ficam acima das raposas */
 }
 
 /* ============================================================
