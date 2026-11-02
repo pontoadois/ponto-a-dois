@@ -1,0 +1,21 @@
+{
+  "name": "entre-nos",
+  "version": "1.0.0",
+  "description": "Um jogo de cartas para casais fortalecerem a conexão",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 8000",
+    "build": "echo 'Build complete'",
+    "lint": "echo 'No linter configured'"
+  },
+  "keywords": [
+    "game",
+    "couples",
+    "cards"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/analytics": "^2.0.1"
+  }
+}
