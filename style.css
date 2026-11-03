@@ -284,26 +284,6 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   margin-top: var(--sp-4);
   animation: fadeUp 0.9s var(--ease) 0.2s both;
 }
-.home-notice {
-  margin-top: var(--sp-6);
-  font-size: 0.78rem;
-  color: var(--muted-2);
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
-  flex-wrap: wrap;
-  justify-content: center;
-  animation: fadeUp 0.9s var(--ease) 0.28s both;
-}
-.notice-dot {
-  background: var(--red-400);
-  color: #fff;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: var(--r-pill);
-  font-size: 0.72rem;
-  letter-spacing: 0.5px;
-}
 
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(20px); }
@@ -1406,14 +1386,6 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 @media (max-width: 359px) {
   .home-title { font-size: 14.5vw; }
 }
-
-
-/* Links legais na tela inicial */
-.home-legal { margin: 14px 0 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; font-size: 0.82rem; color: var(--muted); }
-.home-legal a { color: var(--muted); text-decoration: underline; min-height: 24px; }
-.home-legal a:hover { color: var(--white); }
-
-
 
 /* Formação do casal */
 .st-mode--compact { align-items: center; min-height: 56px; padding: 12px 14px; }
