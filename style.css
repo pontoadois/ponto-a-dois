@@ -1894,3 +1894,18 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
 
 /* Etiqueta da atividade recomendada (a partir do formulário) */
 .exp-reco { position: relative; align-self: flex-start; padding: 3px 12px; border-radius: 999px; background: #fff7ff; color: #5b145d; font-size: 0.72rem; font-weight: 600; }
+
+
+/* ============================================================
+   ALTERAR SENHA, DATA ESPECIAL DO CASAL E AVISO DE MOEDAS
+   ============================================================ */
+.pw-form { display: flex; flex-direction: column; gap: 14px; padding: 4px 24px 22px; }
+.pw-actions { display: flex; gap: 12px; margin-top: 4px; }
+.pw-actions .btn { flex: 1; }
+.pw-actions .btn:disabled { opacity: 0.6; cursor: wait; }
+.pf-seg--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 8px; }
+@media (min-width: 520px) { .pf-seg--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+.pf-date input { color-scheme: dark; min-height: 48px; }
+.heat-date { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.9rem; line-height: 1.4; color: #ffd9a8; }
+.heat-date > svg { flex-shrink: 0; color: #ff80bd; }
+.peek-btn.is-low { opacity: 0.85; border-style: dashed; }

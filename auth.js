@@ -78,7 +78,7 @@
     if (!session) { profile = null; avatarUrl = null; onboard = undefined; return; }
     const { data } = await client
       .from("profiles")
-      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path, spouse_name")
+      .select("id, display_name, birth_date, terms_accepted_at, age_verified_at, gender, avatar_path, spouse_name, special_date, special_label")
       .eq("id", session.user.id)
       .maybeSingle();
     profile = data || null;
@@ -428,12 +428,48 @@
   }
 
   // Salva o nome e o gênero ("h", "m" ou "" para não informar)
-  async function saveProfile({ name, gender, spouse }) {
+  async function saveProfile({ name, gender, spouse, specialDate, specialLabel }) {
     const g = gender === "h" || gender === "m" ? gender : null;
     const sp = String(spouse || "").trim().slice(0, 16) || null;
-    const { error } = await client.from("profiles").update({ display_name: name, gender: g, spouse_name: sp }).eq("id", session.user.id);
+    // Data especial do casal: precisa vir com o tipo (namoro, noivado, casamento ou outra)
+    const okLabel = ["namoro", "noivado", "casamento", "outro"].includes(specialLabel);
+    const okDate = /^\d{4}-\d{2}-\d{2}$/.test(specialDate || "");
+    const sd = okDate && okLabel ? specialDate : null;
+    const sl = sd ? specialLabel : null;
+    const { error } = await client.from("profiles").update({ display_name: name, gender: g, spouse_name: sp, special_date: sd, special_label: sl }).eq("id", session.user.id);
     if (!error) { await loadProfile(); renderHomeUser(); }
     return !error;
+  }
+
+  // A conta tem senha própria? (quem entrou só com o Google ainda não tem uma e pode criar)
+  function hasPassword() {
+    const ids = session && session.user && session.user.identities;
+    return Array.isArray(ids) ? ids.some((i) => i.provider === "email") : true;
+  }
+
+  // Altera a senha de quem está logado. Antes, confere a senha atual (quando a conta tem uma).
+  async function changePassword(current, next) {
+    if (!client || !session) return { ok: false, error: "auth" };
+    try {
+      if (hasPassword()) {
+        const chk = await client.auth.signInWithPassword({ email: session.user.email, password: current });
+        if (chk.error) {
+          const m = String(chk.error.message || "").toLowerCase();
+          return { ok: false, error: m.includes("invalid login") ? "wrong_current" : m.includes("rate limit") || m.includes("too many") ? "rate" : m.includes("failed to fetch") || m.includes("network") ? "network" : "unknown" };
+        }
+      }
+      const { error } = await client.auth.updateUser({ password: next });
+      if (error) {
+        const m = String(error.message || "").toLowerCase();
+        if (m.includes("same password")) return { ok: false, error: "same" };
+        if (m.includes("password should be") || m.includes("weak") || m.includes("at least")) return { ok: false, error: "weak" };
+        if (m.includes("reauth") || m.includes("recent login") || m.includes("nonce")) return { ok: false, error: "reauth" };
+        if (m.includes("rate limit") || m.includes("too many")) return { ok: false, error: "rate" };
+        if (m.includes("failed to fetch") || m.includes("network")) return { ok: false, error: "network" };
+        return { ok: false, error: "unknown" };
+      }
+      return { ok: true };
+    } catch { return { ok: false, error: "network" }; }
   }
 
   // Recorta no centro, reduz para 512 px e salva em JPEG (isso também apaga dados de localização da foto)
@@ -514,7 +550,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

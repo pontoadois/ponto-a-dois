@@ -181,6 +181,7 @@
     $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
     if (add) add.addEventListener("click", () => app().goTo("profile"));
+    renderSpecialDate(p, g);
     $("#quickLbl").textContent = g.quick_done ? "Jogar de novo" : "Jogar agora";
     const sc = $("#secretCard");
     sc.classList.toggle("is-done", g.secret_done);
@@ -188,7 +189,58 @@
     $("#secretSub").textContent = g.secret_done ? "Voltem amanhã para uma nova" : "Uma prévia do conteúdo Premium";
     const peek = $("#peekBtn");
     peek.hidden = plan.premium || g.peeks_left <= 0;
+    peek.classList.toggle("is-low", g.coins < g.cfg.peek_cost);
     $("#peekLbl").textContent = `Espiar outra carta premium · ${g.cfg.peek_cost} moedas`;
+  }
+
+  /* ---------- Data especial do casal ---------- */
+  const DATE_PREFIX = { namoro: "Juntos há", noivado: "Noivos há", casamento: "Casados há", outro: "Juntos há" };
+  const DATE_NOUN = { namoro: "de namoro", noivado: "de noivado", casamento: "de casados", outro: "juntos" };
+  const DATE_FUTURE = { namoro: "o início do namoro", noivado: "o noivado", casamento: "o casamento", outro: "a data especial de vocês" };
+  const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+  const ymd = (iso) => { const [y, m, d] = iso.split("-").map(Number); return { y, m, d }; };
+  const utc = (o) => Date.UTC(o.y, o.m - 1, o.d);
+  const dayDiff = (from, to) => Math.round((utc(to) - utc(from)) / 86400000);
+
+  // Texto sobre a data especial (puro, para poder ser testado): { text } ou null
+  function specialDateText(iso, label, todayIso) {
+    if (!iso) return null;
+    const from = ymd(iso), to = ymd(todayIso), lb = label || "outro";
+    const total = dayDiff(from, to);
+    if (total < 0) return { text: `Faltam ${plural(-total, "dia", "dias")} para ${DATE_FUTURE[lb]}.` };
+    // Meses completos entre as duas datas; o dia do mês é ajustado ao tamanho do mês (31 de jan + 1 mês = 28 de fev)
+    let total_m = (to.y - from.y) * 12 + (to.m - from.m);
+    if (to.d < from.d) total_m -= 1;
+    const am = from.m - 1 + total_m;
+    const ay = from.y + Math.floor(am / 12), amo = ((am % 12) + 12) % 12;
+    const dim = new Date(Date.UTC(ay, amo + 1, 0)).getUTCDate();
+    const days = dayDiff({ y: ay, m: amo + 1, d: Math.min(from.d, dim) }, to);
+    const years = Math.floor(total_m / 12), months = total_m % 12;
+    const parts = [];
+    if (years) parts.push(plural(years, "ano", "anos"));
+    if (months) parts.push(plural(months, "mês", "meses"));
+    if (days || !parts.length) parts.push(plural(days, "dia", "dias"));
+    const span = parts.length > 1 ? parts.slice(0, -1).join(", ") + " e " + parts[parts.length - 1] : parts[0];
+    // próximo aniversário
+    let ny = to.y;
+    if (utc({ y: ny, m: from.m, d: from.d }) < utc(to)) ny += 1;
+    const toNext = dayDiff(to, { y: ny, m: from.m, d: from.d });
+    const nth = ny - from.y;
+    if (toNext === 0 && nth > 0) return { text: `Hoje vocês completam ${plural(nth, "ano", "anos")} ${DATE_NOUN[lb]}!`, today: true };
+    return { text: `${DATE_PREFIX[lb]} ${span} (${total.toLocaleString("pt-BR")} dias). Faltam ${plural(toNext, "dia", "dias")} para completarem ${plural(nth, "ano", "anos")}.` };
+  }
+
+  function renderSpecialDate(p, g) {
+    const row = $("#heatDateRow");
+    const info = p && p.special_date ? specialDateText(p.special_date, p.special_label, g.today) : null;
+    row.hidden = !info;
+    if (info) $("#heatDate").textContent = info.text;
+    // Convite discreto para cadastrar a data (depois do nome do cônjuge)
+    if (!info && p && p.spouse_name) {
+      const hn = $("#heatNext");
+      hn.innerHTML = hn.innerHTML + ' <button type="button" class="link-btn" id="addDate">Adicionar a data especial do casal</button>';
+      $("#addDate").addEventListener("click", () => app().goTo("profile"));
+    }
   }
 
   function openLevels() {
@@ -238,19 +290,41 @@
     });
   }
 
-  function askPeek() {
-    if (!game) return;
-    const c = game.cfg;
-    if (game.coins < c.peek_cost) {
-      app().showToast(`Você precisa de ${c.peek_cost} moedas. A Conexão Rápida dá ${c.coins_quick} por dia.`);
-      return;
-    }
-    if (!app().namesOk()) return;
-    $("#pkText").textContent = `Você vai gastar ${c.peek_cost} moedas para ver uma carta do conteúdo Premium. Hoje ainda dá para espiar ${game.peeks_left} ${game.peeks_left === 1 ? "carta" : "cartas"}, e você tem ${game.coins} moedas.`;
+  // Janela única para "espiar" e para "comprar bloqueio": confirma o gasto ou avisa que faltam moedas
+  let peekMode = "confirm";
+  function setPeekDialog(mode, title, text, primary, cancel) {
+    peekMode = mode;
+    $("#pkTitle").textContent = title;
+    $("#pkText").textContent = text;
+    const go = $("#pkGo");
+    go.hidden = !primary;
+    if (primary) go.textContent = primary;
+    $("#pkCancel").textContent = cancel;
     app().openModal("peek");
   }
 
+  // Avisa que as moedas não bastam e diz quanto falta e como ganhar mais
+  function showNeedCoins(cost, what) {
+    const falta = Math.max(0, cost - game.coins);
+    let text = `Para ${what} você precisa de ${cost} moedas e tem ${game.coins}. Faltam ${falta}.`;
+    if (game.quick_done) text += " Hoje vocês já ganharam as moedas da Conexão Rápida. Voltem amanhã: entrar no app todos os dias também rende moedas.";
+    else text += ` Ganhem moedas fazendo a Conexão Rápida (+${game.cfg.coins_quick}) e entrando no app todos os dias.`;
+    setPeekDialog("coins", "Moedas insuficientes", text, game.quick_done ? "" : "Fazer Conexão Rápida", game.quick_done ? "Entendi" : "Agora não");
+  }
+
+  function askPeek() {
+    if (!game) return;
+    const c = game.cfg;
+    if (game.coins < c.peek_cost) { showNeedCoins(c.peek_cost, "espiar uma carta premium"); return; }
+    if (!app().namesOk()) return;
+    const left = game.coins - c.peek_cost;
+    setPeekDialog("confirm", "Espiar uma carta premium?",
+      `Você vai gastar ${c.peek_cost} moedas para ver uma carta do conteúdo Premium. Hoje ainda dá para espiar ${game.peeks_left} ${game.peeks_left === 1 ? "carta" : "cartas"}. Você tem ${game.coins} moedas e fica com ${left} depois.`,
+      "Espiar", "Agora não");
+  }
+
   async function doPeek() {
+    if (peekMode === "coins") { app().closeModal(); playQuick(); return; } // o aviso de moedas leva à Conexão Rápida
     const btn = $("#pkGo");
     btn.disabled = true;
     const r = await auth().peekCard();
@@ -299,6 +373,7 @@
 
   async function buyFreeze() {
     if (!game) return;
+    if (game.freezes < game.cfg.freeze_max && game.coins < game.cfg.freeze_cost) { showNeedCoins(game.cfg.freeze_cost, "comprar um bloqueio de ofensiva"); return; }
     const btn = $("#buyFreeze");
     btn.disabled = true;
     const r = await auth().buyFreeze();
@@ -348,7 +423,32 @@
     $("#pfError").hidden = true;
     pfGender = (p && p.gender) || "";
     renderGender();
+    $("#pfSpecialDate").value = (p && p.special_date) || "";
+    pfDateLabel = (p && p.special_label) || defaultDateLabel();
+    renderDateLabel();
     paintAvatars();
+  }
+
+  // Tipo da data especial: já sugere o mais provável conforme a situação informada no formulário inicial
+  let pfDateLabel = "outro";
+  function defaultDateLabel() {
+    const o = auth().getOnboarding && auth().getOnboarding();
+    const st = o && o.answers && o.answers.status;
+    return st === "casados" ? "casamento" : st === "noivos" ? "noivado" : st === "namorando" ? "namoro" : "outro";
+  }
+  function renderDateLabel() {
+    const wrap = $("#pfDateLabel");
+    wrap.innerHTML = "";
+    [["namoro", "Namoro"], ["noivado", "Noivado"], ["casamento", "Casamento"], ["outro", "Outra data"]].forEach(([v, label]) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "pf-opt" + (pfDateLabel === v ? " is-selected" : "");
+      b.setAttribute("role", "radio");
+      b.setAttribute("aria-checked", pfDateLabel === v ? "true" : "false");
+      b.textContent = label;
+      b.addEventListener("click", () => { pfDateLabel = v; renderDateLabel(); });
+      wrap.appendChild(b);
+    });
   }
 
   let pfGender = "";
@@ -484,13 +584,63 @@
     const name = $("#pfName").value.trim();
     err.hidden = true;
     if (name.length < 2) { err.textContent = "Escreva pelo menos 2 letras."; err.hidden = false; return; }
+    const sd = $("#pfSpecialDate").value; // vazio = sem data especial
+    if (sd) {
+      const t = new Date(sd + "T12:00:00");
+      const limit = new Date(); limit.setFullYear(limit.getFullYear() + 5);
+      if (isNaN(t) || t.getFullYear() < 1950 || t > limit) { err.textContent = "Confira a data especial: use uma data a partir de 1950 e até 5 anos à frente."; err.hidden = false; return; }
+    }
     const btn = $("#pfSave");
     btn.disabled = true;
-    const ok = await auth().saveProfile({ name, gender: pfGender, spouse: $("#pfSpouse").value });
+    const ok = await auth().saveProfile({ name, gender: pfGender, spouse: $("#pfSpouse").value, specialDate: sd || null, specialLabel: sd ? pfDateLabel : null });
     btn.disabled = false;
     if (!ok) { err.textContent = "Não foi possível salvar agora. Tente de novo."; err.hidden = false; return; }
     app().showToast("Perfil atualizado.");
     app().goTo("perfil");
+  }
+
+  /* ---------- Alterar senha ---------- */
+  function openPassword() {
+    const has = auth().hasPassword();
+    $("#passwordForm").reset();
+    $("#pwError").hidden = true;
+    $("#pwCurrentWrap").hidden = !has; // quem entrou só com o Google ainda não tem senha atual
+    $("#pwTitle").textContent = has ? "Alterar senha" : "Criar senha";
+    $("#pwSubmit").textContent = "Salvar senha";
+    $$("#passwordForm .au-input input").forEach((i) => { i.type = "password"; });
+    $$("#passwordForm .au-toggle").forEach((t) => { t.textContent = "Mostrar"; t.setAttribute("aria-pressed", "false"); });
+    app().openModal("password");
+  }
+
+  async function submitPassword(e) {
+    e.preventDefault();
+    const err = $("#pwError");
+    const has = auth().hasPassword();
+    const cur = $("#pwCurrent").value, nw = $("#pwNew").value, cf = $("#pwConfirm").value;
+    const fail = (m) => { err.textContent = m; err.hidden = false; };
+    err.hidden = true;
+    if (has && !cur) return fail("Digite a sua senha atual.");
+    if (nw.length < 8) return fail("A nova senha precisa ter pelo menos 8 caracteres.");
+    if (nw !== cf) return fail("As duas senhas novas não são iguais.");
+    if (has && nw === cur) return fail("Escolha uma senha diferente da atual.");
+    const btn = $("#pwSubmit");
+    btn.disabled = true;
+    btn.textContent = "Salvando…";
+    const r = await auth().changePassword(cur, nw);
+    btn.disabled = false;
+    btn.textContent = "Salvar senha";
+    if (!r.ok) {
+      return fail({
+        wrong_current: "A senha atual está incorreta.",
+        same: "Escolha uma senha diferente da atual.",
+        weak: "Essa senha é muito fraca. Use pelo menos 8 caracteres, misturando letras e números.",
+        reauth: "Por segurança, saia da conta, entre de novo e tente outra vez.",
+        rate: "Muitas tentativas seguidas. Espere um pouco e tente de novo.",
+        network: "Sem conexão agora. Confira a internet e tente de novo.",
+      }[r.error] || "Não foi possível alterar a senha agora. Tente de novo.");
+    }
+    app().closeModal();
+    app().showToast(has ? "Senha alterada." : "Senha criada.");
   }
 
   /* ---------- Excluir conta ---------- */
@@ -601,6 +751,7 @@
     };
   }
 
+  window.EntreNosDates = { specialDateText }; // usado nos testes
   window.EntreNosHooks = {
     inicio: async () => { markNav("inicio"); await load(); renderInicio(); maybeWelcome(); },
     streak: hook("streak", renderStreak),
@@ -630,6 +781,8 @@
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
     $$("[data-soon]").forEach((b) => b.addEventListener("click", () => app().showToast("Disponível em breve, junto com o pagamento.")));
     $("#rowLogout").addEventListener("click", () => auth().signOut());
+    $("#rowPassword").addEventListener("click", openPassword);
+    $("#passwordForm").addEventListener("submit", submitPassword);
     $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
     $("#delConfirm").addEventListener("click", confirmDelete);
     $("#recoPlay").addEventListener("click", () => {
