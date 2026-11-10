@@ -723,6 +723,7 @@
     badge.classList.toggle("is-ok", paid);
     $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
       .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "info" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
+    $("#myPlanPromoFeat").innerHTML = PAID_FEAT.map(([, t]) => `<li class="is-on">${svg("check", 18, 2.2)}<span>${t}</span></li>`).join("");
     $("#myPlanFree").hidden = paid;
     $("#myPlanActions").hidden = !paid;
     const info = $("#myPlanInfo");
