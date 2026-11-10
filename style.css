@@ -2086,3 +2086,25 @@ h1, h2, h3, .brand-name, .pm-title { letter-spacing: -0.01em; }
   section[data-screen="perfil"].is-active > .app,
   section[data-screen="streak"].is-active > .app { width: 100%; margin-left: auto; margin-right: auto; }
 }
+
+/* Título da tela inicial em uma linha só */
+.home-title { white-space: nowrap; font-size: clamp(2.4rem, 11vw, 5rem); }
+
+/* Campos preenchidos/colados pelo navegador: sem o fundo azul do Google */
+input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill {
+  -webkit-text-fill-color: #fff7ff !important;
+  caret-color: #fff7ff;
+  -webkit-box-shadow: 0 0 0 1000px #1a0818 inset !important;
+  box-shadow: 0 0 0 1000px #1a0818 inset !important;
+  transition: background-color 9999s ease-out 0s;
+}
+input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
+
+/* Carta do jogo: medalhão nítido no lugar do borrão */
+.screen--game .card::before {
+  width: 164px; height: 164px; top: 118px;
+  border: 1px solid rgba(241, 59, 145, 0.4);
+  background: rgba(241, 59, 145, 0.07);
+  filter: none;
+  box-shadow: 0 0 0 14px rgba(241, 59, 145, 0.04), 0 0 0 15px rgba(241, 59, 145, 0.14);
+}

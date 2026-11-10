@@ -20,6 +20,7 @@
     heartFill: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     card: "M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20",
     check: "M20 6 9 17l-5-5",
+    x: "M18 6 6 18 M6 6l12 12",
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
@@ -693,8 +694,8 @@
   }
 
   /* ---------- Meu plano ---------- */
-  const FREE_FEAT = [[1, "Cartas do nível Leve"], [1, "Sequência diária"], [0, "Níveis Picante e Intenso"], [0, "Categoria Posições"], [0, "Noite de Encontro"]];
-  const PAID_FEAT = [[1, "Todas as categorias e níveis"], [1, "Noite de Encontro completa"], [1, "Posições com ilustrações"]];
+  const FREE_FEAT = [[1, "Cartas do nível Leve"], [1, "Sequência diária"], [0, "Níveis Picante e Intenso"], [0, "Categoria Posições"], [0, "Noite de Encontro"], [2, "Com anúncios"]];
+  const PAID_FEAT = [[1, "Todas as categorias e níveis"], [1, "Noite de Encontro completa"], [1, "Posições com ilustrações"], [1, "Sem anúncios"]];
 
   function renderPlano() {
     const paid = plan.premium;
@@ -703,7 +704,7 @@
     badge.textContent = paid ? "Ativa" : "R$ 0";
     badge.classList.toggle("is-ok", paid);
     $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
-      .map(([on, t]) => `<li class="${on ? "is-on" : "is-off"}">${svg(on ? "check" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
+      .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "x" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
     $("#myPlanFree").hidden = paid;
     $("#myPlanActions").hidden = !paid;
     const info = $("#myPlanInfo");
