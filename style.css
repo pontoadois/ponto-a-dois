@@ -8,7 +8,7 @@
   /* Paleta oficial (sem degradês) */
   --bg: #160713;        /* Ameixa Profunda: fundo principal */
   --surface: #3a0d3c;   /* Vinho: superfícies e cartas */
-  --violet: #a82dd0;    /* Violeta: apoio (uso mínimo) */
+  --violet: #f13b91;    /* Violeta: apoio (uso mínimo) */
   --pink: #f13b91;      /* Rosa Vivo: marca, botões, destaques */
   /* Paleta principal: ameixa profunda, rosa neon e violeta */
   /* Paleta de vinhos (teste): #1D011B, #24021F, #3a0d3c, #40012A, #3a0d3c */
@@ -20,8 +20,8 @@
   --red-500: #be1f72;
   --red-400: #f13b91;
   --red-300: #f13b91;
-  --plum-500: #a82dd0;
-  --plum-400: #a82dd0;
+  --plum-500: #f13b91;
+  --plum-400: #f13b91;
   --plum-300: #fff7ff;
 
   /* Neutros */
@@ -65,7 +65,7 @@
 
   /* Sombras */
   --sh-soft: 0 8px 30px rgba(0, 0, 0, 0.35);
-  --sh-glow: 0 0 40px rgba(211, 45, 213, 0.3);
+  --sh-glow: 0 0 40px rgba(241, 59, 145, 0.3);
   --sh-card: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 1px var(--glass-brd);
 
   /* Transições */
@@ -311,9 +311,9 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   gap: var(--sp-5);
   padding: 32px;
   background: var(--surface);
-  border: 1px solid rgba(218, 75, 225, 0.58);
+  border: 1px solid rgba(241, 59, 145, 0.58);
   border-radius: 30px;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 35px rgba(173, 29, 178, 0.18) inset;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 35px rgba(241, 59, 145, 0.18) inset;
 }
 
 /* HUD */
@@ -397,7 +397,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   color: var(--plum-300);
 
   filter:
-    drop-shadow(0 0 6px rgba(192, 132, 252, 0.35));
+    drop-shadow(0 0 6px rgba(255, 140, 200, 0.35));
 }
 
 /* Card stage */
@@ -568,7 +568,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   position: absolute;
   inset: 0;
   border-radius: 28px;
-  box-shadow: 0 0 28px rgba(156,39,176,0.03);
+  box-shadow: 0 0 28px rgba(241, 59, 145, 0.03);
 }
 
 /* Destaque do número atual da carta (ex: 'Carta 1 / 45') */
@@ -658,7 +658,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 }
 .screen--game .game-hud .btn--ghost,
 .screen--game .turn-bar {
-  border-color: rgba(218, 75, 225, 0.48);
+  border-color: rgba(241, 59, 145, 0.48);
   background: rgba(67, 15, 72, 0.5);
 }
 .screen--game .game-hud .btn--ghost {
@@ -697,8 +697,8 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   gap: 14px;
   border-radius: 28px;
   background: var(--surface);
-  border: 1px solid rgba(229, 52, 194, 0.68);
-  box-shadow: 0 0 28px rgba(210, 41, 196, 0.15) inset, 0 18px 45px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(241, 59, 145, 0.68);
+  box-shadow: 0 0 28px rgba(241, 59, 145, 0.15) inset, 0 18px 45px rgba(0, 0, 0, 0.25);
 }
 .screen--game .card::before {
   content: "";
@@ -736,7 +736,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 }
 .screen--game .card-int {
   padding: 6px 13px;
-  border-color: rgba(216, 140, 255, 0.48);
+  border-color: rgba(255, 140, 200, 0.48);
   background: rgba(66, 22, 83, 0.48);
   color: var(--plum-300);
   font-size: 0.82rem;
@@ -798,7 +798,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 }
 .screen--game .game-actions .btn--soft {
   background: rgba(68, 21, 78, 0.5);
-  border-color: rgba(168, 45, 208, 0.28);
+  border-color: rgba(241, 59, 145, 0.28);
   color: var(--muted);
 }
 
@@ -859,7 +859,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   width: 120px;
   height: 4px;
   border-radius: 999px;
-  background: rgba(216, 140, 255, 0.2);
+  background: rgba(255, 140, 200, 0.2);
   overflow: hidden;
 }
 .stage-bar i {
@@ -883,7 +883,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   align-self: center;
   padding: 3px 14px;
   border-radius: 999px;
-  border: 1px dashed rgba(216, 140, 255, 0.5);
+  border: 1px dashed rgba(255, 140, 200, 0.5);
   color: var(--plum-300);
   font-size: 0.8rem;
   letter-spacing: 0.02em;
@@ -922,7 +922,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   justify-content: center;
   gap: 1px;
   border-radius: 16px;
-  border: 1px solid rgba(216, 140, 255, 0.5);
+  border: 1px solid rgba(255, 140, 200, 0.5);
   background: rgba(103, 24, 120, 0.4);
   color: var(--white);
   transition: background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), transform var(--t-fast) var(--ease);
@@ -954,7 +954,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   min-height: 46px;
   padding: 8px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(216, 140, 255, 0.4);
+  border: 1px solid rgba(255, 140, 200, 0.4);
   background: rgba(103, 24, 120, 0.3);
   color: var(--white);
   text-align: left;
@@ -971,7 +971,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  border: 1px solid rgba(216, 140, 255, 0.6);
+  border: 1px solid rgba(255, 140, 200, 0.6);
   color: var(--plum-300);
   font-size: 0.78rem;
   font-weight: 600;
@@ -1014,7 +1014,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   min-height: 46px;
   padding: 8px 12px;
   border-radius: 14px;
-  border: 1px solid rgba(216, 140, 255, 0.45);
+  border: 1px solid rgba(255, 140, 200, 0.45);
   background: rgba(103, 24, 120, 0.3);
   color: var(--white);
   font-size: 0.95rem;
@@ -1058,7 +1058,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
   width: 32%;
   aspect-ratio: 7 / 10;
   border-radius: 18px;
-  border: 1px solid rgba(229, 52, 194, 0.55);
+  border: 1px solid rgba(241, 59, 145, 0.55);
   background: var(--surface);
   display: flex;
   flex-direction: column;
@@ -1349,7 +1349,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .au-note svg { flex-shrink: 0; color: #f13b91; margin-top: 1px; }
 
 .au-error { margin: 0; padding: 12px 14px; border-radius: 12px; font-size: 0.88rem; line-height: 1.45; color: #ffb3cf; background: rgba(241, 59, 145, 0.12); border: 1px solid rgba(241, 59, 145, 0.4); }
-.au-error.is-info { color: #fff7ff; background: rgba(168, 45, 208, 0.14); border-color: rgba(216, 140, 255, 0.4); }
+.au-error.is-info { color: #fff7ff; background: rgba(241, 59, 145, 0.14); border-color: rgba(255, 140, 200, 0.4); }
 .au-switch { margin: 0; text-align: center; font-size: 0.95rem; color: var(--muted); }
 .au-adult { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 0.82rem; color: var(--muted); }
 .au-adult span { width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(241, 59, 145, 0.6); display: flex; align-items: center; justify-content: center; font-size: 0.68rem; font-weight: 600; color: #f13b91; }
@@ -1601,7 +1601,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
    FOTO DE PERFIL: ver e posicionar
    ============================================================ */
 .pf-avatar { position: relative; padding: 0; border: 0; cursor: pointer; color: inherit; font: inherit; }
-.pf-cam { position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; background: #a82dd0; border: 2px solid #160713; display: flex; align-items: center; justify-content: center; color: #fff7ff; }
+.pf-cam { position: absolute; right: -2px; bottom: -2px; width: 32px; height: 32px; border-radius: 50%; background: #f13b91; border: 2px solid #160713; display: flex; align-items: center; justify-content: center; color: #fff7ff; }
 .photo-card { max-width: 460px; }
 .photo-view { width: min(360px, calc(100vw - 96px)); aspect-ratio: 1; margin: 6px auto 18px; border-radius: 24px; overflow: hidden; background: #160713; border: 1px solid rgba(255, 247, 255, 0.14); }
 .photo-view img { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -1912,7 +1912,7 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
    e vidro com borda rosa. Fica por último para sobrepor o resto.
    ============================================================ */
 :root {
-  --grad-pink: linear-gradient(100deg, #f13b91 0%, #e8339a 55%, #a82dd0 135%);
+  --grad-pink: linear-gradient(100deg, #f13b91 0%, #f13b91 55%, #f13b91 135%);
   --grad-card: linear-gradient(150deg, rgba(58, 13, 60, 0.92) 0%, rgba(34, 9, 33, 0.92) 55%, rgba(22, 7, 19, 0.96) 100%);
   --grad-card-hot: linear-gradient(135deg, rgba(241, 59, 145, 0.34) 0%, rgba(58, 13, 60, 0.92) 62%, rgba(34, 9, 33, 0.96) 100%);
   --grad-card-soft: linear-gradient(150deg, rgba(58, 13, 60, 0.6) 0%, rgba(22, 7, 19, 0.7) 100%);
@@ -1921,7 +1921,7 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
 body { background: #160713; }
 .bg-gradient {
   background:
-    radial-gradient(ellipse 60% 50% at 85% 0%, rgba(168, 45, 208, 0.22), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 85% 0%, rgba(241, 59, 145, 0.22), transparent 70%),
     radial-gradient(ellipse 50% 45% at 100% 55%, rgba(241, 59, 145, 0.12), transparent 70%),
     linear-gradient(180deg, #160713 0%, #230a24 55%, #3a0d3c 130%);
 }
@@ -1931,7 +1931,7 @@ body { background: #160713; }
 .wk-day.is-on .wk-dot, .welcome-flame { background: var(--grad-pink); }
 .btn--primary, .appnav-play, .pm-btn { box-shadow: var(--glow-pink); }
 .btn--primary:hover { box-shadow: 0 10px 30px rgba(241, 59, 145, 0.5); }
-.heat-bar i, .ob-bar i, .st-track i { background: linear-gradient(90deg, #f13b91, #a82dd0); }
+.heat-bar i, .ob-bar i, .st-track i { background: linear-gradient(90deg, #f13b91, #f13b91); }
 .wk-day.is-on .wk-dot { box-shadow: 0 0 14px rgba(241, 59, 145, 0.45); }
 
 /* Cartas e superfícies */
@@ -1976,3 +1976,39 @@ body { background: #160713; }
 }
 .heat-gauge small { display: none; }
 .heat-gauge b { font-size: 2rem; }
+
+/* ===== v7: vinho iluminado, rosa claro no lugar de cinza, botões chapados ===== */
+:root {
+  --muted: rgba(255, 205, 230, 0.78);
+  --muted-2: rgba(255, 190, 222, 0.5);
+  --glass-bg: rgba(255, 120, 190, 0.07);
+  --glass-brd: rgba(255, 140, 200, 0.28);
+  --glass-brd-hi: rgba(241, 59, 145, 0.55);
+  --grad-card-hot: linear-gradient(135deg, rgba(150, 28, 92, 0.36) 0%, rgba(70, 12, 60, 0.6) 42%, rgba(22, 7, 19, 0.9) 100%);
+  --grad-card: linear-gradient(135deg, rgba(58, 13, 60, 0.45), rgba(22, 7, 19, 0.85));
+  --grad-card-soft: linear-gradient(135deg, rgba(58, 13, 60, 0.4), rgba(22, 7, 19, 0.8));
+}
+.bg-gradient { background: radial-gradient(ellipse 60% 50% at 85% 0%, rgba(241, 59, 145, 0.22), transparent 70%), radial-gradient(ellipse 50% 45% at 100% 55%, rgba(241, 59, 145, 0.10), transparent 70%), linear-gradient(180deg, #160713 0%, #1c0919 60%, #240a23 100%); }
+.btn--primary, .pm-btn, .app-avatar, .appnav-avatar, .appnav-play, .wk-day.is-on .wk-dot, .welcome-flame { background: #f13b91; }
+.heat-bar i, .ob-bar i, .st-track i { background: #f13b91; }
+.heat-card, .reco, .streak-hero, .exp-card, .plan-card--promo { background: var(--grad-card-hot); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+.exp-card--night, .secret-card, .pm-banner, .plan-card { background: var(--grad-card); border-color: var(--glass-brd); }
+.game-tile, .app-card, .stat, .menu-row, .recent-item, .plan-opt, .plans-box, .au-panel, .st-panel { border-color: rgba(255, 140, 200, 0.26); background: var(--grad-card-soft); }
+.heat-gauge { background: radial-gradient(circle, #1a0818 0 62%, rgba(241, 59, 145, 0.22) 100%); box-shadow: 0 0 26px rgba(241, 59, 145, 0.22), inset 0 0 18px rgba(241, 59, 145, 0.1); }
+.heat-gauge::before { background: radial-gradient(circle at 50% 4.5px, #f13b91 0 4.5px, transparent 5px), conic-gradient(from 0deg, #f13b91 0, #f13b91 calc(var(--p) * 1%), transparent calc(var(--p) * 1%)), rgba(241, 59, 145, 0.26); }
+.heat-bar, .ob-bar, .st-track { background: rgba(255, 120, 190, 0.2); }
+.heat-chip, .heat-chips > * { border-color: rgba(255, 140, 200, 0.3); background: rgba(255, 120, 190, 0.1); }
+
+/* Carta do jogo: mais escura, sem o roxo */
+.card, .screen--game .card {
+  background: linear-gradient(160deg, rgba(60, 12, 48, 0.95) 0%, rgba(34, 9, 33, 0.97) 50%, rgba(20, 6, 18, 0.99) 100%);
+  border: 1px solid rgba(241, 59, 145, 0.45);
+  box-shadow: inset 0 1px 0 rgba(255, 200, 230, 0.16), 0 18px 45px rgba(0, 0, 0, 0.35);
+}
+.screen--game .game-hud .btn--ghost, .screen--game .turn-bar { border-color: rgba(255, 140, 200, 0.35); background: rgba(34, 9, 33, 0.7); }
+.screen--game .game-inner { background: linear-gradient(160deg, rgba(40, 9, 36, 0.92), rgba(22, 7, 19, 0.96)); border: 1px solid rgba(241, 59, 145, 0.3); }
+.screen--game .game-actions .btn--soft { background: rgba(255, 120, 190, 0.08); border-color: rgba(255, 140, 200, 0.3); color: var(--muted); }
+
+/* Sem ilustrações decorativas (lua, carta, corações) */
+.exp-art, .secret-art, .heat-art, .pm-heart { display: none !important; }
+.heat-foxes { display: none !important; }
