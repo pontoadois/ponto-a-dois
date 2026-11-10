@@ -2074,3 +2074,15 @@ h1, h2, h3, .brand-name, .pm-title { letter-spacing: -0.01em; }
   .appnav-item[aria-current="page"] svg { color: #f13b91; }
   .appnav-item[aria-current="page"]::before { display: block; }
 }
+
+/* Telas curtas centralizadas no meio da área ao lado do menu (computador) */
+@media (min-width: 1024px) {
+  section[data-screen="plano"].is-active,
+  section[data-screen="perfil"].is-active,
+  section[data-screen="streak"].is-active {
+    min-height: 100dvh; box-sizing: border-box; display: flex; flex-direction: column; justify-content: center; padding-top: 40px; padding-bottom: 40px;
+  }
+  section[data-screen="plano"].is-active > .app,
+  section[data-screen="perfil"].is-active > .app,
+  section[data-screen="streak"].is-active > .app { width: 100%; margin-left: auto; margin-right: auto; }
+}

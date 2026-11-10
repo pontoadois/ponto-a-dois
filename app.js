@@ -69,8 +69,13 @@
     const played = new Set((streak && streak.week) || []);
     const base = new Date(today + "T12:00:00");
     const dow = base.getDay();
-    const firstPlayed = [...played].sort()[0] || null;
-    const hasHistory = played.size > 0 || !!(streak && (streak.current > 0 || streak.longest > 0));
+    // Dias antes de a conta existir não contam como perdidos
+    let since = null;
+    try {
+      const ses = auth() && auth().getSession && auth().getSession();
+      const created = ses && ses.user && ses.user.created_at;
+      if (created) since = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date(created));
+    } catch { /* sem data de criação: todo dia passado conta como perdido */ }
     return DOW.map((name, i) => {
       const d = new Date(base);
       d.setDate(base.getDate() - dow + i);
@@ -80,7 +85,7 @@
       // Dias vazios: perdido (chama riscada) ou futuro (chama só de contorno)
       if (!played.has(iso) && iso !== today) {
         if (iso > today) { cls = "is-future"; icon = svg("flame", 19, 1.7); }
-        else if (hasHistory && (!firstPlayed || iso > firstPlayed)) { cls = "is-missed"; icon = svg("flameOff", 19, 1.8); }
+        else if (!since || iso >= since) { cls = "is-missed"; icon = svg("flameOff", 19, 1.8); }
       }
       if (home) {
         // Início: check nos dias em que jogaram; coração e destaque no dia de hoje
