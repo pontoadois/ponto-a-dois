@@ -208,6 +208,69 @@
     $("#peekLbl").textContent = `Espiar outra carta premium · ${g.cfg.peek_cost} moedas`;
   }
 
+  /* ---------- Campo de data (digitar DD/MM/AAAA + calendário do site) ---------- */
+  const MESES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  const pad2 = (n) => String(n).padStart(2, "0");
+  function brToIso(s) {
+    const m = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec((s || "").trim());
+    if (!m) return null;
+    const d = +m[1], mo = +m[2], y = +m[3];
+    const t = new Date(y, mo - 1, d);
+    if (t.getFullYear() !== y || t.getMonth() !== mo - 1 || t.getDate() !== d) return null;
+    return `${m[3]}-${m[2]}-${m[1]}`;
+  }
+  function isoToBr(iso) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || "");
+    return m ? `${m[3]}/${m[2]}/${m[1]}` : "";
+  }
+  function initCalendar() {
+    const input = $("#pfSpecialDate"), btn = $("#pfCalBtn"), pop = $("#calPop");
+    if (!input || !btn || !pop) return;
+    let vy, vm; // ano e mês exibidos
+    const sel = () => { const iso = brToIso(input.value); return iso ? iso : null; };
+    function render() {
+      const first = new Date(vy, vm, 1).getDay();
+      const days = new Date(vy, vm + 1, 0).getDate();
+      const s = sel(), now = new Date();
+      const todayIso = `${now.getFullYear()}-${pad2(now.getMonth() + 1)}-${pad2(now.getDate())}`;
+      let cells = "";
+      for (let i = 0; i < first; i++) cells += '<span class="cal-empty"></span>';
+      for (let d = 1; d <= days; d++) {
+        const iso = `${vy}-${pad2(vm + 1)}-${pad2(d)}`;
+        cells += `<button type="button" class="cal-day${iso === s ? " is-sel" : ""}${iso === todayIso ? " is-today" : ""}" data-iso="${iso}">${d}</button>`;
+      }
+      pop.innerHTML =
+        `<div class="cal-head">` +
+        `<button type="button" class="cal-nav" data-step="-12" aria-label="Ano anterior">«</button>` +
+        `<button type="button" class="cal-nav" data-step="-1" aria-label="Mês anterior">‹</button>` +
+        `<b class="cal-title">${MESES[vm]} ${vy}</b>` +
+        `<button type="button" class="cal-nav" data-step="1" aria-label="Próximo mês">›</button>` +
+        `<button type="button" class="cal-nav" data-step="12" aria-label="Próximo ano">»</button></div>` +
+        `<div class="cal-week"><span>D</span><span>S</span><span>T</span><span>Q</span><span>Q</span><span>S</span><span>S</span></div>` +
+        `<div class="cal-grid">${cells}</div>` +
+        `<div class="cal-foot"><button type="button" class="cal-link" data-act="clear">Limpar</button><button type="button" class="cal-link" data-act="today">Hoje</button></div>`;
+    }
+    function open() {
+      const iso = sel();
+      const base = iso ? new Date(iso + "T12:00:00") : new Date();
+      vy = base.getFullYear(); vm = base.getMonth();
+      render(); pop.hidden = false; btn.setAttribute("aria-expanded", "true");
+    }
+    function close() { pop.hidden = true; btn.setAttribute("aria-expanded", "false"); }
+    btn.addEventListener("click", (e) => { e.stopPropagation(); pop.hidden ? open() : close(); });
+    pop.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const t = e.target.closest("button"); if (!t) return;
+      if (t.dataset.step) { const n = vm + (+t.dataset.step); vy += Math.floor(n / 12); vm = ((n % 12) + 12) % 12; render(); }
+      else if (t.dataset.iso) { input.value = isoToBr(t.dataset.iso); input.dispatchEvent(new Event("input", { bubbles: true })); close(); }
+      else if (t.dataset.act === "clear") { input.value = ""; close(); }
+      else if (t.dataset.act === "today") { const n = new Date(); input.value = `${pad2(n.getDate())}/${pad2(n.getMonth() + 1)}/${n.getFullYear()}`; close(); }
+    });
+    document.addEventListener("click", (e) => { if (!pop.hidden && !pop.contains(e.target) && e.target !== btn) close(); });
+    document.addEventListener("keydown", (e) => { if (e.key === "Escape" && !pop.hidden) { close(); btn.focus(); } });
+  }
+  initCalendar();
+
   /* ---------- Data especial do casal ---------- */
   const DATE_PREFIX = { namoro: "Juntos há", noivado: "Noivos há", casamento: "Casados há", outro: "Juntos há" };
   const DATE_NOUN = { namoro: "de namoro", noivado: "de noivado", casamento: "de casados", outro: "juntos" };
@@ -438,7 +501,7 @@
     $("#pfError").hidden = true;
     pfGender = (p && p.gender) || "";
     renderGender();
-    $("#pfSpecialDate").value = (p && p.special_date) || "";
+    $("#pfSpecialDate").value = isoToBr(p && p.special_date);
     pfDateLabel = (p && p.special_label) || defaultDateLabel();
     renderDateLabel();
     paintAvatars();
@@ -599,7 +662,9 @@
     const name = $("#pfName").value.trim();
     err.hidden = true;
     if (name.length < 2) { err.textContent = "Escreva pelo menos 2 letras."; err.hidden = false; return; }
-    const sd = $("#pfSpecialDate").value; // vazio = sem data especial
+    const sdText = $("#pfSpecialDate").value.trim();
+    const sd = sdText ? brToIso(sdText) : ""; // vazio = sem data especial
+    if (sdText && !sd) { err.textContent = "Digite a data especial no formato DD/MM/AAAA."; err.hidden = false; return; }
     if (sd) {
       const t = new Date(sd + "T12:00:00");
       const limit = new Date(); limit.setFullYear(limit.getFullYear() + 5);
