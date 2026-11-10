@@ -2142,3 +2142,13 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
   .heat-card .heat-levels { position: absolute; top: 20px; right: 28px; width: auto; margin: 0; z-index: 3; }
   .heat-card .heat-head-txt { padding-right: 240px; }
 }
+
+/* Barra de rolagem: sem a faixa roxa escura do navegador */
+.screen, .modal-body, .modal { scrollbar-width: thin; scrollbar-color: rgba(241, 59, 145, 0.35) transparent; }
+.screen::-webkit-scrollbar, .modal-body::-webkit-scrollbar, .modal::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+.screen::-webkit-scrollbar-track, .modal-body::-webkit-scrollbar-track, .modal::-webkit-scrollbar-track { background: transparent; }
+.screen::-webkit-scrollbar-thumb, .modal-body::-webkit-scrollbar-thumb, .modal::-webkit-scrollbar-thumb { background: rgba(241, 59, 145, 0.35); border-radius: 6px; }
+@media (max-width: 899px) {
+  .screen, .modal-body, .modal { scrollbar-width: none; }
+  .screen::-webkit-scrollbar, .modal-body::-webkit-scrollbar, .modal::-webkit-scrollbar { display: none; }
+}
