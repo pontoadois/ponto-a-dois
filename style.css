@@ -2192,3 +2192,10 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
   .heat-gauge b { font-size: 1.5rem; }
   .exp-card { padding: 16px 20px; }
 }
+
+/* Notebook: tela "Plano" em duas colunas (Gratuito e Premium lado a lado), sem precisar rolar tanto */
+@media (min-width: 1024px) {
+  section[data-screen="plano"] .app.app--narrow { max-width: 1040px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 20px; row-gap: 18px; align-items: stretch; }
+  section[data-screen="plano"] .app.app--narrow > .app-bar,
+  section[data-screen="plano"] .app.app--narrow > .plan-card--info { grid-column: 1 / -1; }
+}
