@@ -1953,3 +1953,26 @@ body { background: #160713; }
   .appnav-item[aria-current="page"] { background: linear-gradient(90deg, rgba(241, 59, 145, 0.26), rgba(58, 13, 60, 0.4)); }
 }
 .home-title { background: none; }
+
+/* Termômetro: anel fino com arco rosa de pontas arredondadas */
+.heat-gauge {
+  background: radial-gradient(circle, #160713 0 58%, rgba(241, 59, 145, 0.16) 100%);
+  box-shadow: 0 0 28px rgba(241, 59, 145, 0.14);
+}
+.heat-gauge::before {
+  inset: 0; border-radius: 50%; box-shadow: none;
+  background:
+    radial-gradient(circle at 50% 4.5px, #f13b91 0 4.5px, transparent 5px),
+    conic-gradient(from 0deg, #f13b91 0, #f13b91 calc(var(--p) * 1%), transparent calc(var(--p) * 1%)),
+    rgba(241, 59, 145, 0.18);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8.5px));
+          mask: radial-gradient(farthest-side, transparent calc(100% - 9px), #000 calc(100% - 8.5px));
+}
+.heat-gauge::after {
+  content: ""; position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 50% 4.5px, #f13b91 0 4.5px, transparent 5px);
+  transform: rotate(calc(var(--p) * 3.6deg));
+  filter: drop-shadow(0 0 6px rgba(241, 59, 145, 0.7));
+}
+.heat-gauge small { display: none; }
+.heat-gauge b { font-size: 2rem; }
