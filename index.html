@@ -416,17 +416,16 @@
           </div>
           <div class="plan-card plan-card--info" id="myPlanInfo" hidden></div>
           <div class="plan-card plan-card--promo" id="myPlanFree">
-            <div class="plan-card-top"><div><span class="plan-card-lbl">Fundadores · primeiras 100 vagas</span><h2 class="plan-card-name">Premium</h2></div><span class="plan-card-badge">R$ 24,90/mês</span></div>
+            <div class="plan-card-top"><div><span class="plan-card-lbl">Fundadores · primeiras 100 vagas</span><h2 class="plan-card-name">Premium</h2></div><span class="plan-card-badge">R$ 14,90/mês</span></div>
             <ul class="plan-feat" id="myPlanPromoFeat"></ul>
-            <p class="plan-card-note">R$ 94,90 por ano para os Fundadores, com preço travado nas renovações, ou R$ 24,90 por mês.</p>
+            <p class="plan-card-note">R$ 49,90 por ano para os Fundadores, com preço travado nas renovações, ou R$ 14,90 por mês. Cada pessoa do casal assina o seu.</p>
             <button type="button" class="btn btn--primary btn--lg btn--block" data-goto="planos">Seja Premium</button>
           </div>
           <div class="menu-group" id="myPlanActions" hidden>
             <span class="menu-label">Assinatura</span>
-            <button class="menu-row" type="button" data-soon="cartao"><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
-            <button class="menu-row" type="button" data-soon="recibos"><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
-            <button class="menu-row" type="button" data-soon="plano"><span class="menu-txt"><span>Mudar entre mensal e anual</span><small></small></span></button>
-            <button class="menu-row menu-row--danger" type="button" data-soon="cancelar"><span class="menu-txt"><span>Cancelar assinatura</span><small></small></span></button>
+            <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
+            <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
+            <button class="menu-row menu-row--danger" type="button" data-portal><span class="menu-txt"><span>Cancelar assinatura</span><small></small></span></button>
           </div>
         </div>
       </section>
@@ -447,20 +446,20 @@
                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Noite de Encontro completa, uma sessão guiada de 20 minutos</li>
                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Sem anúncios</li>
                 <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Novas cartas toda semana</li>
-                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Uma assinatura para os dois</li>
+                <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Cada pessoa do casal assina o seu</li>
               </ul>
             </div>
             <div class="plans-box">
               <div class="plan-options" role="radiogroup" aria-label="Escolha o período da assinatura">
                 <button type="button" class="plan-opt is-selected" role="radio" aria-checked="true" data-plan="anual">
-                  <span class="plan-badge">Fundadores · primeiras 100 vagas</span>
+                  <span class="plan-badge" id="planBadge">Fundadores · primeiras 100 vagas</span>
                   <span class="plan-radio"></span>
-                  <span class="plan-info"><b>Anual</b><span>R$ 94,90 por ano · preço travado</span><small>Depois das 100 vagas: <s>R$ 149,90</s></small></span>
-                  <span class="plan-off">-36%</span>
+                  <span class="plan-info"><b>Anual</b><span id="planYearPrice">R$ 49,90 por ano · preço travado</span><small id="planYearNote">Depois das 100 vagas: <s>R$ 79,90</s></small></span>
+                  <span class="plan-off" id="planYearOff">-38%</span>
                 </button>
                 <button type="button" class="plan-opt" role="radio" aria-checked="false" data-plan="mensal">
                   <span class="plan-radio"></span>
-                  <span class="plan-info"><b>Mensal</b><span>R$ 24,90 por mês</span></span>
+                  <span class="plan-info"><b>Mensal</b><span>R$ 14,90 por mês</span></span>
                 </button>
               </div>
               <button type="button" class="btn btn--primary btn--lg btn--block" id="plansContinue">Continuar</button>
@@ -683,7 +682,7 @@
             <h3 class="howto-sub">Plano gratuito e Premium</h3>
             <ul class="howto-types">
               <li><b>Gratuito</b> 70 cartas do nível Leve, nas categorias Conexão, Diversão e Verdade, com sequência, pontos e moedas. Contém anúncios.</li>
-              <li><b>Premium</b> mais de 240 cartas, todos os níveis, as categorias Carinho, Intimidade e Posições, a Noite de Encontro completa, novas cartas toda semana e <b>sem anúncios</b>. Uma assinatura vale para os dois.</li>
+              <li><b>Premium</b> mais de 240 cartas, todos os níveis, as categorias Carinho, Intimidade e Posições, a Noite de Encontro completa, novas cartas toda semana e <b>sem anúncios</b>. Cada pessoa do casal assina o seu.</li>
             </ul>
           </div>
 
