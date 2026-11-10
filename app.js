@@ -13,6 +13,7 @@
 
   const PATHS = {
     flame: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4",
+    flameOff: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4 M4 4l16 16",
     crown: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14",
     heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     calendar: "M8 2v4 M16 2v4 M3 10h18 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
@@ -68,12 +69,19 @@
     const played = new Set((streak && streak.week) || []);
     const base = new Date(today + "T12:00:00");
     const dow = base.getDay();
+    const firstPlayed = [...played].sort()[0] || null;
+    const hasHistory = played.size > 0 || !!(streak && (streak.current > 0 || streak.longest > 0));
     return DOW.map((name, i) => {
       const d = new Date(base);
       d.setDate(base.getDate() - dow + i);
       const iso = d.toISOString().slice(0, 10);
       let cls = played.has(iso) ? "is-on" : iso === today ? "is-today" : "";
       let icon = played.has(iso) || iso === today ? svg("flame", 20, 1.9, played.has(iso) ? "rgba(255,247,255,.3)" : "none") : "";
+      // Dias vazios: perdido (chama riscada) ou futuro (chama só de contorno)
+      if (!played.has(iso) && iso !== today) {
+        if (iso > today) { cls = "is-future"; icon = svg("flame", 19, 1.7); }
+        else if (hasHistory && (!firstPlayed || iso > firstPlayed)) { cls = "is-missed"; icon = svg("flameOff", 19, 1.8); }
+      }
       if (home) {
         // Início: check nos dias em que jogaram; coração e destaque no dia de hoje
         if (iso === today) { cls = "is-today"; icon = svg("heartFill", 20, 1.9, "currentColor"); }
