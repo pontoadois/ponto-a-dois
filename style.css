@@ -1905,3 +1905,51 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
 .heat-date { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.9rem; line-height: 1.4; color: #ffd9a8; }
 .heat-date > svg { flex-shrink: 0; color: #f13b91; }
 .peek-btn.is-low { opacity: 0.85; border-style: dashed; }
+
+/* ============================================================
+   Estilo "vinho iluminado": mesma paleta, com degradês suaves
+   (Ameixa #160713 → Vinho #3A0D3C, Rosa #F13B91 → Violeta #A82DD0)
+   e vidro com borda rosa. Fica por último para sobrepor o resto.
+   ============================================================ */
+:root {
+  --grad-pink: linear-gradient(100deg, #f13b91 0%, #e8339a 55%, #a82dd0 135%);
+  --grad-card: linear-gradient(150deg, rgba(58, 13, 60, 0.92) 0%, rgba(34, 9, 33, 0.92) 55%, rgba(22, 7, 19, 0.96) 100%);
+  --grad-card-hot: linear-gradient(135deg, rgba(241, 59, 145, 0.34) 0%, rgba(58, 13, 60, 0.92) 62%, rgba(34, 9, 33, 0.96) 100%);
+  --grad-card-soft: linear-gradient(150deg, rgba(58, 13, 60, 0.6) 0%, rgba(22, 7, 19, 0.7) 100%);
+  --glow-pink: 0 8px 26px rgba(241, 59, 145, 0.38);
+}
+body { background: #160713; }
+.bg-gradient {
+  background:
+    radial-gradient(ellipse 60% 50% at 85% 0%, rgba(168, 45, 208, 0.22), transparent 70%),
+    radial-gradient(ellipse 50% 45% at 100% 55%, rgba(241, 59, 145, 0.12), transparent 70%),
+    linear-gradient(180deg, #160713 0%, #230a24 55%, #3a0d3c 130%);
+}
+
+/* Botões e elementos de marca */
+.btn--primary, .pm-btn, .app-avatar, .appnav-avatar, .appnav-play,
+.wk-day.is-on .wk-dot, .welcome-flame { background: var(--grad-pink); }
+.btn--primary, .appnav-play, .pm-btn { box-shadow: var(--glow-pink); }
+.btn--primary:hover { box-shadow: 0 10px 30px rgba(241, 59, 145, 0.5); }
+.heat-bar i, .ob-bar i, .st-track i { background: linear-gradient(90deg, #f13b91, #a82dd0); }
+.wk-day.is-on .wk-dot { box-shadow: 0 0 14px rgba(241, 59, 145, 0.45); }
+
+/* Cartas e superfícies */
+.heat-card, .reco, .streak-hero { background: var(--grad-card-hot); border-color: rgba(241, 59, 145, 0.42); }
+.exp-card { background: var(--grad-card-hot); }
+.exp-card--night { background: var(--grad-card); border-color: rgba(255, 247, 255, 0.16); }
+.secret-card, .pm-banner, .plan-card, .plan-card--promo { background: var(--grad-card); }
+.plan-card--promo { background: var(--grad-card-hot); border-color: rgba(241, 59, 145, 0.5); }
+.modal-card { background: linear-gradient(160deg, #3a0d3c 0%, #22091f 70%, #160713 100%); }
+.st-tile.has-art { background: linear-gradient(110deg, #160713 0%, #230a24 60%, #2e0c30 100%); }
+.st-tile.has-art.is-selected { background: linear-gradient(110deg, #2a0b2c 0%, #3a0d3c 100%); box-shadow: 0 0 0 1px rgba(241, 59, 145, 0.4), 0 0 22px rgba(241, 59, 145, 0.22); }
+.secret-ico { background: linear-gradient(155deg, #3a0d3c, #160713); }
+.game-tile, .app-card, .stat, .menu-row, .recent-item, .plan-opt, .plans-box, .au-panel, .st-panel {
+  background: var(--grad-card-soft); border-color: rgba(255, 247, 255, 0.12);
+}
+
+/* Navegação lateral: item ativo com brilho rosa */
+@media (min-width: 900px) {
+  .appnav-item[aria-current="page"] { background: linear-gradient(90deg, rgba(241, 59, 145, 0.26), rgba(58, 13, 60, 0.4)); }
+}
+.home-title { background: none; }
