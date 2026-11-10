@@ -2108,3 +2108,6 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
   filter: none;
   box-shadow: 0 0 0 14px rgba(241, 59, 145, 0.04), 0 0 0 15px rgba(241, 59, 145, 0.14);
 }
+
+/* Sem o círculo atrás do ícone da carta */
+.screen--game .card::before { display: none; }
