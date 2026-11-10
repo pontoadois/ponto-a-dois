@@ -825,7 +825,7 @@
     $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
     $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
     if (reg && reg.freezes_used) $("#welSub").textContent = "Um bloqueio de ofensiva protegeu a sua sequência. Que bom ter vocês de volta!";
-    else if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas de conexão.`;
+    if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas por entrar hoje.`;
     $("#welNum").textContent = n;
     $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
     $("#welWeek").innerHTML = weekHtml();
