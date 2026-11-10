@@ -98,11 +98,34 @@
     }).join("");
   }
 
+  /* ---------- Moedas: saldo na barra de cima e formas de ganhar de graça ---------- */
+  function renderCoins() {
+    const g = game, c = (g && g.cfg) || {};
+    const n = g ? g.coins : 0;
+    const now = $("#coinsNow"); if (now) now.textContent = n;
+    const bal = $("#coinsBal"); if (bal) bal.textContent = n;
+    const earn = $("#coinsEarn"), spend = $("#coinsSpend");
+    if (!earn || !spend) return;
+    const daily = c.coins_daily != null ? c.coins_daily : 5, quick = c.coins_quick != null ? c.coins_quick : 10;
+    const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
+    earn.innerHTML =
+      row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}</span>`) +
+      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`);
+    const fc = c.freeze_cost != null ? c.freeze_cost : 50, pc = c.peek_cost != null ? c.peek_cost : 30;
+    const need = (cost) => (n >= cost ? '<span class="coins-tag is-done">Já dá</span>' : `<span class="coins-tag is-need">faltam ${cost - n}</span>`);
+    spend.innerHTML =
+      row("lock", "Espiar uma carta premium", `${pc} moedas. Uma prévia do conteúdo Premium.`, need(pc)) +
+      row("heart", "Bloqueio de ofensiva", `${fc} moedas. Protege a sequência num dia em que não der para jogar.`, need(fc));
+  }
+
+  { const cp = $("#coinPill"); if (cp) cp.addEventListener("click", renderCoins); }
+
   /* ---------- Início ---------- */
   function renderInicio() {
     $("#helloName").textContent = "Olá, " + nameOf();
     paintAvatars();
     $("#streakNow").textContent = (streak && streak.current) || 0;
+    renderCoins();
     $("#weekHome").innerHTML = weekHtml(true);
     const nDays = ((streak && streak.week) || []).length;
     $("#weekLinkSub").textContent = nDays ? `${nDays} ${nDays === 1 ? "dia" : "dias"} de conexão nesta semana` : "Comecem a sequência de vocês";
@@ -192,6 +215,7 @@
     $("#stFreezes").textContent = g.freezes;
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
+    renderCoins();
     const next = g.next_at ? `Faltam ${g.next_at - g.points} pontos para o próximo nível. Continuem juntos!` : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");

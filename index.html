@@ -245,6 +245,7 @@
 <div class="top-actions">
 <button type="button" class="help-btn" data-open-modal="howto" aria-label="Como jogar" title="Como jogar">?</button>
 <button type="button" class="streak-pill" data-goto="streak" aria-label="Ver sequência"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg><span id="streakNow">0</span></button>
+<button type="button" class="streak-pill coin-pill" id="coinPill" data-open-modal="coins" aria-label="Minhas moedas: como ganhar de graça"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 16.2l-3.3-3.2a2.1 2.1 0 0 1 3.3-2.7 2.1 2.1 0 0 1 3.3 2.7z"/></svg><span id="coinsNow">0</span></button>
 <button type="button" class="week-link" data-goto="streak"><span class="week-link-txt"><b>Sequência do casal</b><small id="weekLinkSub">Veja a sua semana</small></span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
 </div>
 </header>
@@ -671,8 +672,9 @@
             <ul class="howto-types">
               <li><b>Sequência:</b> joguem todo dia para manter a sequência. Os dias da semana aparecem marcados: o que foi cumprido, o que ficou para trás (chama riscada) e o que ainda vem.</li>
               <li><b>Termômetro do casal:</b> cada jogo rende pontos de conexão e faz o termômetro subir, passando pelos níveis do casal.</li>
-              <li><b>Moedas:</b> vocês ganham <b>5 moedas</b> no primeiro acesso de cada dia, e a <b>Conexão Rápida</b> rende mais 10. Se não entrarem no dia, não ganham nada. Servem para comprar um <b>Bloqueio de ofensiva</b> (protege a sequência num dia em que não der para jogar) ou para <b>espiar uma carta premium</b>.</li>
+              <li><b>Moedas:</b> o saldo aparece na barra de cima, ao lado da sequência. Toquem nele para ver como ganhar de graça: <b>5 moedas</b> no primeiro acesso de cada dia (se não entrarem, não ganham nada) e <b>10 moedas</b> na primeira Conexão Rápida do dia. Elas servem para comprar um <b>Bloqueio de ofensiva</b> (50 moedas), que protege a sequência num dia em que não der para jogar, ou para <b>espiar uma carta premium</b> (30 moedas).</li>
               <li><b>Conexão Rápida:</b> três cartas leves, em uns 5 minutos, para se reconectarem quando o dia estiver corrido.</li>
+              <li><b>Data especial do casal:</b> em <b>Perfil &gt; Gerenciar perfil</b>, digitem a data do namoro, do noivado ou do casamento. O Início passa a mostrar há quanto tempo vocês estão juntos e quanto falta para o próximo aniversário.</li>
               <li><b>Carta secreta do dia:</b> uma carta surpresa de um nível acima, como prévia do Premium.</li>
             </ul>
           </div>
@@ -703,6 +705,33 @@
       </div>
     </div>
 
+
+    <!-- ============ MODAL: MINHAS MOEDAS ============ -->
+    <div class="modal" id="modalCoins" data-modal="coins" role="dialog" aria-modal="true" aria-labelledby="coinsTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass">
+        <header class="modal-head">
+          <h2 class="modal-title" id="coinsTitle">Minhas moedas</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="modal-body">
+          <div class="coins-bal"><span class="coins-bal-num" id="coinsBal">0</span><span class="coins-bal-lbl">moedas de conexão</span></div>
+
+          <div>
+            <h3 class="howto-sub">Como ganhar de graça</h3>
+            <ul class="coins-list" id="coinsEarn"></ul>
+          </div>
+
+          <div>
+            <h3 class="howto-sub">Para que servem</h3>
+            <ul class="coins-list" id="coinsSpend"></ul>
+          </div>
+        </div>
+        <footer class="modal-foot">
+          <button class="btn btn--primary btn--block" data-close-modal>Entendi</button>
+        </footer>
+      </div>
+    </div>
 
     <!-- ============ MODAL: EXCLUIR CONTA ============ -->
     <div class="modal" id="modalDelete" data-modal="delete" role="dialog" aria-modal="true" aria-labelledby="delTitle" aria-hidden="true">
