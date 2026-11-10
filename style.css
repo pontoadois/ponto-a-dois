@@ -2125,13 +2125,13 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
 @media (min-width: 900px) {
   .heat-card { padding-right: 28px; }
 }
-/* Carta secreta com a mesma altura do botão Seja Premium */
-.secret-card { box-sizing: border-box; height: 52px; min-height: 52px; padding: 0 16px; gap: 12px; border-radius: 26px; }
-.secret-ico { width: 34px; height: 34px; border-radius: 11px; display: grid; place-items: center; flex-shrink: 0; }
-.secret-ico svg { width: 20px; height: 20px; }
-.secret-txt b { font-size: 1rem; }
-.secret-txt { line-height: 1.15; }
-.secret-txt small { font-size: 0.78rem; }
+/* Carta secreta com a mesma altura da faixa Seja Premium */
+.secret-card { box-sizing: border-box; min-height: 88px; padding: 16px 22px; gap: 16px; border-radius: 22px; }
+.secret-ico { width: 56px; height: 56px; border-radius: 16px; }
+.secret-ico svg { width: 24px; height: 24px; }
+.secret-txt b { font-size: 1.1rem; }
+.secret-txt small { font-size: 0.875rem; }
+@media (min-width: 640px) { .secret-card { height: 108px; min-height: 108px; } }
 /* Tela de entrar: sem título e sem o brilho roxo atrás */
 body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[data-screen="login"]::after { background: #160713 !important; }
 @media (max-width: 899px) { .au-hero--min { display: none; } }
@@ -2141,4 +2141,14 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 @media (min-width: 900px) {
   .heat-card .heat-levels { position: absolute; top: 20px; right: 28px; width: auto; margin: 0; z-index: 3; }
   .heat-card .heat-head-txt { padding-right: 240px; }
+}
+
+/* Barra de rolagem: sem a faixa roxa escura do navegador */
+.screen, .modal-body, .modal { scrollbar-width: thin; scrollbar-color: rgba(241, 59, 145, 0.35) transparent; }
+.screen::-webkit-scrollbar, .modal-body::-webkit-scrollbar, .modal::-webkit-scrollbar { width: 6px; height: 6px; background: transparent; }
+.screen::-webkit-scrollbar-track, .modal-body::-webkit-scrollbar-track, .modal::-webkit-scrollbar-track { background: transparent; }
+.screen::-webkit-scrollbar-thumb, .modal-body::-webkit-scrollbar-thumb, .modal::-webkit-scrollbar-thumb { background: rgba(241, 59, 145, 0.35); border-radius: 6px; }
+@media (max-width: 899px) {
+  .screen, .modal-body, .modal { scrollbar-width: none; }
+  .screen::-webkit-scrollbar, .modal-body::-webkit-scrollbar, .modal::-webkit-scrollbar { display: none; }
 }
