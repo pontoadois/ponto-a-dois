@@ -43,7 +43,7 @@
   --error: #ef5350;
 
   /* Tipografia */
-  --font-display: "Fraunces", Georgia, serif;
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body: "Outfit", system-ui, -apple-system, sans-serif;
 
   /* Espaçamento (base 8px) */
@@ -2019,3 +2019,7 @@ body { background: #160713; }
 
 /* Rótulo "Experiência especial" em rosa */
 .exp-card--night .exp-eyebrow { color: #f13b91; }
+
+/* Títulos em Inter */
+.home-title { font-weight: 800; letter-spacing: -0.02em; }
+h1, h2, h3, .brand-name, .pm-title { letter-spacing: -0.01em; }
