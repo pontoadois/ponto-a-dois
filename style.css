@@ -2152,3 +2152,15 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
   .screen, .modal-body, .modal { scrollbar-width: none; }
   .screen::-webkit-scrollbar, .modal-body::-webkit-scrollbar, .modal::-webkit-scrollbar { display: none; }
 }
+
+/* Celular: o nome completo cabe no cabeçalho (quebra em até 2 linhas, sem "...") */
+@media (max-width: 520px) {
+  .home-top { gap: 10px; align-items: center; }
+  .app-avatar--home { width: 48px; height: 48px; font-size: 1.15rem; flex-shrink: 0; }
+  .home-top .app-hello b { font-size: 1.2rem; line-height: 1.15; white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .home-top .app-hello span { font-size: 0.8rem; line-height: 1.3; display: block; }
+  .home-top .app-hello span svg { display: none; }
+  .top-actions { gap: 6px; flex-shrink: 0; }
+  .top-actions .help-btn { width: 38px; height: 38px; }
+  .top-actions .streak-pill { padding: 0 10px; height: 38px; }
+}
