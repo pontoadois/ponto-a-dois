@@ -43,7 +43,7 @@
   --error: #ef5350;
 
   /* Tipografia */
-  --font-display: "Fraunces", Georgia, serif;
+  --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-body: "Outfit", system-ui, -apple-system, sans-serif;
 
   /* Espaçamento (base 8px) */
@@ -2019,3 +2019,12 @@ body { background: #160713; }
 
 /* Rótulo "Experiência especial" em rosa */
 .exp-card--night .exp-eyebrow { color: #f13b91; }
+
+/* Títulos em Inter */
+.home-title { font-weight: 800; letter-spacing: -0.02em; }
+h1, h2, h3, .brand-name, .pm-title { letter-spacing: -0.01em; }
+
+/* Dias vazios da semana: perdido (chama riscada) e futuro (chama de contorno) */
+.wk-day.is-missed .wk-dot { border: 1px dashed rgba(241, 59, 145, 0.55); background: rgba(22, 7, 19, 0.6); color: #f13b91; }
+.wk-day.is-future .wk-dot { border-color: rgba(241, 59, 145, 0.25); color: rgba(241, 59, 145, 0.6); }
+.wk-day.is-missed .wk-dot svg, .wk-day.is-future .wk-dot svg { display: block; }
