@@ -2124,8 +2124,6 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
 /* Computador: as raposas saíram, então o cartão não reserva mais o espaço da direita */
 @media (min-width: 900px) {
   .heat-card { padding-right: 28px; }
-  .heat-head { flex-wrap: nowrap; align-items: flex-start; }
-  .heat-levels { margin-left: auto; flex-shrink: 0; }
 }
 /* Carta secreta com a mesma altura do botão Seja Premium */
 .secret-card { box-sizing: border-box; height: 52px; min-height: 52px; padding: 0 16px; gap: 12px; border-radius: 26px; }
@@ -2137,3 +2135,10 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
 /* Tela de entrar: sem título e sem o brilho roxo atrás */
 body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[data-screen="login"]::after { background: #160713 !important; }
 @media (max-width: 899px) { .au-hero--min { display: none; } }
+
+/* Celular e tablet: "Ver próximos níveis" em largura total, no fim do cartão */
+.heat-levels { width: 100%; justify-content: center; margin-top: 2px; }
+@media (min-width: 900px) {
+  .heat-card .heat-levels { position: absolute; top: 20px; right: 28px; width: auto; margin: 0; z-index: 3; }
+  .heat-card .heat-head-txt { padding-right: 240px; }
+}
