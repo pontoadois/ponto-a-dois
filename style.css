@@ -2111,3 +2111,6 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
 
 /* Sem o círculo atrás do ícone da carta */
 .screen--game .card::before { display: none; }
+
+.plan-feat li.is-on svg, .plan-feat li.is-on { color: inherit; }
+.plan-feat li.is-on svg { color: #f13b91; }
