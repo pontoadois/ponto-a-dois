@@ -21,6 +21,7 @@
     card: "M2 7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z M2 10h20",
     check: "M20 6 9 17l-5-5",
     x: "M18 6 6 18 M6 6l12 12",
+    info: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 16v-4 M12 8h.01",
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
@@ -694,8 +695,25 @@
   }
 
   /* ---------- Meu plano ---------- */
-  const FREE_FEAT = [[1, "Cartas do nível Leve"], [1, "Sequência diária"], [0, "Níveis Picante e Intenso"], [0, "Categoria Posições"], [0, "Noite de Encontro"], [2, "Com anúncios"]];
-  const PAID_FEAT = [[1, "Todas as categorias e níveis"], [1, "Noite de Encontro completa"], [1, "Posições com ilustrações"], [1, "Sem anúncios"]];
+  // 1 = incluído, 0 = só no Premium, 2 = aviso (anúncios)
+  const FREE_FEAT = [
+    [1, "70 cartas do nível Leve"],
+    [1, "Categorias Conexão, Diversão e Verdade"],
+    [1, "Sequência diária, pontos e moedas"],
+    [2, "Contém anúncios"],
+    [0, "Níveis Picante e Intenso"],
+    [0, "Categorias Carinho, Intimidade e Posições"],
+    [0, "Noite de Encontro"],
+  ];
+  const PAID_FEAT = [
+    [1, "Mais de 240 cartas em 6 categorias"],
+    [1, "Todos os níveis: Leve, Picante e Intenso"],
+    [1, "Carinho, Intimidade e Posições (com ilustrações)"],
+    [1, "Noite de Encontro completa"],
+    [1, "Sem anúncios"],
+    [1, "Novas cartas toda semana"],
+    [1, "Uma assinatura para os dois"],
+  ];
 
   function renderPlano() {
     const paid = plan.premium;
@@ -704,7 +722,8 @@
     badge.textContent = paid ? "Ativa" : "R$ 0";
     badge.classList.toggle("is-ok", paid);
     $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
-      .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "x" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
+      .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "info" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
+    $("#myPlanPromoFeat").innerHTML = PAID_FEAT.map(([, t]) => `<li class="is-on">${svg("check", 18, 2.2)}<span>${t}</span></li>`).join("");
     $("#myPlanFree").hidden = paid;
     $("#myPlanActions").hidden = !paid;
     const info = $("#myPlanInfo");
