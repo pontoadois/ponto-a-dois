@@ -860,8 +860,8 @@
     const paid = plan.premium;
     $("#myPlanName").textContent = paid ? "Premium" : "Gratuito";
     const badge = $("#myPlanBadge");
-    badge.textContent = paid ? "Ativa" : "R$ 0";
-    badge.classList.toggle("is-ok", paid);
+    badge.textContent = paid ? (plan.cancels ? "Cancelada" : "Ativa") : "R$ 0";
+    badge.classList.toggle("is-ok", paid && !plan.cancels);
     $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
       .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "info" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
     $("#myPlanPromoFeat").innerHTML = PAID_FEAT.map(([, t]) => `<li class="is-on">${svg("check", 18, 2.2)}<span>${t}</span></li>`).join("");
@@ -872,7 +872,12 @@
     if (paid) {
       const until = plan.until ? new Date(plan.until).toLocaleDateString("pt-BR") : "";
       info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>${plan.cancels ? "Cancelada, sem renovação" : "Assinatura ativa"}</b></div>` +
-        (until ? `<div class="plan-kv"><span>Acesso garantido até</span><b>${until}</b></div>` : "");
+        (until ? `<div class="plan-kv"><span>${plan.cancels ? "Seu Premium termina em" : "Próxima renovação"}</span><b>${until}</b></div>` : "") +
+        (plan.cancels ? `<p class="plan-card-note">Você continua com todos os benefícios até essa data. Depois, a conta volta para o plano gratuito. Para continuar com o Premium, toque em "Reativar assinatura".</p>` : "");
+      const lbl = $("#planCancelLbl");
+      if (lbl) lbl.textContent = plan.cancels ? "Reativar assinatura" : "Cancelar assinatura";
+      const row = $("#planCancelRow");
+      if (row) row.classList.toggle("menu-row--danger", !plan.cancels);
     }
   }
 
