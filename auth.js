@@ -539,6 +539,25 @@
     return !error;
   }
 
+  // Pagamento (Stripe): o servidor decide o preço e devolve o endereço da Stripe
+  async function callBilling(fn, body) {
+    if (!client || !session) return { ok: false, error: "unauthorized" };
+    const { data, error } = await client.functions.invoke(fn, body ? { body } : undefined);
+    if (error) {
+      let code = null;
+      try { code = (await error.context.json()).error; } catch { /* ignore */ }
+      return { ok: false, error: code || "failed" };
+    }
+    return data && data.url ? { ok: true, url: data.url } : { ok: false, error: "failed" };
+  }
+  const startCheckout = (plan) => callBilling("create-checkout", { plan });
+  const openPortal = () => callBilling("customer-portal");
+  async function foundersLeft() {
+    if (!client || !session) return null;
+    const { data, error } = await client.rpc("founders_left");
+    return error ? null : data;
+  }
+
   async function deleteAccount() {
     const { error } = await client.functions.invoke("delete-account");
     if (error) return false;
@@ -550,7 +569,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

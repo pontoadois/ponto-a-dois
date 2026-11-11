@@ -770,11 +770,63 @@
         $$(".plan-opt").forEach((o) => { o.classList.toggle("is-selected", o === opt); o.setAttribute("aria-checked", o === opt ? "true" : "false"); });
       });
     });
-    // O pagamento entra na etapa da Stripe
-    $("#plansContinue").addEventListener("click", () => app().showToast("O pagamento ficará disponível em breve."));
+    $("#plansContinue").addEventListener("click", goCheckout);
+  }
+
+  const BILLING_ERR = {
+    already_subscribed: "Você já tem uma assinatura ativa.",
+    billing_unavailable: "O pagamento ainda não está disponível. Tente mais tarde.",
+    unauthorized: "Entre na sua conta para assinar.",
+  };
+
+  async function goCheckout() {
+    const btn = $("#plansContinue");
+    const sel = $(".plan-opt.is-selected");
+    const label = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = "Abrindo o pagamento…";
+    const r = await auth().startCheckout(sel ? sel.dataset.plan : "anual");
+    if (r.ok) { window.location.href = r.url; return; }
+    btn.disabled = false;
+    btn.textContent = label;
+    app().showToast(BILLING_ERR[r.error] || "Não foi possível abrir o pagamento. Tente de novo.");
+  }
+
+  async function goPortal(btn) {
+    btn.disabled = true;
+    const r = await auth().openPortal();
+    if (r.ok) { window.location.href = r.url; return; }
+    btn.disabled = false;
+    app().showToast(BILLING_ERR[r.error] || "Não foi possível abrir a assinatura. Tente de novo.");
+  }
+
+  // Volta do pagamento: espera o aviso da Stripe chegar e libera o Premium
+  async function afterCheckout() {
+    const q = new URLSearchParams(window.location.search).get("checkout");
+    if (!q) return;
+    try { history.replaceState(null, "", window.location.pathname); } catch { /* ignore */ }
+    if (q !== "success") { app().showToast("O pagamento foi cancelado. Nada foi cobrado."); return; }
+    app().showToast("Pagamento recebido! Liberando o Premium…");
+    for (let i = 0; i < 8; i++) {
+      await new Promise((r) => setTimeout(r, 2500));
+      if (!auth().getSession || !auth().getSession()) continue;
+      await load();
+      if (plan.premium) { renderInicio(); app().showToast("Premium ativado. Aproveitem!"); return; }
+    }
+    app().showToast("O pagamento pode levar alguns minutos para aparecer. Atualize a página em instantes.");
+  }
+
+  async function renderFounders() {
+    const left = await auth().foundersLeft();
+    if (left === null || left > 0) return; // sem resposta ou ainda há vagas: mantém o preço Fundadores
+    $("#planBadge").hidden = true;
+    $("#planYearPrice").textContent = "R$ 79,90 por ano";
+    $("#planYearNote").textContent = "Equivale a R$ 6,66 por mês";
+    $("#planYearOff").textContent = "-55%";
   }
 
   function renderPlanos() {
+    renderFounders();
     const a = $(".plans-fan");
     if (a && !a.innerHTML) {
       const get = (id) => D.categories.find((c) => c.id === id);
@@ -801,7 +853,7 @@
     [1, "Noite de Encontro completa"],
     [1, "Sem anúncios"],
     [1, "Novas cartas toda semana"],
-    [1, "Uma assinatura para os dois"],
+    [1, "Cada pessoa do casal assina o seu"],
   ];
 
   function renderPlano() {
@@ -901,6 +953,8 @@
     $("#pfPhotoRemove").addEventListener("click", removePhoto);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
+    $$("[data-portal]").forEach((b) => b.addEventListener("click", () => goPortal(b)));
+    afterCheckout();
     $$("[data-soon]").forEach((b) => b.addEventListener("click", () => app().showToast("Disponível em breve, junto com o pagamento.")));
     $("#rowLogout").addEventListener("click", () => auth().signOut());
     $("#rowPassword").addEventListener("click", openPassword);
