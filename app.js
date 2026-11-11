@@ -871,7 +871,7 @@
     info.hidden = !paid;
     if (paid) {
       const until = plan.until ? new Date(plan.until).toLocaleDateString("pt-BR") : "";
-      info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>Assinatura ativa</b></div>` +
+      info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>${plan.cancels ? "Cancelada, sem renovação" : "Assinatura ativa"}</b></div>` +
         (until ? `<div class="plan-kv"><span>Acesso garantido até</span><b>${until}</b></div>` : "");
     }
   }
