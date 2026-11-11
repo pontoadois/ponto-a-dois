@@ -856,6 +856,32 @@
     [1, "Cada pessoa do casal assina o seu"],
   ];
 
+  // Desistência: até 7 dias corridos depois do último pagamento (o servidor confere de novo)
+  const canRefund = () => !!(plan.premium && plan.start && Date.now() - new Date(plan.start).getTime() < 7 * 24 * 3600 * 1000);
+
+  async function confirmRefund() {
+    const err = $("#rfError");
+    const btn = $("#rfConfirm");
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Reembolsando…";
+    const r = await auth().requestRefund();
+    btn.disabled = false;
+    btn.textContent = "Cancelar e reembolsar";
+    if (!r.ok) {
+      err.textContent = r.error === "not_eligible"
+        ? "O prazo de 7 dias já passou. Use \"Cancelar assinatura\" para parar a renovação."
+        : "Não foi possível reembolsar agora. Tente de novo ou escreva para o suporte.";
+      err.hidden = false;
+      return;
+    }
+    app().closeModal();
+    await load();
+    renderPlano();
+    renderInicio();
+    app().showToast("Assinatura cancelada e valor reembolsado.");
+  }
+
   function renderPlano() {
     const paid = plan.premium;
     $("#myPlanName").textContent = paid ? "Premium" : "Gratuito";
@@ -876,6 +902,8 @@
         (plan.cancels ? `<p class="plan-card-note">Você continua com todos os benefícios até essa data. Depois, a conta volta para o plano gratuito. Para continuar com o Premium, toque em "Reativar assinatura".</p>` : "");
       const lbl = $("#planCancelLbl");
       if (lbl) lbl.textContent = plan.cancels ? "Reativar assinatura" : "Cancelar assinatura";
+      const rf = $("#planRefundRow");
+      if (rf) rf.hidden = !canRefund();
       const row = $("#planCancelRow");
       if (row) row.classList.toggle("menu-row--danger", !plan.cancels);
     }
@@ -966,6 +994,7 @@
     $("#passwordForm").addEventListener("submit", submitPassword);
     $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
     $("#delConfirm").addEventListener("click", confirmDelete);
+    $("#rfConfirm").addEventListener("click", confirmRefund);
     $("#recoPlay").addEventListener("click", () => {
       app().play("noite", D.categories.map((c) => c.id));
     });

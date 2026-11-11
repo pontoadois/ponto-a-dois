@@ -422,9 +422,9 @@
 
   async function getPlan() {
     if (!client || !session) return { premium: false };
-    const { data } = await client.from("subscriptions").select("status, current_period_end, cancel_at_period_end").eq("user_id", session.user.id).maybeSingle();
+    const { data } = await client.from("subscriptions").select("status, current_period_start, current_period_end, cancel_at_period_end").eq("user_id", session.user.id).maybeSingle();
     const ok = data && ["active", "trialing"].includes(data.status) && (!data.current_period_end || new Date(data.current_period_end) > new Date());
-    return { premium: !!ok, status: data ? data.status : null, until: data ? data.current_period_end : null, cancels: !!(data && data.cancel_at_period_end) };
+    return { premium: !!ok, status: data ? data.status : null, until: data ? data.current_period_end : null, cancels: !!(data && data.cancel_at_period_end), start: data ? data.current_period_start : null };
   }
 
   // Salva o nome e o gênero ("h", "m" ou "" para não informar)
@@ -552,6 +552,16 @@
   }
   const startCheckout = (plan) => callBilling("create-checkout", { plan });
   const openPortal = () => callBilling("customer-portal");
+  async function requestRefund() {
+    if (!client || !session) return { ok: false, error: "unauthorized" };
+    const { data, error } = await client.functions.invoke("request-refund");
+    if (error) {
+      let code = null;
+      try { code = (await error.context.json()).error; } catch { /* ignore */ }
+      return { ok: false, error: code || "failed" };
+    }
+    return data && data.ok ? { ok: true } : { ok: false, error: "failed" };
+  }
   async function foundersLeft() {
     if (!client || !session) return null;
     const { data, error } = await client.rpc("founders_left");
@@ -569,7 +579,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, requestRefund, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

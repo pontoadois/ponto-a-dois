@@ -425,6 +425,7 @@
             <span class="menu-label">Assinatura</span>
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
+            <button class="menu-row menu-row--danger" type="button" id="planRefundRow" data-open-modal="refund" hidden><span class="menu-txt"><span>Cancelar e receber o dinheiro de volta</span><small>Você tem até 7 dias corridos após o pagamento</small></span></button>
             <button class="menu-row menu-row--danger" type="button" data-portal id="planCancelRow"><span class="menu-txt"><span id="planCancelLbl">Cancelar assinatura</span><small></small></span></button>
           </div>
         </div>
@@ -742,12 +743,32 @@
         </header>
         <div class="modal-body">
           <p class="howto-intro">Isso apaga a sua conta e os seus dados, e <b>não dá para desfazer</b>.</p>
-          <p class="howto-intro">Se você tem uma assinatura, ela é encerrada, sem reembolso do período já pago (exceto nos 7 dias de desistência). Quem tem o preço do plano Fundadores perde esse preço.</p>
+          <p class="howto-intro">Se você tem uma assinatura, ela é encerrada na hora. Se o pagamento foi feito há menos de 7 dias, o valor é devolvido ao seu cartão; depois disso, não há reembolso do período já pago. Quem tem o preço do plano Fundadores perde esse preço.</p>
           <p class="au-error" id="delError" role="alert" hidden></p>
         </div>
         <footer class="modal-foot modal-foot--row">
           <button class="btn btn--ghost btn--block" data-close-modal>Cancelar</button>
           <button class="btn btn--danger btn--block" id="delConfirm">Excluir definitivamente</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: DESISTÊNCIA (REEMBOLSO EM 7 DIAS) ============ -->
+    <div class="modal" id="modalRefund" data-modal="refund" role="dialog" aria-modal="true" aria-labelledby="rfTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass">
+        <header class="modal-head">
+          <h2 class="modal-title" id="rfTitle">Cancelar e receber o dinheiro de volta?</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="modal-body">
+          <p class="howto-intro">Você está dentro dos 7 dias de desistência. Vamos devolver o valor total pago ao seu cartão e encerrar a assinatura <b>agora</b>.</p>
+          <p class="howto-intro">O Premium é desativado na hora e a conta volta para o plano gratuito. O valor costuma aparecer na fatura do cartão em até 10 dias úteis, conforme o banco.</p>
+          <p class="au-error" id="rfError" role="alert" hidden></p>
+        </div>
+        <footer class="modal-foot modal-foot--row">
+          <button class="btn btn--ghost btn--block" data-close-modal>Voltar</button>
+          <button class="btn btn--danger btn--block" id="rfConfirm">Cancelar e reembolsar</button>
         </footer>
       </div>
     </div>
