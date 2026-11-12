@@ -2253,3 +2253,10 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .howto-types li > b:first-child, .howto-type-name { display: block; color: #fff7ff; font-size: 0.93rem; font-weight: 600; margin-bottom: 1px; }
 .howto-types li b { color: #fff7ff; font-weight: 600; }
 .howto-type-help { display: block; font-size: 0.86rem; color: #f0dce8; }
+
+
+/* ============================================================
+   SEM RAPOSAS: o texto da tela inicial não reserva mais o espaço da arte
+   ============================================================ */
+.home-art { display: none !important; }
+@media (max-width: 760px) { .screen--home .home-inner { padding-bottom: 0; } }
