@@ -2275,3 +2275,9 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .bill-amt.is-refund { color: #f13b91; }
 .bill-note { margin: 4px 0 0; font-size: 0.8rem; line-height: 1.45; color: var(--muted); }
 @media (min-width: 900px) { .bill-hist { max-width: 640px; } }
+
+
+/* Links dos documentos na tela inicial (o Google exige a Política de Privacidade visível na página inicial) */
+.home-legal { position: absolute; left: 0; right: 0; bottom: 18px; z-index: 1; margin: 0; display: flex; justify-content: center; gap: 10px; font-size: 0.82rem; color: var(--muted-2); }
+.home-legal a { color: var(--muted-2); text-decoration: underline; text-underline-offset: 3px; }
+.home-legal a:hover { color: #fff7ff; }
