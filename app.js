@@ -110,7 +110,8 @@
     const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
       row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}</span>`) +
-      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`);
+      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`) +
+      row("heart", "Subir de nível", "Um presente a cada novo estágio do casal, quando chegam nos pontos do próximo nível.", `<span class="coins-tag">+${c.levelup_coins_2 != null ? c.levelup_coins_2 : 60} e +${c.levelup_coins_3 != null ? c.levelup_coins_3 : 120}</span>`);
     const fc = c.freeze_cost != null ? c.freeze_cost : 50, pc = c.peek_cost != null ? c.peek_cost : 30;
     const need = (cost) => (n >= cost ? '<span class="coins-tag is-done">Já dá</span>' : `<span class="coins-tag is-need">faltam ${cost - n}</span>`);
     spend.innerHTML =
@@ -456,12 +457,13 @@
     if (granted) {
       rows.push(["Pontos de conexão", "+" + res.points]);
       if (res.coins) rows.push(["Moedas", "+" + res.coins]);
+      if (res.level_coins) rows.push(["Moedas por subir de nível", "+" + res.level_coins]);
     } else {
       title = "Que bom jogar de novo!";
       sub = "Os pontos desta atividade de hoje já foram contados.";
     }
     if (streak) rows.push(["Ofensiva", `${streak.current} ${streak.current === 1 ? "dia seguido" : "dias seguidos"}`]);
-    if (granted && before && game && game.stage > before.stage) sub = `Vocês chegaram a um novo estágio: ${STAGES[game.stage - 1]}!`;
+    if (granted && before && game && game.stage > before.stage) sub = `Vocês chegaram a um novo estágio: ${STAGES[game.stage - 1]}!` + (res.level_coins ? ` E ganharam ${res.level_coins} moedas de presente.` : "");
     $("#doneTitle").textContent = title;
     $("#doneSub").textContent = sub;
     $("#doneList").innerHTML = rows.map(([k, v]) => `<div class="plan-kv"><span>${k}</span><b>${v}</b></div>`).join("");
