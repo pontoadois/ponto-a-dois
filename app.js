@@ -882,7 +882,35 @@
     app().showToast("Assinatura cancelada e valor reembolsado.");
   }
 
+  /* ---------- Histórico de cobranças (comprovantes) ---------- */
+  const BILL_PLAN = { mensal: "Premium mensal", anual: "Premium anual", fundadores: "Premium Fundadores (anual)" };
+  const BILL_KIND = {
+    purchase: ["Assinatura contratada", ""],
+    renewal: ["Assinatura renovada", ""],
+    cancel_scheduled: ["Cancelamento solicitado", "A renovação foi interrompida. O Premium continua até o fim do período pago."],
+    reactivated: ["Assinatura reativada", "A renovação voltou a valer."],
+    refund: ["Reembolso", "Valor devolvido ao cartão. O banco costuma mostrar na fatura em até 10 dias úteis."],
+    ended: ["Assinatura encerrada", "O Premium terminou e a conta voltou ao plano gratuito."],
+  };
+  const money = (c) => (c / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  async function renderHistory() {
+    const box = $("#planHistory");
+    if (!box || !auth().getBillingEvents) return;
+    const ev = await auth().getBillingEvents();
+    box.hidden = !ev.length;
+    if (!ev.length) return;
+    $("#planHistoryList").innerHTML = ev.map((e) => {
+      const [title, sub] = BILL_KIND[e.kind] || [e.kind, ""];
+      const when = new Date(e.created_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      const amt = e.amount_cents ? `<b class="bill-amt${e.kind === "refund" ? " is-refund" : ""}">${e.kind === "refund" ? "−" : ""}${money(e.amount_cents)}</b>` : "";
+      return `<li class="bill-item"><div class="bill-main"><b>${title}</b>${e.plan ? `<span>${BILL_PLAN[e.plan] || ""}</span>` : ""}${sub ? `<small>${sub}</small>` : ""}<small>${when}${e.reference ? ` · Protocolo ${esc(e.reference)}` : ""}</small></div>${amt}</li>`;
+    }).join("");
+  }
+
   function renderPlano() {
+    renderHistory();
     const paid = plan.premium;
     $("#myPlanName").textContent = paid ? "Premium" : "Gratuito";
     const badge = $("#myPlanBadge");

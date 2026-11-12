@@ -562,6 +562,11 @@
     }
     return data && data.ok ? { ok: true } : { ok: false, error: "failed" };
   }
+  async function getBillingEvents() {
+    if (!client || !session) return [];
+    const { data, error } = await client.from("billing_events").select("kind, plan, amount_cents, reference, created_at").order("created_at", { ascending: false }).limit(30);
+    return error || !data ? [] : data;
+  }
   async function foundersLeft() {
     if (!client || !session) return null;
     const { data, error } = await client.rpc("founders_left");
@@ -579,7 +584,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, requestRefund, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, requestRefund, getBillingEvents, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,
