@@ -1800,20 +1800,10 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
 
 
 /* ============================================================
-   RAPOSAS NO TERMÔMETRO, SEJA PREMIUM EM FAIXA E CAPAS DAS CATEGORIAS
+   TERMÔMETRO, SEJA PREMIUM EM FAIXA E CARTÕES DAS CATEGORIAS
    ============================================================ */
 .heat-card { overflow: visible; }
 .heat-clip { position: absolute; inset: 0; border-radius: 24px; overflow: hidden; pointer-events: none; }
-.heat-foxes { display: none; pointer-events: none; user-select: none; -webkit-user-drag: none; }
-/* Celular e tablet: as raposas ficam ao lado da porcentagem, no espaço livre */
-.heat-foxes--inline { display: block; flex: 1 1 0; width: 0; min-width: 96px; max-width: 230px; height: 132px; margin-left: auto; object-fit: contain; object-position: right bottom; filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.45)); -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent 100%); mask-image: linear-gradient(to bottom, #000 82%, transparent 100%); }
-/* Computador: ficam no lado direito do painel, saindo um pouco por cima */
-@media (min-width: 900px) {
-  .heat-card { padding-right: 400px; }
-  .heat-foxes--inline { display: none; }
-  .heat-foxes--side { display: block; position: absolute; z-index: 2; right: 22px; bottom: 0; width: auto; height: min(108%, 268px); filter: drop-shadow(0 8px 22px rgba(0, 0, 0, 0.5)); -webkit-mask-image: linear-gradient(to bottom, #000 86%, transparent 100%); mask-image: linear-gradient(to bottom, #000 86%, transparent 100%); }
-  .heat-card .heat-head, .heat-card .heat-body { z-index: 3; }
-}
 
 /* Seja Premium em faixa */
 .pm-banner { position: relative; overflow: hidden; display: flex; align-items: center; gap: 22px; width: 100%; padding: 18px 24px; border-radius: 22px; border: 1px solid rgba(241, 59, 145, 0.42); background: var(--surface); box-shadow: inset 0 0 0 1px rgba(241, 59, 145, 0.06); color: var(--white); font: inherit; text-align: left; cursor: pointer; transition: border-color 0.2s; }
@@ -1833,30 +1823,12 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
   .pm-btn { width: 100%; justify-content: center; }
 }
 
-/* Capas das categorias: o casal de raposas no canto direito de cada cartão */
+/* Cartões das categorias */
 .free-tiles { grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 640px) { .free-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.st-tile.has-art { position: relative; overflow: hidden; min-height: 128px; background: var(--bg); }
-.st-tile.has-art.is-selected { background: var(--surface); box-shadow: 0 0 0 1px rgba(241, 59, 145, 0.22); }
-.st-tile .tile-art { display: none; }
-.st-tile.has-art .tile-art { display: block; position: absolute; right: 0; bottom: 0; height: 100%; width: auto; max-width: 62%; object-fit: cover; object-position: right bottom; pointer-events: none; user-select: none; -webkit-mask-image: linear-gradient(to right, transparent 0, #000 26%); mask-image: linear-gradient(to right, transparent 0, #000 26%); }
-.st-tile.has-art .st-tile-name, .st-tile.has-art .st-tile-sub { position: relative; z-index: 1; max-width: 52%; }
-.st-tile.has-art .st-tile-ico { position: relative; z-index: 1; }
-.st-tile.has-art .st-check, .st-tile.has-art .st-crown { z-index: 2; }
-
-/* Página de boas-vindas: o casal de raposas sentado, de cada lado do texto */
+/* Página de boas-vindas */
 .screen--home { overflow-x: hidden; }
-.home-art { position: absolute; left: 50%; bottom: 0; z-index: 0; width: min(100%, 1920px); height: min(80vh, 50vw); transform: translateX(-50%); pointer-events: none;
-  -webkit-mask-image: linear-gradient(to top, #000 62%, transparent 100%), linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-  mask-image: linear-gradient(to top, #000 62%, transparent 100%), linear-gradient(to right, transparent 0, #000 7%, #000 93%, transparent 100%);
-  -webkit-mask-composite: source-in; mask-composite: intersect; }
-.home-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; user-select: none; }
 .screen--home .home-inner { position: relative; z-index: 1; }
-@media (max-width: 760px) {
-  .home-art { left: 0; width: 100%; transform: none; height: auto; aspect-ratio: 1100 / 713; -webkit-mask-image: linear-gradient(to top, #000 70%, transparent 100%); mask-image: linear-gradient(to top, #000 70%, transparent 100%); }
-  .home-art img { height: auto; }
-  .screen--home .home-inner { padding-bottom: calc(100vw * 0.5); } /* o texto e os botões ficam acima das raposas */
-}
 
 /* ============================================================
    FORMULÁRIO INICIAL DE PERSONALIZAÇÃO
@@ -1940,8 +1912,6 @@ body { background: #160713; }
 .secret-card, .pm-banner, .plan-card, .plan-card--promo { background: var(--grad-card); }
 .plan-card--promo { background: var(--grad-card-hot); border-color: rgba(241, 59, 145, 0.5); }
 .modal-card { background: linear-gradient(160deg, #240a23 0%, #22091f 70%, #160713 100%); }
-.st-tile.has-art { background: linear-gradient(110deg, #160713 0%, #230a24 60%, #240a23 100%); }
-.st-tile.has-art.is-selected { background: linear-gradient(110deg, #240a23 0%, #240a23 100%); box-shadow: 0 0 0 1px rgba(241, 59, 145, 0.4), 0 0 22px rgba(241, 59, 145, 0.22); }
 .secret-ico { background: linear-gradient(155deg, #240a23, #160713); }
 .game-tile, .app-card, .stat, .menu-row, .recent-item, .plan-opt, .plans-box, .au-panel, .st-panel {
   background: var(--grad-card-soft); border-color: rgba(241, 59, 145, 0.4);
@@ -2010,7 +1980,6 @@ body { background: #160713; }
 
 /* Sem ilustrações decorativas (lua, carta, corações) */
 .exp-art, .secret-art, .heat-art, .pm-heart { display: none !important; }
-.heat-foxes { display: none !important; }
 
 /* Título da tela inicial visível; textos e bordas sem cinza */
 .home-title { background: none !important; color: #fff7ff !important; -webkit-text-fill-color: #fff7ff !important; }
@@ -2035,7 +2004,6 @@ h1, h2, h3, .brand-name, .pm-title { letter-spacing: -0.01em; }
   .appnav-item[aria-current="page"]::before { display: none; }
 }
 /* Categoria selecionada: fundo escuro padrão, sem tom roxo */
-.st-tile.has-art.is-selected { background: #240a23; }
 
 /* Menu lateral e barra inferior: fundo escuro padrão, sem tom roxo */
 .appnav { background: #160713; backdrop-filter: none; -webkit-backdrop-filter: none; }
@@ -2120,7 +2088,7 @@ input::selection { background: rgba(241, 59, 145, 0.45); color: #fff7ff; }
 /* ============================================================
    AJUSTES: botão de níveis à direita, carta secreta e tela de entrar
    ============================================================ */
-/* Computador: as raposas saíram, então o cartão não reserva mais o espaço da direita */
+/* Computador: o cartão do termômetro usa a largura toda */
 @media (min-width: 900px) {
   .heat-card { padding-right: 28px; }
 }
@@ -2253,13 +2221,6 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .howto-types li > b:first-child, .howto-type-name { display: block; color: #fff7ff; font-size: 0.93rem; font-weight: 600; margin-bottom: 1px; }
 .howto-types li b { color: #fff7ff; font-weight: 600; }
 .howto-type-help { display: block; font-size: 0.86rem; color: #f0dce8; }
-
-
-/* ============================================================
-   SEM RAPOSAS: o texto da tela inicial não reserva mais o espaço da arte
-   ============================================================ */
-.home-art { display: none !important; }
-@media (max-width: 760px) { .screen--home .home-inner { padding-bottom: 0; } }
 
 
 /* ============================================================
