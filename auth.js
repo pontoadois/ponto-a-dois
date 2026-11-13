@@ -361,6 +361,7 @@
     $("#signupForm").addEventListener("submit", onSignup);
     $("#completeForm").addEventListener("submit", onComplete);
     $("#newpassForm").addEventListener("submit", onNewPass);
+    $("#newpassBack").addEventListener("click", async () => { await client.auth.signOut(); renderHomeUser(); app().goTo("login"); });
     $("#forgotBtn").addEventListener("click", onForgot);
     $$("[data-auth='google']").forEach((b) => b.addEventListener("click", onGoogle));
     $("#completeLogout").addEventListener("click", signOut);
