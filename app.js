@@ -809,7 +809,14 @@
 
   // Volta do pagamento: espera o aviso da Stripe chegar e libera o Premium
   async function afterCheckout() {
-    const q = new URLSearchParams(window.location.search).get("checkout");
+    const qs = new URLSearchParams(window.location.search);
+    if (qs.get("portal") === "return") {
+      try { history.replaceState(null, "", window.location.pathname); } catch { /* ignore */ }
+      const t = setInterval(() => { if (auth().getSession && auth().getSession()) { clearInterval(t); app().goTo("plano"); } }, 400);
+      setTimeout(() => clearInterval(t), 8000);
+      return;
+    }
+    const q = qs.get("checkout");
     if (!q) return;
     try { history.replaceState(null, "", window.location.pathname); } catch { /* ignore */ }
     if (q !== "success") { app().showToast("O pagamento foi cancelado. Nada foi cobrado."); return; }
@@ -866,13 +873,64 @@
   // Desistência: até 7 dias corridos depois do último pagamento (o servidor confere de novo)
   const canRefund = () => !!(plan.premium && plan.start && Date.now() - new Date(plan.start).getTime() < 7 * 24 * 3600 * 1000);
 
+  /* ---------- Motivo do cancelamento / reembolso (opcional) ---------- */
+  const REASONS = [["preco", "Está caro"], ["uso", "Não estamos usando"], ["recursos", "Faltam cartas ou recursos"], ["par", "Meu par não quis usar"], ["tecnico", "Tive algum problema"], ["outro", "Outro motivo"]];
+  function bindReasons() {
+    $$("[data-reasons]").forEach((box) => {
+      box.innerHTML = REASONS.map(([k, t]) => `<button type="button" class="sup-chip" role="radio" aria-checked="false" data-reason="${k}">${t}</button>`).join("");
+      box.addEventListener("click", (e) => {
+        const c = e.target.closest(".sup-chip");
+        if (!c) return;
+        const on = c.getAttribute("aria-checked") !== "true"; // tocar de novo desmarca
+        box.querySelectorAll(".sup-chip").forEach((x) => x.setAttribute("aria-checked", "false"));
+        c.setAttribute("aria-checked", on ? "true" : "false");
+      });
+    });
+  }
+  function readReason(modalId) {
+    const m = $(modalId);
+    const c = m.querySelector('.sup-chip[aria-checked="true"]');
+    const n = m.querySelector(".rs-note");
+    return { reason: c ? c.dataset.reason : null, comment: n ? n.value.trim() : "" };
+  }
+  function resetReason(modalId) {
+    const m = $(modalId);
+    m.querySelectorAll(".sup-chip").forEach((x) => x.setAttribute("aria-checked", "false"));
+    const n = m.querySelector(".rs-note"); if (n) n.value = "";
+  }
+
+  async function confirmCancel() {
+    const err = $("#cnError"), btn = $("#cnConfirm");
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Cancelando…";
+    const r = await auth().cancelSubscription(readReason("#modalCancel"));
+    btn.disabled = false;
+    btn.textContent = "Cancelar assinatura";
+    if (!r.ok) {
+      err.textContent = "Não foi possível cancelar agora. Tente de novo ou escreva para o suporte.";
+      err.hidden = false;
+      return;
+    }
+    app().closeModal();
+    resetReason("#modalCancel");
+    await load();
+    renderPlano();
+    app().showToast("Renovação cancelada. O Premium segue até o fim do período pago.");
+  }
+
+  function onPlanCancelRow(e) {
+    if (plan.cancels) { goPortal(e.currentTarget); return; } // reativar: a Stripe cuida
+    app().openModal("cancel");
+  }
+
   async function confirmRefund() {
     const err = $("#rfError");
     const btn = $("#rfConfirm");
     err.hidden = true;
     btn.disabled = true;
     btn.textContent = "Reembolsando…";
-    const r = await auth().requestRefund();
+    const r = await auth().requestRefund(readReason("#modalRefund"));
     btn.disabled = false;
     btn.textContent = "Cancelar e reembolsar";
     if (!r.ok) {
@@ -883,6 +941,7 @@
       return;
     }
     app().closeModal();
+    resetReason("#modalRefund");
     await load();
     renderPlano();
     renderInicio();
@@ -1053,6 +1112,9 @@
     $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
     $("#delConfirm").addEventListener("click", confirmDelete);
     $("#rfConfirm").addEventListener("click", confirmRefund);
+    bindReasons();
+    $("#cnConfirm").addEventListener("click", confirmCancel);
+    $("#planCancelRow").addEventListener("click", onPlanCancelRow);
     $("#recoPlay").addEventListener("click", () => {
       app().play("noite", D.categories.map((c) => c.id));
     });

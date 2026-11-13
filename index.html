@@ -430,7 +430,7 @@
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
             <button class="menu-row menu-row--danger" type="button" id="planRefundRow" data-open-modal="refund" hidden><span class="menu-txt"><span>Cancelar e receber o dinheiro de volta</span><small>Você tem até 7 dias corridos após o pagamento</small></span></button>
-            <button class="menu-row menu-row--danger" type="button" data-portal id="planCancelRow"><span class="menu-txt"><span id="planCancelLbl">Cancelar assinatura</span><small></small></span></button>
+            <button class="menu-row menu-row--danger" type="button" id="planCancelRow"><span class="menu-txt"><span id="planCancelLbl">Cancelar assinatura</span><small></small></span></button>
           </div>
           <div class="menu-group bill-hist" id="planHistory" hidden>
             <span class="menu-label">Histórico</span>
@@ -773,11 +773,32 @@
         <div class="modal-body">
           <p class="howto-intro">Você está dentro dos 7 dias de desistência. Vamos devolver o valor total pago ao seu cartão e encerrar a assinatura <b>agora</b>.</p>
           <p class="howto-intro">O Premium é desativado na hora e a conta volta para o plano gratuito. O valor costuma aparecer na fatura do cartão em até 10 dias úteis, conforme o banco.</p>
+          <div class="sup-field rs-field"><span>Pode nos contar o motivo? (opcional)</span><div class="sup-chips" data-reasons role="radiogroup" aria-label="Motivo"></div><textarea class="rs-note" maxlength="500" rows="2" placeholder="Quer deixar um comentário? (opcional)"></textarea></div>
           <p class="au-error" id="rfError" role="alert" hidden></p>
         </div>
         <footer class="modal-foot modal-foot--row">
           <button class="btn btn--ghost btn--block" data-close-modal>Voltar</button>
           <button class="btn btn--danger btn--block" id="rfConfirm">Cancelar e reembolsar</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: CANCELAR ASSINATURA ============ -->
+    <div class="modal" id="modalCancel" data-modal="cancel" role="dialog" aria-modal="true" aria-labelledby="cnTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass">
+        <header class="modal-head">
+          <h2 class="modal-title" id="cnTitle">Cancelar a assinatura?</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="modal-body">
+          <p class="howto-intro">Sentimos muito. A renovação será interrompida e vocês continuam com o Premium até o fim do período já pago. Dá para reativar quando quiserem.</p>
+          <div class="sup-field rs-field"><span>Pode nos contar o motivo? (opcional)</span><div class="sup-chips" data-reasons role="radiogroup" aria-label="Motivo"></div><textarea class="rs-note" maxlength="500" rows="2" placeholder="Quer deixar um comentário? (opcional)"></textarea></div>
+          <p class="au-error" id="cnError" role="alert" hidden></p>
+        </div>
+        <footer class="modal-foot modal-foot--row">
+          <button class="btn btn--ghost btn--block" data-close-modal>Manter assinatura</button>
+          <button class="btn btn--danger btn--block" id="cnConfirm">Cancelar assinatura</button>
         </footer>
       </div>
     </div>
