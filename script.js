@@ -660,7 +660,7 @@
       goTo("inicio");
       return;
     }
-    // Jogo começou: conta o dia na sequência (o servidor também dá os pontos do jogo)
+    // Jogo começou: garante as moedas do dia (o servidor conta a ofensiva ao dar os pontos do jogo)
     if (A && A.registerPlay) A.registerPlay();
     if (!pre) {
       if (A && A.completeGame) A.completeGame();

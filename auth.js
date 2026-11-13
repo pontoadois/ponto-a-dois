@@ -386,7 +386,7 @@
     const day = spToday();
     if (playedKey === day) return null;
     playedKey = day;
-    // O servidor registra o dia, aplica um bloqueio de ofensiva se for preciso e dá as moedas do dia
+    // O servidor dá as moedas do dia por entrar (a ofensiva só conta quando jogam)
     try {
       const { data, error } = await client.rpc("register_day");
       if (error) throw error;

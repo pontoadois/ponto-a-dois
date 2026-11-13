@@ -106,7 +106,7 @@
     const bal = $("#coinsBal"); if (bal) bal.textContent = n;
     const earn = $("#coinsEarn"), spend = $("#coinsSpend");
     if (!earn || !spend) return;
-    const daily = c.coins_daily != null ? c.coins_daily : 5, quick = c.coins_quick != null ? c.coins_quick : 10;
+    const daily = c.coins_daily != null ? c.coins_daily : 10, quick = c.coins_quick != null ? c.coins_quick : 10;
     const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
       row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}</span>`) +
@@ -462,6 +462,7 @@
       rows.push(["Pontos de conexão", "+" + res.points]);
       if (res.coins) rows.push(["Moedas", "+" + res.coins]);
       if (res.level_coins) rows.push(["Moedas por subir de nível", "+" + res.level_coins]);
+      if (res.freezes_used) rows.push(["Bloqueio de ofensiva usado", String(res.freezes_used)]);
     } else {
       title = "Que bom jogar de novo!";
       sub = "Os pontos desta atividade de hoje já foram contados.";
@@ -956,7 +957,7 @@
     try { seen = localStorage.getItem(WELCOME_KEY); } catch { /* ignore */ }
     if (seen === day || welcomedDay === day) return;
     welcomedDay = day;
-    const reg = await a.registerPlay(); // entrar no app já conta o dia na sequência (e dá as moedas do dia)
+    const reg = await a.registerPlay(); // entrar no app só dá as moedas do dia; a ofensiva conta quando jogam
     let fresh = null;
     try { fresh = await a.getStreak(); } catch { /* ignore */ }
     if (!fresh) return; // sem conexão: não mostra nada e tenta de novo na próxima vez
@@ -964,10 +965,16 @@
     try { game = await a.getGame(); } catch { /* ignore */ }
     try { localStorage.setItem(WELCOME_KEY, day); } catch { /* ignore */ }
     renderInicio();
-    const n = streak.current || 1;
-    $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
-    $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
-    if (reg && reg.freezes_used) $("#welSub").textContent = "Um bloqueio de ofensiva protegeu a sua sequência. Que bom ter vocês de volta!";
+    const n = streak.current || 0;
+    const today = streak.today;
+    const playedToday = ((streak.week) || []).includes(today);
+    if (playedToday) {
+      $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
+      $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
+    } else {
+      $("#welTitle").textContent = n === 0 ? "Que bom ter vocês aqui!" : "Bem-vindos de volta!";
+      $("#welSub").textContent = n === 0 ? "Joguem hoje para começar a sua ofensiva." : `Joguem hoje para manter a ofensiva de ${n} ${n === 1 ? "dia" : "dias"}.`;
+    }
     if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas por entrar hoje.`;
     $("#welNum").textContent = n;
     $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
