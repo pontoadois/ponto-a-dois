@@ -2274,3 +2274,5 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .heat-card .hl { color: #f13b91; font-weight: 600; }
 .heat-next { margin-bottom: 4px; }
 .heat-levels { margin-top: 10px; }
+
+.wk-day.is-now { color: #f13b91; font-weight: 600; }

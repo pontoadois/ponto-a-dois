@@ -91,8 +91,8 @@
       }
       if (home) {
         // Início: check nos dias em que jogaram; chama e destaque no dia de hoje (a ofensiva já foi contada)
-        if (iso === today) { cls = "is-today"; icon = svg("flame", 20, 1.9, "currentColor"); }
-        else if (played.has(iso)) icon = svg("check", 20, 2.6);
+        if (played.has(iso)) { icon = svg("check", 20, 2.6); if (iso === today) cls = "is-on is-now"; }
+        else if (iso === today) { cls = "is-today"; icon = svg("flame", 20, 1.9, "none"); }
       }
       return `<div class="wk-day ${cls}"><span class="wk-dot">${icon}</span>${name}</div>`;
     }).join("");
