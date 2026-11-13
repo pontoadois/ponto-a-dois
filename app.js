@@ -1016,6 +1016,11 @@
     $("#pfPhotoRemove").addEventListener("click", removePhoto);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
+    $("#supCopy").addEventListener("click", async () => {
+      const mail = "suporte@pontoadois.com.br";
+      try { await navigator.clipboard.writeText(mail); app().showToast("E-mail copiado."); }
+      catch (e) { app().showToast(mail); }
+    });
     $$("[data-portal]").forEach((b) => b.addEventListener("click", () => goPortal(b)));
     afterCheckout();
     $$("[data-soon]").forEach((b) => b.addEventListener("click", () => app().showToast("Disponível em breve, junto com o pagamento.")));
