@@ -1873,7 +1873,7 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
 .pw-actions .btn:disabled { opacity: 0.6; cursor: wait; }
 .pf-seg--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); margin-bottom: 8px; }
 @media (min-width: 520px) { .pf-seg--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
-.heat-date { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.9rem; line-height: 1.4; color: #f13b91; }
+.heat-date { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 0.9rem; line-height: 1.4; color: var(--muted); }
 .heat-date > svg { flex-shrink: 0; color: #f13b91; }
 .peek-btn.is-low { opacity: 0.85; border-style: dashed; }
 
