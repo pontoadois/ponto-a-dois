@@ -553,9 +553,14 @@
   }
   const startCheckout = (plan) => callBilling("create-checkout", { plan });
   const openPortal = () => callBilling("customer-portal");
-  async function requestRefund() {
+  async function cancelSubscription(body) {
     if (!client || !session) return { ok: false, error: "unauthorized" };
-    const { data, error } = await client.functions.invoke("request-refund");
+    const { data, error } = await client.functions.invoke("cancel-subscription", { body: body || {} });
+    return error || !data || !data.ok ? { ok: false, error: "failed" } : { ok: true };
+  }
+  async function requestRefund(body) {
+    if (!client || !session) return { ok: false, error: "unauthorized" };
+    const { data, error } = await client.functions.invoke("request-refund", { body: body || {} });
     if (error) {
       let code = null;
       try { code = (await error.context.json()).error; } catch { /* ignore */ }
@@ -585,7 +590,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, requestRefund, getBillingEvents, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, cancelSubscription, requestRefund, getBillingEvents, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,

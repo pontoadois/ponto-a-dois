@@ -2276,3 +2276,8 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .heat-levels { margin-top: 10px; }
 
 .wk-day.is-now { color: #f13b91; font-weight: 600; }
+
+.rs-field { margin-top: 14px; }
+.rs-note { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(241, 59, 145, 0.4); background: #240a23; color: #fff7ff; font: inherit; font-size: 0.9rem; resize: vertical; }
+.rs-note:focus-visible { outline: none; border-color: #f13b91; }
+.rs-note::placeholder { color: #b995ad; }
