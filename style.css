@@ -2242,3 +2242,27 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .home-legal { position: absolute; left: 0; right: 0; bottom: 18px; z-index: 1; margin: 0; display: flex; justify-content: center; gap: 10px; font-size: 0.82rem; color: var(--muted-2); }
 .home-legal a { color: var(--muted-2); text-decoration: underline; text-underline-offset: 3px; }
 .home-legal a:hover { color: #fff7ff; }
+
+/* Termômetro compacto no celular */
+@media (max-width: 600px) {
+  body .heat-card { display: grid; grid-template-columns: 92px 1fr; grid-template-areas: "badge lbl" "gauge stage" "gauge sub" "metrics metrics"; column-gap: 14px; row-gap: 0; padding: 16px; align-items: start; }
+  body .heat-head, body .heat-head-txt, body .heat-body { display: contents; }
+  body .heat-badge { grid-area: badge; width: 36px; height: 36px; border-radius: 12px; }
+  body .heat-badge svg { width: 20px; height: 20px; }
+  body .heat-lbl { grid-area: lbl; align-self: center; font-size: 0.66rem; line-height: 1.3; }
+  body .heat-stage-name { grid-area: stage; margin: 12px 0 4px; font-size: 1.35rem; line-height: 1.1; align-self: end; }
+  body .heat-sub { grid-area: sub; font-size: 0.8rem; line-height: 1.35; align-self: start; }
+  body .heat-gauge { grid-area: gauge; width: 92px; height: 92px; margin-top: 12px; align-self: center; }
+  body .heat-gauge b { font-size: 1.35rem; }
+  body .heat-metrics { grid-area: metrics; min-width: 0; margin-top: 14px; gap: 10px; }
+  body .heat-levels { grid-column: 1 / -1; }
+  body .heat-chips { gap: 8px; }
+  body .heat-chips .chip-st { padding: 8px 10px; gap: 8px; }
+  body .heat-chips .chip-st b { font-size: 1rem; }
+  body .heat-chips .chip-st small { font-size: 0.68rem; line-height: 1.2; }
+  body .heat-chips .chip-st svg { width: 18px; height: 18px; }
+}
+
+.sup-field { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 14px; font-size: 0.85rem; color: #f0dce8; }
+.sup-field select { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(241, 59, 145, 0.4); background: #240a23; color: #fff7ff; font: inherit; }
+.sup-field select:focus-visible { outline: none; border-color: #f13b91; }
