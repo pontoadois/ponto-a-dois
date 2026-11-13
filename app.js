@@ -217,7 +217,7 @@
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
     renderCoins();
-    const next = g.next_at ? `Faltam ${g.next_at - g.points} pontos para o próximo nível. Continuem juntos!` : "Vocês chegaram ao estágio mais alto. Que bonito!";
+    const next = g.next_at ? `Faltam <b class="hl">${g.next_at - g.points} pontos</b> para o próximo nível. Continuem juntos!` : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
     if (add) add.addEventListener("click", () => app().goTo("profile"));
@@ -306,11 +306,12 @@
   const dayDiff = (from, to) => Math.round((utc(to) - utc(from)) / 86400000);
 
   // Texto sobre a data especial (puro, para poder ser testado): { text } ou null
+  const hl = (s) => `<b class="hl">${s}</b>`;
   function specialDateText(iso, label, todayIso) {
     if (!iso) return null;
     const from = ymd(iso), to = ymd(todayIso), lb = label || "outro";
     const total = dayDiff(from, to);
-    if (total < 0) return { text: `Faltam ${plural(-total, "dia", "dias")} para ${DATE_FUTURE[lb]}.` };
+    if (total < 0) return { text: `Faltam ${plural(-total, "dia", "dias")} para ${DATE_FUTURE[lb]}.`, html: `Faltam ${hl(plural(-total, "dia", "dias"))} para ${DATE_FUTURE[lb]}.` };
     // Meses completos entre as duas datas; o dia do mês é ajustado ao tamanho do mês (31 de jan + 1 mês = 28 de fev)
     let total_m = (to.y - from.y) * 12 + (to.m - from.m);
     if (to.d < from.d) total_m -= 1;
@@ -329,15 +330,18 @@
     if (utc({ y: ny, m: from.m, d: from.d }) < utc(to)) ny += 1;
     const toNext = dayDiff(to, { y: ny, m: from.m, d: from.d });
     const nth = ny - from.y;
-    if (toNext === 0 && nth > 0) return { text: `Hoje vocês completam ${plural(nth, "ano", "anos")} ${DATE_NOUN[lb]}!`, today: true };
-    return { text: `${DATE_PREFIX[lb]} ${span} (${total.toLocaleString("pt-BR")} dias). Faltam ${plural(toNext, "dia", "dias")} para completarem ${plural(nth, "ano", "anos")}.` };
+    if (toNext === 0 && nth > 0) return { text: `Hoje vocês completam ${plural(nth, "ano", "anos")} ${DATE_NOUN[lb]}!`, html: `Hoje vocês completam ${hl(plural(nth, "ano", "anos"))} ${DATE_NOUN[lb]}!`, today: true };
+    return {
+      text: `${DATE_PREFIX[lb]} ${span} (${total.toLocaleString("pt-BR")} dias). Faltam ${plural(toNext, "dia", "dias")} para completarem ${plural(nth, "ano", "anos")}.`,
+      html: `${DATE_PREFIX[lb]} ${hl(span)} (${total.toLocaleString("pt-BR")} dias). Faltam ${hl(plural(toNext, "dia", "dias"))} para completarem ${plural(nth, "ano", "anos")}.`,
+    };
   }
 
   function renderSpecialDate(p, g) {
     const row = $("#heatDateRow");
     const info = p && p.special_date ? specialDateText(p.special_date, p.special_label, g.today) : null;
     row.hidden = !info;
-    if (info) $("#heatDate").textContent = info.text;
+    if (info) $("#heatDate").innerHTML = info.html || info.text;
     // Convite discreto para cadastrar a data (depois do nome do cônjuge)
     if (!info && p && p.spouse_name) {
       const hn = $("#heatNext");

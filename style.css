@@ -2269,3 +2269,8 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .sup-chip:hover { border-color: #f13b91; }
 .sup-chip[aria-checked="true"] { background: #f13b91; border-color: #f13b91; color: #fff7ff; font-weight: 600; }
 .sup-chip:focus-visible { outline: 2px solid #f13b91; outline-offset: 2px; }
+
+/* Destaques em rosa e respiro antes do botão do termômetro */
+.heat-card .hl { color: #f13b91; font-weight: 600; }
+.heat-next { margin-bottom: 4px; }
+.heat-levels { margin-top: 10px; }
