@@ -10,10 +10,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="img/favicon-48.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
     <meta property="og:title" content="Ponto a Dois — Um jogo para dois" />
     <meta property="og:description" content="Descubram novas formas de se conectar, juntos." />
-    <!-- Quando tiver uma imagem de divulgação, adicione:
-         <meta property="og:image" content="https://seusite.com/capa.png" /> -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.pontoadois.com.br/" />
+    <meta property="og:image" content="https://www.pontoadois.com.br/img/og-ponto-a-dois.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://www.pontoadois.com.br/img/og-ponto-a-dois.png" />
   </head>
 
   <body>
@@ -33,10 +41,6 @@
 
       <!-- ============ TELA INICIAL ============ -->
       <section class="screen screen--home is-active" data-screen="home">
-        <picture class="home-art" aria-hidden="true">
-          <source media="(max-width: 760px)" srcset="img/boas-vindas-raposas-mobile.webp">
-          <img src="img/boas-vindas-raposas.webp" alt="" width="1776" height="886" decoding="async" fetchpriority="high">
-        </picture>
         <div class="home-user" id="homeUser" hidden></div>
         <div class="home-inner">
           <p class="home-eyebrow">Experiências para fortalecer a conexão entre vocês.</p>
@@ -53,6 +57,7 @@
             </button>
           </div>
         </div>
+        <p class="home-legal"><a href="termos.html">Termos de Uso</a><span aria-hidden="true">·</span><a href="privacidade.html">Política de Privacidade</a></p>
       </section>
 
 
@@ -252,14 +257,12 @@
 <div class="app-card week-card week-card--home" id="weekHome" aria-label="Sua semana"></div>
 <section class="heat-card" id="heatCard">
 <div class="heat-clip" aria-hidden="true"><svg class="heat-art" viewBox="0 0 220 190" fill="none" aria-hidden="true"><path d="M110 178C22 116-10 64 42 26 73 3 102 24 110 46c8-22 37-43 68-20 52 38 20 90-68 152Z" stroke="currentColor" stroke-width="3"/><path d="M110 150C48 104 28 68 62 44c20-14 41-2 48 16 7-18 28-30 48-16 34 24 14 60-48 106Z" stroke="currentColor" stroke-width="2" opacity=".5"/></svg></div>
-<img class="heat-foxes heat-foxes--side" src="img/raposas-casal.webp" alt="" width="900" height="648" loading="lazy" decoding="async">
 <div class="heat-head">
 <span class="heat-badge"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
 <div class="heat-head-txt"><span class="heat-lbl" id="heatLbl">Termômetro do casal</span><h2 class="heat-stage-name" id="heatStage">Casal Próspero</h2><p class="heat-sub" id="heatMsg"></p></div>
 </div>
 <div class="heat-body">
 <div class="heat-gauge" id="heatGauge" role="img" aria-label="Termômetro" style="--p:0"><span><b id="heatPct">0%</b><small>termômetro</small></span></div>
-<img class="heat-foxes heat-foxes--inline" src="img/raposas-casal.webp" alt="" width="900" height="648" loading="lazy" decoding="async">
 <div class="heat-metrics">
 <div class="heat-bar" id="heatBar" role="progressbar" aria-label="Progresso para o próximo nível" aria-valuemin="0" aria-valuemax="100"><i id="heatFill"></i></div>
 <div class="heat-chips">
@@ -425,7 +428,13 @@
             <span class="menu-label">Assinatura</span>
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Trocar cartão</span><small></small></span></button>
             <button class="menu-row" type="button" data-portal><span class="menu-txt"><span>Ver recibos</span><small></small></span></button>
-            <button class="menu-row menu-row--danger" type="button" data-portal><span class="menu-txt"><span>Cancelar assinatura</span><small></small></span></button>
+            <button class="menu-row menu-row--danger" type="button" id="planRefundRow" data-open-modal="refund" hidden><span class="menu-txt"><span>Cancelar e receber o dinheiro de volta</span><small>Você tem até 7 dias corridos após o pagamento</small></span></button>
+            <button class="menu-row menu-row--danger" type="button" data-portal id="planCancelRow"><span class="menu-txt"><span id="planCancelLbl">Cancelar assinatura</span><small></small></span></button>
+          </div>
+          <div class="menu-group bill-hist" id="planHistory" hidden>
+            <span class="menu-label">Histórico</span>
+            <ul class="bill-list" id="planHistoryList"></ul>
+            <p class="bill-note">Guarde o protocolo se precisar falar com o suporte sobre uma cobrança ou um reembolso.</p>
           </div>
         </div>
       </section>
@@ -742,12 +751,32 @@
         </header>
         <div class="modal-body">
           <p class="howto-intro">Isso apaga a sua conta e os seus dados, e <b>não dá para desfazer</b>.</p>
-          <p class="howto-intro">Se você tem uma assinatura, ela é encerrada, sem reembolso do período já pago (exceto nos 7 dias de desistência). Quem tem o preço do plano Fundadores perde esse preço.</p>
+          <p class="howto-intro">Se você tem uma assinatura, ela é encerrada na hora. Se o pagamento foi feito há menos de 7 dias, o valor é devolvido ao seu cartão; depois disso, não há reembolso do período já pago. Quem tem o preço do plano Fundadores perde esse preço.</p>
           <p class="au-error" id="delError" role="alert" hidden></p>
         </div>
         <footer class="modal-foot modal-foot--row">
           <button class="btn btn--ghost btn--block" data-close-modal>Cancelar</button>
           <button class="btn btn--danger btn--block" id="delConfirm">Excluir definitivamente</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- ============ MODAL: DESISTÊNCIA (REEMBOLSO EM 7 DIAS) ============ -->
+    <div class="modal" id="modalRefund" data-modal="refund" role="dialog" aria-modal="true" aria-labelledby="rfTitle" aria-hidden="true">
+      <div class="modal-backdrop" data-close-modal></div>
+      <div class="modal-card glass">
+        <header class="modal-head">
+          <h2 class="modal-title" id="rfTitle">Cancelar e receber o dinheiro de volta?</h2>
+          <button class="btn btn--icon modal-close" data-close-modal aria-label="Fechar">✕</button>
+        </header>
+        <div class="modal-body">
+          <p class="howto-intro">Você está dentro dos 7 dias de desistência. Vamos devolver o valor total pago ao seu cartão e encerrar a assinatura <b>agora</b>.</p>
+          <p class="howto-intro">O Premium é desativado na hora e a conta volta para o plano gratuito. O valor costuma aparecer na fatura do cartão em até 10 dias úteis, conforme o banco.</p>
+          <p class="au-error" id="rfError" role="alert" hidden></p>
+        </div>
+        <footer class="modal-foot modal-foot--row">
+          <button class="btn btn--ghost btn--block" data-close-modal>Voltar</button>
+          <button class="btn btn--danger btn--block" id="rfConfirm">Cancelar e reembolsar</button>
         </footer>
       </div>
     </div>

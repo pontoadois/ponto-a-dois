@@ -121,14 +121,7 @@
        positionImageBase = "https://seusite.com/posicoes/";            */
   /* Capas das categorias do Jogo Livre (uma imagem por categoria, no canto direito do cartão).
      Categorias sem imagem aqui ficam só com o ícone. */
-  const categoryArt = {
-    conexao: "img/capas/conexao.webp",
-    diversao: "img/capas/diversao.webp",
-    verdade: "img/capas/verdade.webp",
-    carinho: "img/capas/carinho.webp",
-    intimidade: "img/capas/intimidade.webp",
-    posicoes: "img/capas/posicoes.webp",
-  };
+  const categoryArt = {};
 
   const cards = [];
   const positions = [];

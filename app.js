@@ -110,7 +110,8 @@
     const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
       row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}</span>`) +
-      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`);
+      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`) +
+      row("heart", "Subir de nível", "Um presente a cada novo estágio do casal, quando chegam nos pontos do próximo nível.", `<span class="coins-tag">+${c.levelup_coins_2 != null ? c.levelup_coins_2 : 60} e +${c.levelup_coins_3 != null ? c.levelup_coins_3 : 120}</span>`);
     const fc = c.freeze_cost != null ? c.freeze_cost : 50, pc = c.peek_cost != null ? c.peek_cost : 30;
     const need = (cost) => (n >= cost ? '<span class="coins-tag is-done">Já dá</span>' : `<span class="coins-tag is-need">faltam ${cost - n}</span>`);
     spend.innerHTML =
@@ -456,12 +457,13 @@
     if (granted) {
       rows.push(["Pontos de conexão", "+" + res.points]);
       if (res.coins) rows.push(["Moedas", "+" + res.coins]);
+      if (res.level_coins) rows.push(["Moedas por subir de nível", "+" + res.level_coins]);
     } else {
       title = "Que bom jogar de novo!";
       sub = "Os pontos desta atividade de hoje já foram contados.";
     }
     if (streak) rows.push(["Ofensiva", `${streak.current} ${streak.current === 1 ? "dia seguido" : "dias seguidos"}`]);
-    if (granted && before && game && game.stage > before.stage) sub = `Vocês chegaram a um novo estágio: ${STAGES[game.stage - 1]}!`;
+    if (granted && before && game && game.stage > before.stage) sub = `Vocês chegaram a um novo estágio: ${STAGES[game.stage - 1]}!` + (res.level_coins ? ` E ganharam ${res.level_coins} moedas de presente.` : "");
     $("#doneTitle").textContent = title;
     $("#doneSub").textContent = sub;
     $("#doneList").innerHTML = rows.map(([k, v]) => `<div class="plan-kv"><span>${k}</span><b>${v}</b></div>`).join("");
@@ -856,12 +858,66 @@
     [1, "Cada pessoa do casal assina o seu"],
   ];
 
+  // Desistência: até 7 dias corridos depois do último pagamento (o servidor confere de novo)
+  const canRefund = () => !!(plan.premium && plan.start && Date.now() - new Date(plan.start).getTime() < 7 * 24 * 3600 * 1000);
+
+  async function confirmRefund() {
+    const err = $("#rfError");
+    const btn = $("#rfConfirm");
+    err.hidden = true;
+    btn.disabled = true;
+    btn.textContent = "Reembolsando…";
+    const r = await auth().requestRefund();
+    btn.disabled = false;
+    btn.textContent = "Cancelar e reembolsar";
+    if (!r.ok) {
+      err.textContent = r.error === "not_eligible"
+        ? "O prazo de 7 dias já passou. Use \"Cancelar assinatura\" para parar a renovação."
+        : "Não foi possível reembolsar agora. Tente de novo ou escreva para o suporte.";
+      err.hidden = false;
+      return;
+    }
+    app().closeModal();
+    await load();
+    renderPlano();
+    renderInicio();
+    app().showToast("Assinatura cancelada e valor reembolsado.");
+  }
+
+  /* ---------- Histórico de cobranças (comprovantes) ---------- */
+  const BILL_PLAN = { mensal: "Premium mensal", anual: "Premium anual", fundadores: "Premium Fundadores (anual)" };
+  const BILL_KIND = {
+    purchase: ["Assinatura contratada", ""],
+    renewal: ["Assinatura renovada", ""],
+    cancel_scheduled: ["Cancelamento solicitado", "A renovação foi interrompida. O Premium continua até o fim do período pago."],
+    reactivated: ["Assinatura reativada", "A renovação voltou a valer."],
+    refund: ["Reembolso", "Valor devolvido ao cartão. O banco costuma mostrar na fatura em até 10 dias úteis."],
+    ended: ["Assinatura encerrada", "O Premium terminou e a conta voltou ao plano gratuito."],
+  };
+  const money = (c) => (c / 100).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  async function renderHistory() {
+    const box = $("#planHistory");
+    if (!box || !auth().getBillingEvents) return;
+    const ev = await auth().getBillingEvents();
+    box.hidden = !ev.length;
+    if (!ev.length) return;
+    $("#planHistoryList").innerHTML = ev.map((e) => {
+      const [title, sub] = BILL_KIND[e.kind] || [e.kind, ""];
+      const when = new Date(e.created_at).toLocaleString("pt-BR", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+      const amt = e.amount_cents ? `<b class="bill-amt${e.kind === "refund" ? " is-refund" : ""}">${e.kind === "refund" ? "−" : ""}${money(e.amount_cents)}</b>` : "";
+      return `<li class="bill-item"><div class="bill-main"><b>${title}</b>${e.plan ? `<span>${BILL_PLAN[e.plan] || ""}</span>` : ""}${sub ? `<small>${sub}</small>` : ""}<small>${when}${e.reference ? ` · Protocolo ${esc(e.reference)}` : ""}</small></div>${amt}</li>`;
+    }).join("");
+  }
+
   function renderPlano() {
+    renderHistory();
     const paid = plan.premium;
     $("#myPlanName").textContent = paid ? "Premium" : "Gratuito";
     const badge = $("#myPlanBadge");
-    badge.textContent = paid ? "Ativa" : "R$ 0";
-    badge.classList.toggle("is-ok", paid);
+    badge.textContent = paid ? (plan.cancels ? "Cancelada" : "Ativa") : "R$ 0";
+    badge.classList.toggle("is-ok", paid && !plan.cancels);
     $("#myPlanFeat").innerHTML = (paid ? PAID_FEAT : FREE_FEAT)
       .map(([on, t]) => `<li class="${on === 1 ? "is-on" : "is-off"}">${svg(on === 1 ? "check" : on === 2 ? "info" : "lock", 18, 2.2)}<span>${t}</span></li>`).join("");
     $("#myPlanPromoFeat").innerHTML = PAID_FEAT.map(([, t]) => `<li class="is-on">${svg("check", 18, 2.2)}<span>${t}</span></li>`).join("");
@@ -871,8 +927,15 @@
     info.hidden = !paid;
     if (paid) {
       const until = plan.until ? new Date(plan.until).toLocaleDateString("pt-BR") : "";
-      info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>Assinatura ativa</b></div>` +
-        (until ? `<div class="plan-kv"><span>Acesso garantido até</span><b>${until}</b></div>` : "");
+      info.innerHTML = `<div class="plan-kv"><span>Situação</span><b>${plan.cancels ? "Cancelada, sem renovação" : "Assinatura ativa"}</b></div>` +
+        (until ? `<div class="plan-kv"><span>${plan.cancels ? "Seu Premium termina em" : "Próxima renovação"}</span><b>${until}</b></div>` : "") +
+        (plan.cancels ? `<p class="plan-card-note">Você continua com todos os benefícios até essa data. Depois, a conta volta para o plano gratuito. Para continuar com o Premium, toque em "Reativar assinatura".</p>` : "");
+      const lbl = $("#planCancelLbl");
+      if (lbl) lbl.textContent = plan.cancels ? "Reativar assinatura" : "Cancelar assinatura";
+      const rf = $("#planRefundRow");
+      if (rf) rf.hidden = !canRefund();
+      const row = $("#planCancelRow");
+      if (row) row.classList.toggle("menu-row--danger", !plan.cancels);
     }
   }
 
@@ -961,6 +1024,7 @@
     $("#passwordForm").addEventListener("submit", submitPassword);
     $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
     $("#delConfirm").addEventListener("click", confirmDelete);
+    $("#rfConfirm").addEventListener("click", confirmRefund);
     $("#recoPlay").addEventListener("click", () => {
       app().play("noite", D.categories.map((c) => c.id));
     });
