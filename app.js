@@ -1022,7 +1022,11 @@
       $("#supGmail").href = "https://mail.google.com/mail/?view=cm&fs=1&to=suporte@pontoadois.com.br&su=" + su;
       $("#supApp").href = "mailto:suporte@pontoadois.com.br?subject=" + su;
     };
-    $("#supSubject").addEventListener("change", supLinks);
+    $$("#supChips .sup-chip").forEach((c) => c.addEventListener("click", () => {
+      $$("#supChips .sup-chip").forEach((x) => x.setAttribute("aria-checked", x === c ? "true" : "false"));
+      $("#supSubject").value = c.textContent.trim();
+      supLinks();
+    }));
     supLinks();
     $("#supCopy").addEventListener("click", async () => {
       const mail = "suporte@pontoadois.com.br";
