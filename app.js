@@ -1016,9 +1016,17 @@
     $("#pfPhotoRemove").addEventListener("click", removePhoto);
     $("#rowProfile").addEventListener("click", () => app().goTo("profile"));
     $("#rowPlan").addEventListener("click", () => app().goTo("plano"));
+    const supSubject = () => "Ponto a Dois: " + $("#supSubject").value;
+    const supLinks = () => {
+      const su = encodeURIComponent(supSubject());
+      $("#supGmail").href = "https://mail.google.com/mail/?view=cm&fs=1&to=suporte@pontoadois.com.br&su=" + su;
+      $("#supApp").href = "mailto:suporte@pontoadois.com.br?subject=" + su;
+    };
+    $("#supSubject").addEventListener("change", supLinks);
+    supLinks();
     $("#supCopy").addEventListener("click", async () => {
       const mail = "suporte@pontoadois.com.br";
-      try { await navigator.clipboard.writeText(mail); app().showToast("E-mail copiado."); }
+      try { await navigator.clipboard.writeText(mail + "\nAssunto: " + supSubject()); app().showToast("E-mail e assunto copiados."); }
       catch (e) { app().showToast(mail); }
     });
     $$("[data-portal]").forEach((b) => b.addEventListener("click", () => goPortal(b)));
