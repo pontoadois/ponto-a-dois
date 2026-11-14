@@ -850,12 +850,11 @@
   }
 
   /* ---------- Meu plano ---------- */
-  // 1 = incluído, 0 = só no Premium, 2 = aviso (anúncios)
+  // 1 = incluído, 0 = só no Premium
   const FREE_FEAT = [
     [1, "70 cartas do nível Leve"],
     [1, "Categorias Conexão, Diversão e Verdade"],
     [1, "Sequência diária, pontos e moedas"],
-    [2, "Contém anúncios"],
     [0, "Níveis Picante e Intenso"],
     [0, "Categorias Carinho, Intimidade e Posições"],
     [0, "Noite de Encontro"],
@@ -865,7 +864,6 @@
     [1, "Todos os níveis: Leve, Picante e Intenso"],
     [1, "Carinho, Intimidade e Posições (com ilustrações)"],
     [1, "Noite de Encontro completa"],
-    [1, "Sem anúncios"],
     [1, "Novas cartas toda semana"],
     [1, "Cada pessoa do casal assina o seu"],
   ];
