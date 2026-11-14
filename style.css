@@ -2303,3 +2303,7 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 @media (min-width: 900px) {
   .au-hero .au-heart--hero { display: block; width: 100%; max-width: 260px; height: auto; margin: 0; align-self: flex-start; }
 }
+/* Cadastro no celular: sem o título e a frase (só o coração no canto) */
+@media (max-width: 899px) {
+  [data-screen="signup"] .au-hero { display: none; }
+}
