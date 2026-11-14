@@ -872,7 +872,7 @@
   const canRefund = () => !!(plan.premium && plan.start && Date.now() - new Date(plan.start).getTime() < 7 * 24 * 3600 * 1000);
 
   /* ---------- Motivo do cancelamento / reembolso (opcional) ---------- */
-  const REASONS = [["preco", "O preço está alto"], ["uso", "Não estamos usando o suficiente"], ["pontual", "Assinei só para um uso pontual"], ["melhor", "Encontrei uma opção melhor"], ["recursos", "Faltam cartas ou recursos"], ["tecnico", "O app tem problemas"], ["expectativa", "Não atendeu às expectativas"], ["atendimento", "Suporte ou cobrança sem solução"], ["par", "Meu par não quis usar"], ["outro", "Outro motivo"]];
+  const REASONS = [["preco", "O preço está alto"], ["uso", "Não estou usando o suficiente"], ["pontual", "Assinei só para um uso pontual"], ["melhor", "Encontrei uma opção melhor"], ["recursos", "Faltam cartas ou recursos"], ["tecnico", "O app tem problemas"], ["expectativa", "Não atendeu às expectativas"], ["atendimento", "Suporte ou cobrança sem solução"], ["par", "Meu par não quis usar"], ["outro", "Outro motivo"]];
   const DELETE_REASONS = [["uso", "Não uso mais"], ["pontual", "Já consegui o que queria"], ["melhor", "Encontrei uma opção melhor"], ["recursos", "Faltam cartas ou recursos"], ["tecnico", "O app tem problemas"], ["expectativa", "Não atendeu às expectativas"], ["atendimento", "Suporte ou cobrança sem solução"], ["privacidade", "Privacidade e dados"], ["teste", "Só estava testando"], ["outro", "Outro motivo"]];
   function bindReasons() {
     $$("[data-reasons]").forEach((box) => {
