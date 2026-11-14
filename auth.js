@@ -579,8 +579,8 @@
     return error ? null : data;
   }
 
-  async function deleteAccount() {
-    const { error } = await client.functions.invoke("delete-account");
+  async function deleteAccount(body) {
+    const { error } = await client.functions.invoke("delete-account", { body: body || {} });
     if (error) return false;
     await client.auth.signOut();
     session = null; profile = null; pending = null;

@@ -761,7 +761,7 @@
     err.hidden = true;
     btn.disabled = true;
     btn.textContent = "Excluindo…";
-    const ok = await auth().deleteAccount();
+    const ok = await auth().deleteAccount(readReason("#modalDelete"));
     btn.disabled = false;
     btn.textContent = "Excluir definitivamente";
     if (!ok) { err.textContent = "Não foi possível excluir agora. Tente de novo ou escreva para o suporte."; err.hidden = false; return; }
@@ -873,9 +873,10 @@
 
   /* ---------- Motivo do cancelamento / reembolso (opcional) ---------- */
   const REASONS = [["preco", "Está caro"], ["uso", "Não estamos usando"], ["recursos", "Faltam cartas ou recursos"], ["par", "Meu par não quis usar"], ["tecnico", "Tive algum problema"], ["outro", "Outro motivo"]];
+  const DELETE_REASONS = [["uso", "Não uso mais"], ["gostei", "Não gostei"], ["privacidade", "Privacidade e dados"], ["outro_app", "Prefiro outro app"], ["teste", "Só estava testando"], ["outro", "Outro motivo"]];
   function bindReasons() {
     $$("[data-reasons]").forEach((box) => {
-      box.innerHTML = REASONS.map(([k, t]) => `<button type="button" class="sup-chip" role="radio" aria-checked="false" data-reason="${k}">${t}</button>`).join("");
+      box.innerHTML = (box.dataset.reasons === "delete" ? DELETE_REASONS : REASONS).map(([k, t]) => `<button type="button" class="sup-chip" role="radio" aria-checked="false" data-reason="${k}">${t}</button>`).join("");
       box.addEventListener("click", (e) => {
         const c = e.target.closest(".sup-chip");
         if (!c) return;
@@ -1107,7 +1108,7 @@
     $("#rowLogout").addEventListener("click", () => auth().signOut());
     $("#rowPassword").addEventListener("click", openPassword);
     $("#passwordForm").addEventListener("submit", submitPassword);
-    $("#rowDelete").addEventListener("click", () => app().openModal("delete"));
+    $("#rowDelete").addEventListener("click", () => { resetReason("#modalDelete"); app().openModal("delete"); });
     $("#delConfirm").addEventListener("click", confirmDelete);
     $("#rfConfirm").addEventListener("click", confirmRefund);
     bindReasons();
