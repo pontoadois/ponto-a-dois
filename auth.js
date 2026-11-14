@@ -383,7 +383,7 @@
 
   async function registerPlay() {
     if (!client || !session) return null;
-    const day = spToday();
+    const day = `${session.user.id}:${spToday()}`; // por conta, para não pular quem entra depois de outra conta
     if (playedKey === day) return null;
     playedKey = day;
     // O servidor dá as moedas do dia por entrar (a ofensiva só conta quando jogam)

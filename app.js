@@ -1010,7 +1010,8 @@
   async function maybeWelcome() {
     const a = auth();
     if (!a || !a.getSession || !a.getSession()) return;
-    const day = spToday();
+    const uid = (a.getSession().user || {}).id || "";
+    const day = `${uid}:${spToday()}`; // por conta: outra conta no mesmo navegador também recebe o aviso
     let seen = null;
     try { seen = localStorage.getItem(WELCOME_KEY); } catch { /* ignore */ }
     if (seen === day || welcomedDay === day) return;
