@@ -2291,3 +2291,10 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
   .au-corner { display: none; }
   .au-hero--min .au-heart { display: block; width: 100%; max-width: 260px; height: auto; margin: 0 auto; align-self: center; }
 }
+
+@media (min-width: 900px) {
+  .au-hero--min { align-items: center; text-align: center; gap: 14px; }
+  .au-hero--min .au-hero-brand { font-size: 3.25rem; }
+  .au-hero--min .au-hero-sub { margin: 0; max-width: 24ch; font-size: 1.25rem; line-height: 1.4; color: #f13b91; }
+}
+@media (max-width: 899px) { .au-hero-brand, .au-hero-sub { display: none; } }
