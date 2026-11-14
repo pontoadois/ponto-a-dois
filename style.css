@@ -2298,3 +2298,8 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
   .au-hero--min .au-hero-sub { margin: 0; max-width: 24ch; font-size: 1.25rem; line-height: 1.4; color: #f13b91; }
 }
 @media (max-width: 899px) { .au-hero-brand, .au-hero-sub { display: none; } }
+
+/* Cadastro: coração no lugar das cartas (computador) e no canto (celular) */
+@media (min-width: 900px) {
+  .au-hero .au-heart--hero { display: block; width: 100%; max-width: 260px; height: auto; margin: 0; align-self: flex-start; }
+}
