@@ -2281,3 +2281,13 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .rs-note { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(241, 59, 145, 0.4); background: #240a23; color: #fff7ff; font: inherit; font-size: 0.9rem; resize: vertical; }
 .rs-note:focus-visible { outline: none; border-color: #f13b91; }
 .rs-note::placeholder { color: #b995ad; }
+
+/* Logo do coração: tela de entrada, tela de login */
+.home-logo { display: block; width: 76px; height: 76px; margin: 0 auto 14px; }
+.au { position: relative; }
+.au-heart { display: none; }
+.au-corner { position: absolute; top: 3px; right: 0; width: 36px; height: 36px; }
+@media (min-width: 900px) {
+  .au-corner { display: none; }
+  .au-hero--min .au-heart { display: block; width: 100%; max-width: 260px; height: auto; margin: 0 auto; align-self: center; }
+}
