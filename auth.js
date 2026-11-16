@@ -421,6 +421,12 @@
     return error ? null : data;
   }
 
+  async function getMonth(firstDay) {
+    if (!client || !session) return null;
+    const { data, error } = await client.rpc("my_month", { p_month: firstDay });
+    return error ? null : data;
+  }
+
   async function getPlan() {
     if (!client || !session) return { premium: false };
     const { data } = await client.from("subscriptions").select("status, current_period_start, current_period_end, cancel_at_period_end").eq("user_id", session.user.id).maybeSingle();
@@ -590,7 +596,7 @@
   }
 
   window.EntreNosAuth = {
-    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getPlan, startCheckout, openPortal, cancelSubscription, requestRefund, getBillingEvents, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
+    submitOnboarding, getOnboarding: () => onboard, proceed, changePassword, hasPassword, registerPlay, getStreak, getMonth, getPlan, startCheckout, openPortal, cancelSubscription, requestRefund, getBillingEvents, foundersLeft, getGame, completeQuick, completeGame, getSecret, completeSecret, peekCard, buyFreeze, saveName, saveProfile, uploadAvatar, uploadAvatarBlob, removeAvatar, deleteAccount,
     getAvatarUrl: () => avatarUrl,
     getSession: () => session,
     getProfile: () => profile,
