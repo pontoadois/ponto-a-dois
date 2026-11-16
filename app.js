@@ -538,18 +538,18 @@
     const cur = today.slice(0, 7);
     const minMonth = since ? since.slice(0, 7) : null;
     let cells = "";
-    for (let i = 0; i < lead; i++) cells += '<span class="cal-cell cal-cell--blank"></span>';
+    for (let i = 0; i < lead; i++) cells += "<span></span>";
     for (let d = 1; d <= days; d++) {
       const iso = `${calMonth}-${String(d).padStart(2, "0")}`;
-      let cls = "", inner = String(d);
-      if (played.has(iso)) cls = "is-on";
-      else if (shielded.has(iso)) { cls = "is-shield"; inner = svg("shield", 18, 2); }
-      else if (iso > today) cls = "is-future";
-      else if (iso === today) cls = "";
-      else if (!since || iso >= since) cls = "is-missed";
+      let cls = "", icon = "";
+      // Mesmos ícones da semana na tela inicial
+      if (played.has(iso)) { cls = "is-on"; icon = svg("check", 18, 2.6); if (iso === today) cls = "is-on is-now"; }
+      else if (shielded.has(iso)) { cls = "is-shield"; icon = svg("shield", 18, 1.9); }
+      else if (iso === today) { cls = "is-today"; icon = svg("flame", 18, 1.9, "none"); }
+      else if (iso > today) { cls = "is-future"; icon = svg("flame", 17, 1.7); }
+      else if (!since || iso >= since) { cls = "is-missed"; icon = svg("flameOff", 17, 1.8); }
       else cls = "is-before";
-      if (iso === today) cls += " is-now";
-      cells += `<span class="cal-cell ${cls}" ${shielded.has(iso) ? 'title="Dia protegido por bloqueio de ofensiva"' : ""}><span class="cal-dot">${inner}</span></span>`;
+      cells += `<div class="wk-day oc-day ${cls}" ${shielded.has(iso) ? 'title="Dia protegido por bloqueio de ofensiva"' : ""}><span class="wk-dot">${icon}</span><span class="oc-n">${d}</span></div>`;
     }
     const nPlayed = played.size, nShield = shielded.size;
     const sum = nPlayed || nShield
@@ -559,14 +559,14 @@
     const canNext = calMonth < cur;
     const chev = (p) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${p}"/></svg>`;
     box.innerHTML = `
-      <div class="cal-head">
-        <button type="button" class="cal-nav" data-cal="-1" aria-label="Mês anterior" ${canPrev ? "" : "disabled"}>${chev("m15 18-6-6 6-6")}</button>
-        <div class="cal-title"><b>${MONTHS[m - 1]} ${y}</b><span>${sum}</span></div>
-        <button type="button" class="cal-nav" data-cal="1" aria-label="Próximo mês" ${canNext ? "" : "disabled"}>${chev("m9 18 6-6-6-6")}</button>
+      <div class="oc-head">
+        <button type="button" class="oc-nav" data-cal="-1" aria-label="Mês anterior" ${canPrev ? "" : "disabled"}>${chev("m15 18-6-6 6-6")}</button>
+        <div class="oc-title"><b>${MONTHS[m - 1]} ${y}</b><span>${sum}</span></div>
+        <button type="button" class="oc-nav" data-cal="1" aria-label="Próximo mês" ${canNext ? "" : "disabled"}>${chev("m9 18 6-6-6-6")}</button>
       </div>
-      <div class="cal-dow">${DOW.map((n) => `<span>${n}</span>`).join("")}</div>
-      <div class="cal-grid">${cells}</div>
-      <div class="cal-legend"><span><i class="lg lg--on"></i>Jogado</span><span><i class="lg lg--shield">${svg("shield", 11, 2.4)}</i>Protegido</span><span><i class="lg lg--missed"></i>Perdido</span></div>`;
+      <div class="oc-dow">${DOW.map((n) => `<span>${n}</span>`).join("")}</div>
+      <div class="oc-grid">${cells}</div>
+      <div class="oc-legend"><span><i class="lg lg--on">${svg("check", 10, 3)}</i>Jogado</span><span><i class="lg lg--shield">${svg("shield", 11, 2.4)}</i>Protegido</span><span><i class="lg lg--missed">${svg("flameOff", 10, 2)}</i>Perdido</span></div>`;
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest && e.target.closest("[data-cal]");
