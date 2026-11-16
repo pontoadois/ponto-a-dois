@@ -495,12 +495,94 @@
     renderStreak();
   }
 
+  /* ---------- Calendário de ofensivas ---------- */
+  const MONTHS = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+  let calMonth = null; // "AAAA-MM"
+  let calToken = 0;
+  const calCache = new Map();
+  const spDay = () => (streak && streak.today) || new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
+  function calSince() {
+    try {
+      const ses = auth() && auth().getSession && auth().getSession();
+      const created = ses && ses.user && ses.user.created_at;
+      if (created) return new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date(created));
+    } catch { /* sem data de criação */ }
+    return null;
+  }
+  function calReset() {
+    calCache.clear();
+    calMonth = spDay().slice(0, 7);
+    calRender();
+  }
+  async function calRender() {
+    const box = $("#calCard");
+    if (!box || !calMonth) return;
+    const token = ++calToken;
+    const today = spDay();
+    const [y, m] = calMonth.split("-").map(Number);
+    let data = calCache.get(calMonth);
+    if (!data) {
+      try { data = await auth().getMonth(`${calMonth}-01`); } catch { data = null; }
+      if (token !== calToken) return;
+      if (data) calCache.set(calMonth, data);
+    }
+    const played = new Set((data && data.played) || []);
+    const shielded = new Set((data && data.shielded) || []);
+    // o dia de hoje já jogado pode ainda não estar no cache do mês atual: usa a semana carregada
+    ((streak && streak.week) || []).forEach((d) => { if (d.startsWith(calMonth)) played.add(d); });
+    ((streak && streak.shielded_week) || []).forEach((d) => { if (d.startsWith(calMonth)) shielded.add(d); });
+    const since = calSince();
+    const first = new Date(Date.UTC(y, m - 1, 1));
+    const lead = first.getUTCDay();
+    const days = new Date(Date.UTC(y, m, 0)).getUTCDate();
+    const cur = today.slice(0, 7);
+    const minMonth = since ? since.slice(0, 7) : null;
+    let cells = "";
+    for (let i = 0; i < lead; i++) cells += '<span class="cal-cell cal-cell--blank"></span>';
+    for (let d = 1; d <= days; d++) {
+      const iso = `${calMonth}-${String(d).padStart(2, "0")}`;
+      let cls = "", inner = String(d);
+      if (played.has(iso)) cls = "is-on";
+      else if (shielded.has(iso)) { cls = "is-shield"; inner = svg("shield", 18, 2); }
+      else if (iso > today) cls = "is-future";
+      else if (iso === today) cls = "";
+      else if (!since || iso >= since) cls = "is-missed";
+      else cls = "is-before";
+      if (iso === today) cls += " is-now";
+      cells += `<span class="cal-cell ${cls}" ${shielded.has(iso) ? 'title="Dia protegido por bloqueio de ofensiva"' : ""}><span class="cal-dot">${inner}</span></span>`;
+    }
+    const nPlayed = played.size, nShield = shielded.size;
+    const sum = nPlayed || nShield
+      ? `${nPlayed} ${nPlayed === 1 ? "dia jogado" : "dias jogados"}${nShield ? ` · ${nShield} ${nShield === 1 ? "protegido" : "protegidos"}` : ""}`
+      : "Nenhum dia jogado neste mês";
+    const canPrev = !minMonth || calMonth > minMonth;
+    const canNext = calMonth < cur;
+    const chev = (p) => `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${p}"/></svg>`;
+    box.innerHTML = `
+      <div class="cal-head">
+        <button type="button" class="cal-nav" data-cal="-1" aria-label="Mês anterior" ${canPrev ? "" : "disabled"}>${chev("m15 18-6-6 6-6")}</button>
+        <div class="cal-title"><b>${MONTHS[m - 1]} ${y}</b><span>${sum}</span></div>
+        <button type="button" class="cal-nav" data-cal="1" aria-label="Próximo mês" ${canNext ? "" : "disabled"}>${chev("m9 18 6-6-6-6")}</button>
+      </div>
+      <div class="cal-dow">${DOW.map((n) => `<span>${n}</span>`).join("")}</div>
+      <div class="cal-grid">${cells}</div>
+      <div class="cal-legend"><span><i class="lg lg--on"></i>Jogado</span><span><i class="lg lg--shield">${svg("shield", 11, 2.4)}</i>Protegido</span><span><i class="lg lg--missed"></i>Perdido</span></div>`;
+  }
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest && e.target.closest("[data-cal]");
+    if (!b || b.disabled || !calMonth) return;
+    const [y, m] = calMonth.split("-").map(Number);
+    const d = new Date(Date.UTC(y, m - 1 + Number(b.dataset.cal), 1));
+    calMonth = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+    calRender();
+  });
+
   /* ---------- Sequência ---------- */
   function renderStreak() {
     const n = (streak && streak.current) || 0;
     $("#streakBig").textContent = n;
     $("#streakLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
-    $("#weekBig").innerHTML = weekHtml();
+    calReset();
     const stats = [
       [(streak && streak.best) || 0, "Sequência mais longa", "flame"],
       [(streak && streak.month_days) || 0, "Dias jogados neste mês", "heart"],
