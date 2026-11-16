@@ -2313,28 +2313,33 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .wk-day.is-shield { color: #f13b91; }
 
 /* Calendário de ofensivas */
-.cal-card { padding: 16px 14px 14px; }
-.cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
-.cal-title { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
-.cal-title b { font-family: "Inter", sans-serif; font-size: 1.05rem; color: #fff7ff; }
-.cal-title span { font-size: 0.82rem; color: #f0dce8; }
-.cal-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(241, 59, 145, 0.35); background: transparent; color: #f13b91; display: grid; place-items: center; cursor: pointer; }
-.cal-nav:disabled { opacity: 0.25; cursor: default; }
-.cal-dow, .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px 2px; }
-.cal-dow { margin-bottom: 6px; }
-.cal-dow span { text-align: center; font-size: 0.72rem; color: #e6cddc; opacity: 0.75; }
-.cal-cell { display: grid; place-items: center; }
-.cal-dot { width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; font-size: 0.86rem; color: #f0dce8; border: 1px solid transparent; }
-.cal-cell.is-on .cal-dot { background: #f13b91; color: #fff; font-weight: 700; }
-.cal-cell.is-shield .cal-dot { border: 2px solid #f13b91; background: rgba(241, 59, 145, 0.14); color: #f13b91; }
-.cal-cell.is-missed .cal-dot { color: #e6cddc; border: 1px dashed rgba(241, 59, 145, 0.45); opacity: 0.8; }
-.cal-cell.is-future .cal-dot, .cal-cell.is-before .cal-dot { color: #e6cddc; opacity: 0.28; }
-.cal-cell.is-now .cal-dot { border: 2px solid #f13b91; font-weight: 700; }
-.cal-cell.is-now.is-on .cal-dot { border-color: #fff7ff; }
-.cal-legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.78rem; color: #e6cddc; }
-.cal-legend span { display: inline-flex; align-items: center; gap: 6px; }
-.lg { width: 14px; height: 14px; border-radius: 50%; display: inline-grid; place-items: center; }
-.lg--on { background: #f13b91; }
-.lg--shield { border: 1.5px solid #f13b91; color: #f13b91; width: 18px; height: 18px; }
-.lg--missed { border: 1px dashed rgba(241, 59, 145, 0.6); }
-@media (max-width: 420px) { .cal-dot { width: 34px; height: 34px; } }
+.oc-card { padding: 16px 12px 14px; }
+.oc-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 12px; }
+.oc-title { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2px; }
+.oc-title b { font-family: "Inter", sans-serif; font-size: 1.05rem; color: #fff7ff; }
+.oc-title span { font-size: 0.82rem; color: #f0dce8; }
+.oc-nav { width: 36px; height: 36px; border-radius: 50%; border: 1px solid rgba(241, 59, 145, 0.35); background: transparent; color: #f13b91; display: grid; place-items: center; cursor: pointer; }
+.oc-nav:disabled { opacity: 0.25; cursor: default; }
+.oc-dow, .oc-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px 2px; }
+.oc-grid { row-gap: 10px; }
+.oc-dow { margin-bottom: 8px; }
+.oc-dow span { text-align: center; font-size: 0.72rem; color: #e6cddc; opacity: 0.75; }
+.oc-grid, .oc-dow { min-width: 0; }
+.oc-grid { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.oc-day { gap: 4px; min-width: 0; }
+.oc-day .wk-dot { width: 38px; height: 38px; }
+.oc-n { font-size: 0.72rem; line-height: 1; color: #e6cddc; }
+.oc-day.is-on .wk-dot { background: #f13b91; border-color: transparent; color: #fff; box-shadow: none; }
+.oc-day.is-today .wk-dot { background: rgba(241, 59, 145, 0.1); }
+.oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
+.oc-day.is-today, .oc-day.is-now { color: #f13b91; }
+.oc-day.is-today .oc-n, .oc-day.is-now .oc-n { color: #f13b91; font-weight: 700; }
+.oc-day.is-before .wk-dot { visibility: hidden; }
+.oc-day.is-before .oc-n { opacity: 0.35; }
+.oc-legend { display: flex; justify-content: center; gap: 16px; margin-top: 14px; font-size: 0.78rem; color: #e6cddc; flex-wrap: wrap; }
+.oc-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.lg { width: 18px; height: 18px; border-radius: 50%; display: inline-grid; place-items: center; }
+.lg--on { background: #f13b91; color: #fff; }
+.lg--shield { border: 1.5px solid #f13b91; color: #f13b91; }
+.lg--missed { border: 1px dashed rgba(241, 59, 145, 0.6); color: #f13b91; }
+@media (max-width: 420px) { .oc-day .wk-dot { width: 34px; height: 34px; } }
