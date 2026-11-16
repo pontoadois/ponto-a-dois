@@ -7,16 +7,16 @@
 :root {
   /* Paleta oficial (sem degradês) */
   --bg: #160713;        /* Ameixa Profunda: fundo principal */
-  --surface: #240a23;   /* Vinho: superfícies e cartas */
+  --surface: #450221;   /* Vinho: superfícies e cartas */
   --violet: #f13b91;    /* Violeta: apoio (uso mínimo) */
   --pink: #f13b91;      /* Rosa Vivo: marca, botões, destaques */
   /* Paleta principal: ameixa profunda, rosa neon e violeta */
-  /* Paleta de vinhos (teste): #1D011B, #24021F, #240a23, #40012A, #240a23 */
+  /* Paleta de vinhos (teste): #1D011B, #24021F, #450221, #40012A, #450221 */
   --wine-900: #160713;
   --wine-800: #160713;
-  --wine-700: #240a23;
-  --wine-600: #240a23;
-  --wine-500: #240a23;
+  --wine-700: #450221;
+  --wine-600: #450221;
+  --wine-500: #450221;
   --red-500: #be1f72;
   --red-400: #f13b91;
   --red-300: #f13b91;
@@ -27,7 +27,7 @@
   /* Neutros */
   --ink-900: #160713;
   --ink-800: #160713;
-  --ink-700: #240a23;
+  --ink-700: #450221;
   --white: #fff7ff;
   --muted: #f0dce8;
   --muted-2: #e6cddc;
@@ -1143,7 +1143,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .st-steps { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); }
 .st-step { display: flex; flex-direction: column; align-items: center; gap: 8px; background: none; border: 0; color: var(--white); font-size: 0.9rem; cursor: pointer; padding: 0; min-height: 44px; }
 .st-dotwrap { height: 26px; display: flex; align-items: center; }
-.st-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(241, 59, 145, 0.4); background: #240a23; transition: all 0.3s var(--ease); }
+.st-dot { width: 20px; height: 20px; border-radius: 50%; border: 2px solid rgba(241, 59, 145, 0.4); background: #450221; transition: all 0.3s var(--ease); }
 .st-step.is-on .st-dot { width: 26px; height: 26px; background: #f13b91; border-color: #fff7ff; box-shadow: 0 0 0 5px rgba(241, 59, 145, 0.25); }
 .st-step:not(.is-on) { color: #f0dce8; }
 .st-help { margin: 12px 8px 8px; text-align: center; font-size: 0.82rem; line-height: 1.4; color: #f0dce8; }
@@ -1427,7 +1427,7 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .app-main { display: flex; flex-direction: column; gap: 22px; }
 .app-side { display: flex; flex-direction: column; gap: 22px; }
 .reco { border-radius: 20px; border: 1px solid rgba(241, 59, 145, 0.5); background: rgba(241, 59, 145, 0.28); padding: 22px; display: flex; flex-direction: column; gap: 14px; align-items: flex-start; text-align: left; }
-.reco-tag { padding: 4px 12px; border-radius: 999px; background: #fff7ff; color: #240a23; font-size: 0.8rem; font-weight: 600; }
+.reco-tag { padding: 4px 12px; border-radius: 999px; background: #fff7ff; color: #450221; font-size: 0.8rem; font-weight: 600; }
 .reco-title { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 2.1rem; line-height: 1.05; }
 .reco p { margin: 0; font-size: 0.95rem; line-height: 1.5; color: var(--muted); max-width: 340px; }
 .premium-banner { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 56px; width: 100%; border-radius: 999px; background: rgba(241, 59, 145, 0.22); border: 1px solid rgba(241, 59, 145, 0.55); color: #f13b91; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.06em; cursor: pointer; }
@@ -1494,8 +1494,8 @@ button { background: none; border: none; cursor: pointer; touch-action: manipula
 .plan-info b { font-size: 1.1rem; font-weight: 600; }
 .plan-info span { font-size: 0.9rem; color: var(--muted); }
 .plan-info small { font-size: 0.8rem; color: var(--muted); }
-.plan-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); padding: 3px 14px; border-radius: 999px; background: #fff7ff; color: #240a23; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
-.plan-off { padding: 4px 10px; border-radius: 999px; background: #fff7ff; color: #240a23; font-size: 0.82rem; font-weight: 700; }
+.plan-badge { position: absolute; top: -13px; left: 50%; transform: translateX(-50%); padding: 3px 14px; border-radius: 999px; background: #fff7ff; color: #450221; font-size: 0.75rem; font-weight: 600; white-space: nowrap; }
+.plan-off { padding: 4px 10px; border-radius: 999px; background: #fff7ff; color: #450221; font-size: 0.82rem; font-weight: 700; }
 .plans-note { margin: 0; text-align: center; font-size: 0.82rem; line-height: 1.5; color: var(--muted); }
 .plans-links { margin: 0; text-align: center; font-size: 0.88rem; color: var(--muted); }
 .plans-links a { color: #f13b91; display: inline-block; min-height: 28px; }
@@ -1884,9 +1884,9 @@ button.prof-head > svg { flex-shrink: 0; color: var(--muted); }
    ============================================================ */
 :root {
   --grad-pink: linear-gradient(100deg, #f13b91 0%, #f13b91 55%, #f13b91 135%);
-  --grad-card: linear-gradient(150deg, rgba(36, 10, 35, 0.92) 0%, rgba(34, 9, 33, 0.92) 55%, rgba(22, 7, 19, 0.96) 100%);
-  --grad-card-hot: linear-gradient(135deg, rgba(241, 59, 145, 0.34) 0%, rgba(36, 10, 35, 0.92) 62%, rgba(34, 9, 33, 0.96) 100%);
-  --grad-card-soft: linear-gradient(150deg, rgba(36, 10, 35, 0.6) 0%, rgba(22, 7, 19, 0.7) 100%);
+  --grad-card: linear-gradient(150deg, rgba(69, 2, 33, 0.92) 0%, rgba(34, 9, 33, 0.92) 55%, rgba(22, 7, 19, 0.96) 100%);
+  --grad-card-hot: linear-gradient(135deg, rgba(241, 59, 145, 0.34) 0%, rgba(69, 2, 33, 0.92) 62%, rgba(34, 9, 33, 0.96) 100%);
+  --grad-card-soft: linear-gradient(150deg, rgba(69, 2, 33, 0.6) 0%, rgba(22, 7, 19, 0.7) 100%);
   --glow-pink: 0 8px 26px rgba(241, 59, 145, 0.38);
 }
 body { background: #160713; }
@@ -1894,7 +1894,7 @@ body { background: #160713; }
   background:
     radial-gradient(ellipse 60% 50% at 85% 0%, rgba(241, 59, 145, 0.22), transparent 70%),
     radial-gradient(ellipse 50% 45% at 100% 55%, rgba(241, 59, 145, 0.12), transparent 70%),
-    linear-gradient(180deg, #160713 0%, #230a24 55%, #240a23 130%);
+    linear-gradient(180deg, #160713 0%, #230a24 55%, #450221 130%);
 }
 
 /* Botões e elementos de marca */
@@ -1911,15 +1911,15 @@ body { background: #160713; }
 .exp-card--night { background: var(--grad-card); border-color: rgba(241, 59, 145, 0.4); }
 .secret-card, .pm-banner, .plan-card, .plan-card--promo { background: var(--grad-card); }
 .plan-card--promo { background: var(--grad-card-hot); border-color: rgba(241, 59, 145, 0.5); }
-.modal-card { background: linear-gradient(160deg, #240a23 0%, #22091f 70%, #160713 100%); }
-.secret-ico { background: linear-gradient(155deg, #240a23, #160713); }
+.modal-card { background: linear-gradient(160deg, #450221 0%, #22091f 70%, #160713 100%); }
+.secret-ico { background: linear-gradient(155deg, #450221, #160713); }
 .game-tile, .app-card, .stat, .menu-row, .recent-item, .plan-opt, .plans-box, .au-panel, .st-panel {
   background: var(--grad-card-soft); border-color: rgba(241, 59, 145, 0.4);
 }
 
 /* Navegação lateral: item ativo com brilho rosa */
 @media (min-width: 900px) {
-  .appnav-item[aria-current="page"] { background: linear-gradient(90deg, rgba(241, 59, 145, 0.26), rgba(36, 10, 35, 0.4)); }
+  .appnav-item[aria-current="page"] { background: linear-gradient(90deg, rgba(241, 59, 145, 0.26), rgba(69, 2, 33, 0.4)); }
 }
 .home-title { background: none; }
 
@@ -1953,9 +1953,9 @@ body { background: #160713; }
   --glass-bg: rgba(255, 120, 190, 0.07);
   --glass-brd: rgba(255, 140, 200, 0.28);
   --glass-brd-hi: rgba(241, 59, 145, 0.55);
-  --grad-card-hot: linear-gradient(135deg, rgba(150, 28, 92, 0.36) 0%, rgba(36, 10, 35, 0.6) 42%, rgba(22, 7, 19, 0.9) 100%);
-  --grad-card: linear-gradient(135deg, rgba(36, 10, 35, 0.45), rgba(22, 7, 19, 0.85));
-  --grad-card-soft: linear-gradient(135deg, rgba(36, 10, 35, 0.4), rgba(22, 7, 19, 0.8));
+  --grad-card-hot: linear-gradient(135deg, rgba(150, 28, 92, 0.36) 0%, rgba(69, 2, 33, 0.6) 42%, rgba(22, 7, 19, 0.9) 100%);
+  --grad-card: linear-gradient(135deg, rgba(69, 2, 33, 0.45), rgba(22, 7, 19, 0.85));
+  --grad-card-soft: linear-gradient(135deg, rgba(69, 2, 33, 0.4), rgba(22, 7, 19, 0.8));
 }
 .bg-gradient { background: radial-gradient(ellipse 60% 50% at 85% 0%, rgba(241, 59, 145, 0.22), transparent 70%), radial-gradient(ellipse 50% 45% at 100% 55%, rgba(241, 59, 145, 0.10), transparent 70%), linear-gradient(180deg, #160713 0%, #190817 100%); }
 .btn--primary, .pm-btn, .app-avatar, .appnav-avatar, .appnav-play, .wk-day.is-on .wk-dot, .welcome-flame { background: #f13b91; }
@@ -1970,7 +1970,7 @@ body { background: #160713; }
 
 /* Carta do jogo: mais escura, sem o roxo */
 .card, .screen--game .card {
-  background: linear-gradient(160deg, rgba(36, 10, 35, 0.95) 0%, rgba(34, 9, 33, 0.97) 50%, rgba(20, 6, 18, 0.99) 100%);
+  background: linear-gradient(160deg, rgba(69, 2, 33, 0.95) 0%, rgba(34, 9, 33, 0.97) 50%, rgba(20, 6, 18, 0.99) 100%);
   border: 1px solid rgba(241, 59, 145, 0.45);
   box-shadow: inset 0 1px 0 rgba(255, 200, 230, 0.16), 0 18px 45px rgba(0, 0, 0, 0.35);
 }
@@ -2265,7 +2265,7 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 
 .sup-field { display: flex; flex-direction: column; gap: 8px; margin: 4px 0 14px; font-size: 0.85rem; color: #f0dce8; }
 .sup-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.sup-chip { padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(241, 59, 145, 0.4); background: #240a23; color: #f0dce8; font: inherit; font-size: 0.85rem; cursor: pointer; transition: background .15s, border-color .15s, color .15s; }
+.sup-chip { padding: 9px 14px; border-radius: 999px; border: 1px solid rgba(241, 59, 145, 0.4); background: #450221; color: #f0dce8; font: inherit; font-size: 0.85rem; cursor: pointer; transition: background .15s, border-color .15s, color .15s; }
 .sup-chip:hover { border-color: #f13b91; }
 .sup-chip[aria-checked="true"] { background: #f13b91; border-color: #f13b91; color: #fff7ff; font-weight: 600; }
 .sup-chip:focus-visible { outline: 2px solid #f13b91; outline-offset: 2px; }
@@ -2278,7 +2278,7 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .wk-day.is-now { color: #f13b91; font-weight: 600; }
 
 .rs-field { margin-top: 14px; }
-.rs-note { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(241, 59, 145, 0.4); background: #240a23; color: #fff7ff; font: inherit; font-size: 0.9rem; resize: vertical; }
+.rs-note { width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid rgba(241, 59, 145, 0.4); background: #450221; color: #fff7ff; font: inherit; font-size: 0.9rem; resize: vertical; }
 .rs-note:focus-visible { outline: none; border-color: #f13b91; }
 .rs-note::placeholder { color: #b995ad; }
 
