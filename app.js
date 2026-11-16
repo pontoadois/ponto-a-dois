@@ -15,6 +15,7 @@
     flame: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4",
     flameOff: "M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4 M4 4l16 16",
     crown: "M11.562 3.266a.5.5 0 0 1 .876 0L15.39 8.87a1 1 0 0 0 1.516.294L21.183 5.5a.5.5 0 0 1 .798.519l-2.834 10.246a1 1 0 0 1-.956.734H5.81a1 1 0 0 1-.957-.734L2.02 6.02a.5.5 0 0 1 .798-.519l4.276 3.664a1 1 0 0 0 1.516-.294z M5 21h14",
+    shield: "M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z",
     heart: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
     calendar: "M8 2v4 M16 2v4 M3 10h18 M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z",
     heartFill: "M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z",
@@ -69,6 +70,7 @@
   function weekHtml(home) {
     const today = (streak && streak.today) || new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo" }).format(new Date());
     const played = new Set((streak && streak.week) || []);
+    const shielded = new Set((streak && streak.shielded_week) || []);
     const base = new Date(today + "T12:00:00");
     const dow = base.getDay();
     // Dias antes de a conta existir não contam como perdidos
@@ -86,7 +88,8 @@
       let icon = played.has(iso) || iso === today ? svg("flame", 20, 1.9, played.has(iso) ? "rgba(255,247,255,.3)" : "none") : "";
       // Dias vazios: perdido (chama riscada) ou futuro (chama só de contorno)
       if (!played.has(iso) && iso !== today) {
-        if (iso > today) { cls = "is-future"; icon = svg("flame", 19, 1.7); }
+        if (shielded.has(iso)) { cls = "is-shield"; icon = svg("shield", 19, 1.9); }
+        else if (iso > today) { cls = "is-future"; icon = svg("flame", 19, 1.7); }
         else if (!since || iso >= since) { cls = "is-missed"; icon = svg("flameOff", 19, 1.8); }
       }
       if (home) {
@@ -1027,7 +1030,13 @@
     const n = streak.current || 0;
     const today = streak.today;
     const playedToday = ((streak.week) || []).includes(today);
-    if (playedToday) {
+    const sh = (reg && reg.shield) || 0;
+    const left = game && typeof game.freezes === "number" ? game.freezes : null;
+    if (sh > 0) {
+      $("#welTitle").textContent = "Sua ofensiva foi protegida!";
+      const quando = sh === 1 ? "ontem" : `em ${sh} dias`;
+      $("#welSub").textContent = `Vocês não jogaram ${quando}, então um bloqueio de ofensiva foi usado e a sequência de ${n} ${n === 1 ? "dia" : "dias"} continua.` + (left !== null ? ` Restam ${left} ${left === 1 ? "bloqueio" : "bloqueios"}.` : "") + " Joguem hoje para mantê-la.";
+    } else if (playedToday) {
       $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
       $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
     } else {
