@@ -5,16 +5,16 @@
 .back{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid rgba(255,247,255,.18);background:rgba(255,247,255,.05);color:#fff7ff;text-decoration:none;font-size:.9rem}
 h1{font-family:'Inter',system-ui,sans-serif;font-weight:600;font-size:2.6rem;line-height:1.05;margin:0 0 8px}
 .upd{color:rgba(255,247,255,.65);font-size:.9rem;margin:0 0 28px}
-h2{font-size:1.15rem;font-weight:600;margin:34px 0 8px;color:#f13b91}
+h2{font-size:1.15rem;font-weight:600;margin:34px 0 8px;color:#fb1669}
 p,li{font-size:1rem;color:rgba(255,247,255,.86)}
 ul{padding-left:22px}li{margin:6px 0}
-a{color:#f13b91}a:hover{color:#fff7ff}
-mark.ph{background:rgba(241,59,145,.18);color:#f13b91;border-radius:4px;padding:0 4px}
+a{color:#fb1669}a:hover{color:#fff7ff}
+mark.ph{background:rgba(251, 22, 105,.18);color:#fb1669;border-radius:4px;padding:0 4px}
 .foot{margin-top:48px;padding-top:20px;border-top:1px solid rgba(255,247,255,.14);font-size:.9rem;color:rgba(255,247,255,.65)}
 @media(min-width:640px){.wrap{padding-top:40px}h1{font-size:3.2rem}}
 /* Barra de rolagem no mesmo estilo do site: fina e rosada */
-html { scrollbar-width: thin; scrollbar-color: rgba(241, 59, 145, 0.35) #160713; background: #160713; color-scheme: dark; }
+html { scrollbar-width: thin; scrollbar-color: rgba(251, 22, 105, 0.35) #160713; background: #160713; color-scheme: dark; }
 ::-webkit-scrollbar { width: 8px; height: 8px; background: #160713; }
 ::-webkit-scrollbar-track { background: #160713; }
-::-webkit-scrollbar-thumb { background: rgba(241, 59, 145, 0.35); border-radius: 8px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(241, 59, 145, 0.55); }
+::-webkit-scrollbar-thumb { background: rgba(251, 22, 105, 0.35); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(251, 22, 105, 0.55); }
