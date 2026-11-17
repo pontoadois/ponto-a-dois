@@ -44,7 +44,7 @@
 
   /* Tipografia */
   --font-display: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-body: "Outfit", system-ui, -apple-system, sans-serif;
+  --font-body: "Poppins", system-ui, -apple-system, sans-serif;
 
   /* Espaçamento (base 8px) */
   --sp-1: 4px;
@@ -1615,7 +1615,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .photo-hint { margin: 0; font-size: 0.85rem; color: var(--muted); text-align: center; }
 
 /* Botão "?" (Como jogar) ao lado da ofensiva */
-.help-btn { width: 44px; height: 44px; flex-shrink: 0; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid rgba(251, 22, 105, 0.4); background: rgba(255, 120, 190, 0.06); color: #fb1669; font-family: "Outfit", system-ui, sans-serif; font-size: 1.15rem; font-weight: 600; line-height: 1; cursor: pointer; transition: border-color var(--t-fast, 0.15s), background var(--t-fast, 0.15s); }
+.help-btn { width: 44px; height: 44px; flex-shrink: 0; display: inline-grid; place-items: center; border-radius: 50%; border: 1px solid rgba(251, 22, 105, 0.4); background: rgba(255, 120, 190, 0.06); color: #fb1669; font-family: "Poppins", system-ui, sans-serif; font-size: 1.15rem; font-weight: 600; line-height: 1; cursor: pointer; transition: border-color var(--t-fast, 0.15s), background var(--t-fast, 0.15s); }
 .help-btn:hover { border-color: rgba(251, 22, 105, 0.4); background: rgba(255, 120, 190, 0.12); }
 .help-btn:focus-visible { outline: 2px solid #fb1669; outline-offset: 2px; }
 

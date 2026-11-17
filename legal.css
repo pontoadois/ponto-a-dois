@@ -1,4 +1,4 @@
-*{box-sizing:border-box}body{margin:0;font-family:'Outfit',system-ui,sans-serif;color:#fff7ff;line-height:1.7;background:#160713;min-height:100vh}
+*{box-sizing:border-box}body{margin:0;font-family:'Poppins',system-ui,sans-serif;color:#fff7ff;line-height:1.7;background:#160713;min-height:100vh}
 .wrap{max-width:760px;margin:0 auto;padding:24px 20px 72px}
 .top{display:flex;align-items:center;justify-content:flex-start;gap:12px;margin-bottom:28px}
 .brand{font-family:'Inter',system-ui,sans-serif;font-weight:600;font-size:1.6rem;color:#fff7ff;text-decoration:none}
