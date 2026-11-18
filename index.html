@@ -401,9 +401,11 @@
 
       <!-- ============ APP: SEQUÊNCIA ============ -->
       <section class="screen screen--app" data-screen="streak">
-        <div class="app">
+        <div class="app app--streak">
           <div class="app-bar"><button type="button" class="icon-btn" data-goto="inicio" aria-label="Voltar"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 19-7-7 7-7 M19 12H5"/></svg></button><h1 class="app-title">Sequência</h1></div>
+          <div class="st-col st-col--a">
           <div class="streak-hero">
+            <h2 class="app-h2 st-title">Sequência</h2>
             <div><div class="streak-num" id="streakBig">0</div><div class="streak-lbl" id="streakLbl">dias seguidos</div><p>Jogar um pouquinho por dia aproxima vocês.</p></div>
             <span class="streak-flame"><svg class="fl" width="150" height="141" viewBox="-20 -14 160 150" aria-hidden="true">
   <defs>
@@ -436,10 +438,13 @@
             <div class="shield-txt"><b id="shieldCount">0 de 2</b><p>Protege a sua sequência em um dia em que você não conseguir jogar. Ele é usado sozinho, quando for preciso.</p></div>
             <button type="button" class="btn btn--primary" id="buyFreeze">Comprar</button>
           </div>
+          </div>
+          <div class="st-col st-col--b">
           <h2 class="app-h2">Calendário</h2>
           <div class="app-card oc-card" id="calCard" aria-label="Calendário de ofensivas"></div>
           <h2 class="app-h2">Resumo</h2>
           <div class="stat-list" id="statList"></div>
+          </div>
         </div>
       </section>
 
