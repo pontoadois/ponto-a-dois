@@ -207,7 +207,10 @@
     $("#heatStage").textContent = STAGES[g.stage - 1];
     $("#heatMsg").textContent = heatMessage(g, onb);
     $("#heatPct").textContent = g.heat + "%";
-    $("#heatGauge").style.setProperty("--p", g.heat);
+    // O coração enche até a porcentagem (a subida só anima depois do primeiro desenho)
+    const gauge = $("#heatGauge");
+    requestAnimationFrame(() => requestAnimationFrame(() => gauge.style.setProperty("--p", g.heat)));
+    gauge.setAttribute("aria-label", `Termômetro em ${g.heat}%`);
     // A barra mostra o caminho até o próximo estágio (os pontos nunca diminuem)
     const span = g.next_at ? g.next_at - g.stage_start : 1;
     const pct = g.next_at ? Math.min(100, Math.round(((g.points - g.stage_start) / span) * 100)) : 100;
