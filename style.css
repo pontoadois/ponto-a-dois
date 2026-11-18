@@ -2527,3 +2527,33 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
 .chest-count .coin-ico { align-self: center; }
 .coin-pill .coin-ico { width: 20px; height: 20px; }
 .heat-chips .chip-st--gold .coin-ico { width: 22px; height: 22px; }
+
+/* ===== Ícones de recompensa (família da moeda) ===== */
+.ico { flex: none; display: block; }
+.chip-st > .ico, .heat-date > .ico, .heat-next > .ico { flex: none; }
+body .heat-chips .chip-st .ico { width: 22px; height: 22px; }
+.streak-pill .ico { width: 22px; height: 22px; }
+.shield-ico .ico { width: 28px; height: 28px; }
+
+/* semana e calendário: chama acesa nos dias jogados */
+body .wk-day .wk-dot { background: rgba(251, 22, 105, 0.07); border: 1px solid rgba(251, 22, 105, 0.3); box-shadow: none; }
+body .wk-day.is-on .wk-dot, body .week-card--home .wk-day.is-on .wk-dot, body .oc-day.is-on .wk-dot { background: rgba(251, 22, 105, 0.22); border: 1.5px solid #fb1669; box-shadow: none; color: inherit; }
+body .wk-day.is-today .wk-dot, body .week-card--home .wk-day.is-today .wk-dot, body .oc-day.is-today .wk-dot { background: rgba(251, 22, 105, 0.12); border: 2px solid #fb1669; }
+body .wk-day.is-shield .wk-dot { background: rgba(251, 22, 105, 0.12); border: 1.5px solid #fb1669; }
+body .wk-day.is-missed .wk-dot { background: none; border: 1px dashed rgba(251, 22, 105, 0.5); }
+body .wk-day.is-future .wk-dot { background: rgba(251, 22, 105, 0.05); border: 1px solid rgba(251, 22, 105, 0.22); }
+body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
+.lg { background: none; }
+.lg--on { border: 1.5px solid #fb1669; }
+
+/* botão de espiar: as costas das duas cartas em leque */
+.peek-btn { min-height: 80px; gap: 14px; }
+.peek-fan { position: relative; flex: none; width: 70px; height: 58px; }
+.peek-fan .pf { position: absolute; top: 3px; width: 34px; aspect-ratio: 5 / 7; border-radius: 5px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(251, 22, 105, 0.5); }
+.peek-fan .pf svg { display: block; width: 100%; height: 100%; }
+.peek-fan .pf--eco { left: 2px; transform: rotate(-9deg); }
+.peek-fan .pf--rosa { left: 26px; transform: rotate(8deg); }
+.peek-btn #peekLbl { display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; gap: 12px; min-width: 0; text-align: left; }
+.peek-btn .peek-cost { display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px; border-radius: 999px; background: rgba(251, 22, 105, 0.16); border: 1px solid rgba(251, 22, 105, 0.5); color: #fff7ff; font-weight: 600; font-size: 0.92em; white-space: nowrap; }
+@media (max-width: 460px) { .peek-fan { width: 58px; height: 50px; } .peek-fan .pf { width: 28px; } .peek-fan .pf--rosa { left: 22px; } .peek-btn { gap: 10px; padding-left: 12px; padding-right: 12px; } .peek-btn #peekLbl { gap: 8px; } }
+@media (max-width: 340px) { .peek-fan { display: none; } }
