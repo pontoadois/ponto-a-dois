@@ -228,7 +228,7 @@
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
     renderCoins();
-    $("#heatProgLeft").textContent = g.next_at ? `faltam ${g.next_at - g.points} pontos` : "";
+    $("#heatProgMsg").textContent = g.next_at ? "Pontos para o próximo nível" : "Vocês estão no nível mais alto";
     const next = g.next_at ? "" : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : (next ? " " : "") + '<button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
