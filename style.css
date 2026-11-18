@@ -2615,7 +2615,7 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 /* ===== Cadeado e coroa animados ===== */
 .ax{overflow:visible}
 #axLock,#axCrown{overflow:visible}
-#axLock *,#axCrown *{transform-box:fill-box}
+:where(#axLock,#axCrown) *{transform-box:fill-box}
 
 .ax-lk{transform-box:view-box;transform-origin:12px 21px;animation:axk-lkbody 4.2s ease-in-out infinite}
 .ax-sh{transform-box:view-box;transform-origin:16px 10.8px;animation:axk-shackle 4.2s ease-in-out infinite}
@@ -2657,3 +2657,5 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 @keyframes axk-burst{0%,40%{opacity:0;transform:scale(.3) rotate(0)}52%{opacity:1;transform:scale(1.2) rotate(20deg)}66%,100%{opacity:0;transform:scale(.4) rotate(40deg)}}
 @media (prefers-reduced-motion:reduce){.fh,.ax-rays,.ax-rays2,.gem,.burst{animation:none}.fh,.burst{opacity:0}.gem{opacity:.9}}
 @media (prefers-reduced-motion:reduce){.ax-halo,.ax-lk,.ax-sh,.ax-key,.ax-lring,.ax-sp,.ax-cr,.ax-gleam,.ax-hb,.ax-gl-floor,.ax-gl-core{animation:none}.ax-lring,.ax-sp,.ax-gleam{opacity:0}}
+
+.secret-ico .ax{width:48px;height:48px}
