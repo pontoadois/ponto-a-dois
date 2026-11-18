@@ -1129,14 +1129,69 @@
       $("#welTitle").textContent = n === 0 ? "Que bom ter você aqui!" : "Que bom ter você de volta!";
       $("#welSub").textContent = n === 0 ? "Jogue hoje para começar a sua ofensiva." : `Jogue hoje para manter a ofensiva de ${n} ${n === 1 ? "dia" : "dias"}.`;
     }
-    if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas por entrar hoje.`;
-    $("#welNum").textContent = n;
-    $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
-    $("#welWeek").innerHTML = weekHtml();
-    app().openModal("welcome");
-    const ok = $("#welOk");
-    if (ok) ok.focus();
+    const showWelcome = () => {
+      $("#welNum").textContent = n;
+      $("#welLbl").textContent = n === 1 ? "dia seguido" : "dias seguidos";
+      $("#welWeek").innerHTML = weekHtml();
+      app().openModal("welcome");
+      const ok = $("#welOk");
+      if (ok) ok.focus();
+    };
+    // Moedas por entrar hoje: o baú vem primeiro, num aviso só dele; depois o aviso da ofensiva
+    if (reg && reg.coins) playChest(reg.coins, showWelcome); else showWelcome();
   }
+
+  /* ---------- Baú de moedas (presente por entrar hoje) ---------- */
+  let chestState = null;
+  function playChest(coins, then) {
+    const box = $("#chestBox"), btn = $("#chestBtn");
+    if (!box || !btn) { if (then) then(); return; }
+    box.classList.remove("is-open");
+    $("#chestNum").textContent = "0";
+    $("#chestCount").hidden = true;
+    $("#chSub").textContent = "Toque no baú para abrir.";
+    btn.textContent = "Abrir baú";
+    chestState = { coins, then, opened: false, done: false };
+    app().openModal("chest");
+    btn.focus();
+  }
+  function openChest() {
+    const s = chestState;
+    if (!s || s.opened) return;
+    s.opened = true;
+    const box = $("#chestBox"), num = $("#chestNum"), btn = $("#chestBtn");
+    box.classList.add("is-open");
+    $("#chSub").textContent = "Você ganhou moedas por entrar hoje.";
+    $("#chestCount").hidden = false;
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) num.textContent = s.coins;
+    else {
+      const t0 = performance.now();
+      const tick = (t) => {
+        const k = Math.min(1, Math.max(0, (t - t0 - 350) / 900));
+        num.textContent = Math.round(s.coins * k);
+        if (k < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+    btn.textContent = "Continuar";
+  }
+  (function initChest() {
+    const m = $("#modalChest"), box = $("#chestBox"), btn = $("#chestBtn");
+    if (!m || !box || !btn) return;
+    box.addEventListener("click", openChest);
+    btn.addEventListener("click", () => { if (!chestState || !chestState.opened) openChest(); else app().closeModal(); });
+    // Ao fechar o baú (botão, Esc...), segue para o aviso da ofensiva
+    new MutationObserver(() => {
+      const s = chestState;
+      if (!s || s.done || m.classList.contains("is-open")) return;
+      s.done = true;
+      const next = s.then;
+      chestState = null;
+      if (next) setTimeout(next, 220);
+    }).observe(m, { attributes: true, attributeFilter: ["class"] });
+    window.EntreNosChest = { play: playChest };
+  })();
 
   /* ---------- Barra de navegação: item atual ---------- */
   function markNav(screen) {
