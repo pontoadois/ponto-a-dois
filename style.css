@@ -2370,3 +2370,36 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .heat-stats { gap: 8px; }
 .heat-stats .heat-chips { margin-top: 6px; }
 @media (max-width: 600px) { body .heat-heart .hh-cap { font-size: 0.56rem; letter-spacing: 0.06em; } }
+
+/* ===== Movimento sutil (some para quem pede "reduzir movimento") ===== */
+/* 1. Entrada escalonada dos cartões do Início */
+@keyframes fx-rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+body[data-screen="inicio"] .week-card, body[data-screen="inicio"] .heat-card, body[data-screen="inicio"] .exp-card, body[data-screen="inicio"] .secret-card, body[data-screen="inicio"] .pm-banner, body[data-screen="inicio"] .peek-btn { animation: fx-rise 0.6s cubic-bezier(0.22, 0.8, 0.3, 1) both; }
+body[data-screen="inicio"] .heat-card { animation-delay: 0.08s; }
+body[data-screen="inicio"] .exp-card--quick { animation-delay: 0.16s; }
+body[data-screen="inicio"] .exp-card--night { animation-delay: 0.24s; }
+body[data-screen="inicio"] .secret-card { animation-delay: 0.32s; }
+body[data-screen="inicio"] .peek-btn { animation-delay: 0.38s; }
+body[data-screen="inicio"] .pm-banner { animation-delay: 0.44s; }
+
+/* 2. Brilho que pulsa nos botões principais e batimento nos corações */
+@keyframes fx-glow { 0%, 100% { box-shadow: 0 8px 26px rgba(251, 22, 105, 0.38); } 50% { box-shadow: 0 8px 34px 4px rgba(251, 22, 105, 0.62); } }
+.exp-card--quick .exp-btn, .pm-btn, .appnav-play { animation: fx-glow 3.2s ease-in-out infinite; }
+@keyframes fx-beat { 0%, 56%, 100% { transform: scale(1); } 64% { transform: scale(1.16); } 72% { transform: scale(1); } 80% { transform: scale(1.09); } 88% { transform: scale(1); } }
+.heat-badge svg { animation: fx-beat 2.8s ease-in-out infinite; transform-origin: center; }
+
+/* 3. Reflexo que atravessa os cartões Premium e Carta secreta */
+@keyframes fx-sheen { 0%, 62% { transform: translateX(-130%) skewX(-18deg); } 100% { transform: translateX(330%) skewX(-18deg); } }
+.pm-banner::after, .secret-card::after { content: ""; position: absolute; top: 0; bottom: 0; left: 0; width: 34%; pointer-events: none; background: linear-gradient(100deg, transparent 0%, rgba(255, 255, 255, 0.13) 50%, transparent 100%); transform: translateX(-130%) skewX(-18deg); animation: fx-sheen 7s ease-in-out infinite; }
+.secret-card::after { animation-delay: 2.4s; }
+
+/* 4. Corações do símbolo subindo devagar ao fundo */
+.fx-hearts { display: none; position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, body[data-screen="plano"] .fx-hearts, body[data-screen="perfil"] .fx-hearts, body[data-screen="profile"] .fx-hearts { display: block; }
+.fx-h { position: absolute; left: var(--x); bottom: -60px; width: var(--s); height: auto; color: #fb1669; opacity: 0; animation: fx-float var(--t) linear infinite; animation-delay: var(--d); }
+@keyframes fx-float { 0% { transform: translate(0, 0) rotate(-8deg); opacity: 0; } 12% { opacity: 0.16; } 50% { transform: translate(14px, -55vh) rotate(6deg); } 88% { opacity: 0.16; } 100% { transform: translate(-6px, -112vh) rotate(16deg); opacity: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-screen="inicio"] .week-card, body[data-screen="inicio"] .heat-card, body[data-screen="inicio"] .exp-card, body[data-screen="inicio"] .secret-card, body[data-screen="inicio"] .pm-banner, body[data-screen="inicio"] .peek-btn, .exp-card--quick .exp-btn, .pm-btn, .appnav-play, .heat-badge svg, .pm-banner::after, .secret-card::after { animation: none; }
+  .fx-hearts { display: none !important; }
+}
