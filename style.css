@@ -2464,3 +2464,6 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
 .screen--game .card-front { padding-bottom: 68px; }
 .screen--game .card-front .card-icon { height: 64px; }
 .screen--game .card-front .card-icon svg { width: 54px; height: 54px; }
+/* canto de baixo: texto em pé (sem virar de cabeça para baixo) */
+.screen--game .card-mirror { transform: none; align-items: flex-end; text-align: right; }
+.screen--game .card-front { padding-bottom: 78px; }
