@@ -26,6 +26,7 @@
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const COIN = (s = 16) => `<svg class="coin-ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#coinIco"/></svg>`;
+  const AXI = (id, s = 30) => `<svg class="ax" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#${id}"/></svg>`;
   const AXLOCK = (s = 24) => `<svg class="ax" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#axLock"/></svg>`;
   const ICO = (n, s = 20) => `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ic${n}"/></svg>`;
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
@@ -101,6 +102,7 @@
   }
 
   /* ---------- Moedas: saldo na barra de cima e formas de ganhar de graça ---------- */
+  const AXMAP = { lock: "axLock", calendar: "axCal", heart: "axHeart", shield: "axShield" };
   function renderCoins() {
     const g = game, c = (g && g.cfg) || {};
     const n = g ? g.coins : 0;
@@ -109,7 +111,7 @@
     const earn = $("#coinsEarn"), spend = $("#coinsSpend");
     if (!earn || !spend) return;
     const daily = c.coins_daily != null ? c.coins_daily : 10, quick = c.coins_quick != null ? c.coins_quick : 10;
-    const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${ico === "lock" ? AXLOCK(30) : svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
+    const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${AXMAP[ico] ? AXI(AXMAP[ico], 30) : svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
       row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}${COIN(14)}</span>`) +
       row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}${COIN(14)}</span>`) +
@@ -118,7 +120,7 @@
     const need = (cost) => (n >= cost ? '<span class="coins-tag is-done">Já dá</span>' : `<span class="coins-tag is-need">faltam ${cost - n}</span>`);
     spend.innerHTML =
       row("lock", "Espiar uma carta premium", `${pc} moedas. Uma prévia do conteúdo Premium.`, need(pc)) +
-      row("heart", "Bloqueio de ofensiva", `${fc} moedas. Protege a sequência num dia em que não der para jogar.`, need(fc));
+      row("shield", "Bloqueio de ofensiva", `${fc} moedas. Protege a sequência num dia em que não der para jogar.`, need(fc));
   }
 
   { const cp = $("#coinPill"); if (cp) cp.addEventListener("click", renderCoins); }
