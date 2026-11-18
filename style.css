@@ -2560,15 +2560,24 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 
 /* ===== Chama animada da Sequência ===== */
 .streak-flame .fl{width:150px;height:auto;flex:none;overflow:visible}
-.streak-flame .fl *{transform-box:fill-box}
-.streak-flame .glow{transform-origin:50% 60%;animation:sfglow 2.4s ease-in-out infinite}
-.streak-flame .sf-body{transform-origin:50% 100%;animation:sfflick 1.7s ease-in-out infinite}
-.streak-flame .core{transform-origin:50% 100%;animation:sfflick2 1.1s ease-in-out infinite}
-.streak-flame .sp{opacity:0;fill:#FB1669;transform-origin:50% 50%;animation:sfspark var(--t) ease-out var(--d) infinite}
+.streak-flame .halo,.streak-flame .glow,.streak-flame .glow2,.streak-flame .floor,.streak-flame .sf-body,.streak-flame .core,.streak-flame .sp{transform-box:fill-box}
+.streak-flame .glow{transform-origin:50% 50%;animation:sf-glow 2.6s ease-in-out infinite}
+.streak-flame .glow2{transform-origin:50% 70%;animation:sf-glow 1.7s ease-in-out -.7s infinite}
+.streak-flame .sf-body{transform-origin:50% 100%;animation:sf-flick 2.3s ease-in-out infinite}
+.streak-flame .core{transform-origin:50% 100%;animation:sf-flick2 1.3s ease-in-out infinite}
+.streak-flame .halo{transform-origin:50% 50%;animation:sf-halo 3.4s ease-in-out infinite}
+.streak-flame .floor{opacity:.22;transform-origin:50% 50%;animation:sf-floor 2.2s ease-in-out -.5s infinite;filter:blur(3px)}
+.streak-flame .sp{opacity:0;fill:#FB1669;transform-origin:50% 50%;animation:sf-spark var(--t) ease-out var(--d) infinite}
 .streak-flame .sp.w{fill:#FFF7FF}
-@keyframes sfflick{0%,100%{transform:scale(1,1) skewX(0)}25%{transform:scale(.975,1.045) skewX(1.8deg)}50%{transform:scale(1.02,.975) skewX(-1.2deg)}75%{transform:scale(.985,1.03) skewX(1deg)}}
-@keyframes sfflick2{0%,100%{transform:scale(1,1)}30%{transform:scale(.9,1.14)}60%{transform:scale(1.08,.92)}}
-@keyframes sfglow{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.1)}}
-@keyframes sfspark{0%{opacity:0;transform:translate(0,0) scale(1)}12%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.25)}}
-@media (prefers-reduced-motion: reduce){.streak-flame .glow,.streak-flame .sf-body,.streak-flame .core{animation:none}.streak-flame .sp{animation:none;opacity:0}}
+@keyframes sf-flick{0%,100%{transform:rotate(0) scale(1,1)}20%{transform:rotate(-2.2deg) scale(.97,1.05)}45%{transform:rotate(1.6deg) scale(1.02,.98)}70%{transform:rotate(-1deg) scale(.985,1.035)}85%{transform:rotate(1.4deg) scale(1,1.01)}}
+@keyframes sf-flick2{0%,100%{transform:scale(1,1)}30%{transform:scale(.9,1.14)}60%{transform:scale(1.08,.92)}}
+@keyframes sf-halo{0%,100%{opacity:.6;transform:scale(1)}50%{opacity:1;transform:scale(1.07)}}
+@keyframes sf-floor{0%,100%{opacity:.16;transform:scaleX(1)}40%{opacity:.34;transform:scaleX(1.12)}70%{opacity:.22;transform:scaleX(.95)}}
+@keyframes sf-glow{0%,100%{opacity:.5;transform:scale(1)}35%{opacity:.95;transform:scale(1.08)}60%{opacity:.7;transform:scale(.97)}}
+@keyframes sf-spark{0%{opacity:0;transform:translate(0,0) scale(1)}10%{opacity:1}45%{opacity:1;transform:translate(var(--m),calc(var(--y)*.45)) scale(.8)}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.2)}}
+@media (prefers-reduced-motion:reduce){.streak-flame .halo,.streak-flame .glow,.streak-flame .glow2,.streak-flame .floor,.streak-flame .sf-body,.streak-flame .core{animation:none}.streak-flame .sp{animation:none;opacity:0}}
 @media (max-width:420px){.streak-flame .fl{width:120px;height:auto}}
+.streak-hero{position:relative;overflow:hidden}.streak-hero>*{position:relative;z-index:1}
+.streak-hero::after{content:"";position:absolute;right:-30px;top:50%;width:300px;height:300px;margin-top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(251,22,105,.22),rgba(251,22,105,0) 65%);pointer-events:none;animation:sf-cast 3s ease-in-out infinite}
+@keyframes sf-cast{0%,100%{opacity:.6}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){.streak-hero::after{animation:none}}
