@@ -2840,3 +2840,14 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
   .app--streak > .app-bar .app-title{display:none}
   .st-col--a .streak-hero > .st-title{display:block;position:absolute;left:28px;top:28px;margin:0;text-align:left}
 }
+
+/* ===== Caixas sem moldura no celular: sem fundo "quadrado" escuro =====
+   O degradê dessas caixas só vale quando elas têm borda arredondada (telas maiores). */
+.au-panel, .st-panel, .plans-box { background: none; }
+@media (min-width: 640px) { .au-panel, .st-panel { background: var(--grad-card-soft); } }
+@media (min-width: 1024px) { .plans-box { background: var(--grad-card-soft); } }
+
+/* Fundo aplicado na própria página: no iPhone a camada fixa não cobre a barra de status, e aparecia uma faixa escura */
+html { background: radial-gradient(ellipse 60% 50% at 85% 0%, rgba(251, 22, 105, 0.22), rgba(251, 22, 105, 0) 70%), radial-gradient(ellipse 50% 45% at 100% 55%, rgba(251, 22, 105, 0.10), rgba(251, 22, 105, 0) 70%), linear-gradient(180deg, #160713 0%, #190817 100%); background-color: #160713; }
+body { background: transparent; }
+.bg-gradient { display: none; }

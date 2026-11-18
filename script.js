@@ -1160,7 +1160,7 @@
   let particlesRunning = false;
 
   function burstParticles() {
-    const colors = ["#e91e63", "#9c27b0", "#ff6b9d", "#c084fc", "#fff5f8"];
+    const colors = ["#fb1669", "#fb1669", "#ff5c9a", "#450221", "#fff7ff"];
     const cx = window.innerWidth / 2;
     const cy = window.innerHeight / 2;
     for (let i = 0; i < 60; i++) {
