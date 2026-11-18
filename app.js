@@ -152,7 +152,7 @@
       const b = document.createElement("button");
       b.type = "button";
       b.className = "recent-item";
-      b.innerHTML = `<span>${AXI("axHeart", 34)}</span><span class="recent-name"></span>`;
+      b.innerHTML = `<span>${svg("heart", 22)}</span><span class="recent-name"></span>`;
       $(".recent-name", b).textContent = r.label;
       b.addEventListener("click", () => { app().applyPlay({ categories: r.cats, mode: r.mode }); app().play(r.mode); });
       list.appendChild(b);
@@ -936,9 +936,9 @@
     renderFounders();
     const a = $(".plans-fan");
     if (a && !a.innerHTML) {
-      const get = (id) => D.categories.find((c) => c.id === id);
-      const card = (c, cls) => `<div class="fan-card ${cls}">${c.icon}<span>${c.name}</span></div>`;
-      a.innerHTML = card(get("diversao"), "fan-card--l") + card(get("intimidade"), "fan-card--r") + card(get("conexao"), "fan-card--c");
+      const B = window.CARD_BACKS || {};
+      const back = (v, cls) => `<div class="fan-card fan-back ${cls}">${B[v] || ""}</div>`;
+      a.innerHTML = back("eco", "fan-card--l") + back("eco", "fan-card--r") + back("rosa", "fan-card--c");
     }
   }
 
