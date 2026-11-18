@@ -132,7 +132,7 @@
     renderCoins();
     $("#weekHome").innerHTML = weekHtml(true);
     const nDays = ((streak && streak.week) || []).length;
-    $("#weekLinkSub").textContent = nDays ? `${nDays} ${nDays === 1 ? "dia" : "dias"} de conexão nesta semana` : "Comecem a sequência de vocês";
+    $("#weekLinkSub").textContent = nDays ? `${nDays} ${nDays === 1 ? "dia" : "dias"} de conexão nesta semana` : "Comece a sua sequência";
     $("#premiumHome").hidden = plan.premium;
 
     // Plano e nomes: a seção "Jogo livre" mostra a coroa nas categorias premium e já traz o nome do perfil
@@ -1120,13 +1120,13 @@
     if (sh > 0) {
       $("#welTitle").textContent = "Sua ofensiva foi protegida!";
       const quando = sh === 1 ? "ontem" : `em ${sh} dias`;
-      $("#welSub").textContent = `Vocês não jogaram ${quando}, então um bloqueio de ofensiva foi usado e a sequência de ${n} ${n === 1 ? "dia" : "dias"} continua.` + (left !== null ? ` Restam ${left} ${left === 1 ? "bloqueio" : "bloqueios"}.` : "") + " Joguem hoje para mantê-la.";
+      $("#welSub").textContent = `Você não jogou ${quando}, então um bloqueio de ofensiva foi usado e a sequência de ${n} ${n === 1 ? "dia" : "dias"} continua.` + (left !== null ? ` Restam ${left} ${left === 1 ? "bloqueio" : "bloqueios"}.` : "") + " Jogue hoje para mantê-la.";
     } else if (playedToday) {
       $("#welTitle").textContent = n === 1 ? "Sequência iniciada!" : "Parabéns!";
-      $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Voltem amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
+      $("#welSub").textContent = n === 1 ? "Hoje é o primeiro dia. Volte amanhã para continuar." : "Mais um dia com o Ponto a Dois.";
     } else {
-      $("#welTitle").textContent = n === 0 ? "Que bom ter vocês aqui!" : "Bem-vindos de volta!";
-      $("#welSub").textContent = n === 0 ? "Joguem hoje para começar a sua ofensiva." : `Joguem hoje para manter a ofensiva de ${n} ${n === 1 ? "dia" : "dias"}.`;
+      $("#welTitle").textContent = n === 0 ? "Que bom ter você aqui!" : "Que bom ter você de volta!";
+      $("#welSub").textContent = n === 0 ? "Jogue hoje para começar a sua ofensiva." : `Jogue hoje para manter a ofensiva de ${n} ${n === 1 ? "dia" : "dias"}.`;
     }
     if (reg && reg.coins) $("#welSub").textContent += ` Você ganhou ${reg.coins} moedas por entrar hoje.`;
     $("#welNum").textContent = n;
