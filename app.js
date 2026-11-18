@@ -26,6 +26,7 @@
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const COIN = (s = 16) => `<svg class="coin-ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#coinIco"/></svg>`;
+  const AXLOCK = (s = 24) => `<svg class="ax" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#axLock"/></svg>`;
   const ICO = (n, s = 20) => `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ic${n}"/></svg>`;
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
     `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PATHS[k]}"/></svg>`;
@@ -108,7 +109,7 @@
     const earn = $("#coinsEarn"), spend = $("#coinsSpend");
     if (!earn || !spend) return;
     const daily = c.coins_daily != null ? c.coins_daily : 10, quick = c.coins_quick != null ? c.coins_quick : 10;
-    const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
+    const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${ico === "lock" ? AXLOCK(30) : svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
       row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}${COIN(14)}</span>`) +
       row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}${COIN(14)}</span>`) +
@@ -360,7 +361,7 @@
     const at = [0, game.cfg.stage2_at, game.cfg.stage3_at];
     $("#levelsList").innerHTML = STAGE_INFO.map(([name, desc], i) => {
       const cur = game.stage === i + 1, done = game.stage > i + 1;
-      const icon = done ? svg("check", 20, 2.4) : cur ? svg("heartFill", 18, 1.9, "currentColor") : svg("lock", 18);
+      const icon = done ? svg("check", 20, 2.4) : cur ? svg("heartFill", 18, 1.9, "currentColor") : AXLOCK(30);
       return `<div class="lv-row ${cur ? "is-current" : ""} ${done ? "is-done" : ""}"><span class="lv-ico">${icon}</span><span class="lv-txt"><span class="lv-name">${name}</span><span class="lv-sub">${i ? "A partir de " + at[i] + " pontos. " : ""}${desc}</span></span>${cur ? '<span class="lv-tag">Atual</span>' : ""}</div>`;
     }).join("");
     app().openModal("levels");
