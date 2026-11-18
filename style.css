@@ -2727,8 +2727,9 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 #axTherm{overflow:visible}
 .az-merc{transform-origin:50% 100%;animation:azk-merc 4.2s ease-in-out infinite}
 .az-tk{opacity:.3;animation:azk-tk 4.2s ease-in-out var(--d) infinite}
-.az-heart{transform-box:view-box;transform-origin:12px 17px;animation:azk-beat 2.1s ease-in-out infinite}
-@keyframes azk-merc{0%{transform:scaleY(.03)}38%{transform:scaleY(1)}62%{transform:scaleY(.94)}72%{transform:scaleY(1)}90%,100%{transform:scaleY(.03)}}
+.az-bulb{transform-box:view-box;transform-origin:12px 18px;animation:azk-beat 2.1s ease-in-out infinite}
+.az-core{transform-box:view-box;transform-origin:12px 17.9px;animation:azk-beat 2.1s ease-in-out infinite}
+@keyframes azk-merc{0%{transform:scaleY(.02)}38%{transform:scaleY(1)}62%{transform:scaleY(.94)}72%{transform:scaleY(1)}90%,100%{transform:scaleY(.02)}}
 @keyframes azk-tk{0%,8%{opacity:.3}16%,72%{opacity:1}86%,100%{opacity:.3}}
 @keyframes azk-beat{0%,34%,100%{transform:scale(1)}10%{transform:scale(1.1)}20%{transform:scale(1)}26%{transform:scale(1.06)}}
-@media (prefers-reduced-motion:reduce){.az-merc,.az-tk,.az-heart{animation:none}.az-tk{opacity:1}}
+@media (prefers-reduced-motion:reduce){.az-merc,.az-tk,.az-bulb,.az-core{animation:none}.az-tk{opacity:1}}
