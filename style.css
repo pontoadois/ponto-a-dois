@@ -2659,3 +2659,10 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 @media (prefers-reduced-motion:reduce){.ax-halo,.ax-lk,.ax-sh,.ax-key,.ax-lring,.ax-sp,.ax-cr,.ax-gleam,.ax-hb,.ax-gl-floor,.ax-gl-core{animation:none}.ax-lring,.ax-sp,.ax-gleam{opacity:0}}
 
 .secret-ico .ax{width:48px;height:48px}
+
+/* Cadeado: flutuar e flocos de luz */
+.ax-fl{animation:axk-lfloat 4.2s ease-in-out infinite}
+.ax-fk{opacity:0;transform-origin:50% 50%;animation:axk-fk var(--t) ease-out var(--d) infinite}
+@keyframes axk-lfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
+@keyframes axk-fk{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
+@media (prefers-reduced-motion:reduce){.ax-fl,.ax-fk{animation:none}.ax-fk{opacity:0}}
