@@ -2835,3 +2835,8 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
   .st-col--b .stat{display:flex;align-items:center;row-gap:0}
   .st-col--b .stat-lbl{flex:1;font-size:1rem;align-self:auto}
 }
+.st-title{display:none}
+@media (min-width:1024px){
+  .app--streak > .app-bar .app-title{display:none}
+  .st-col--a .streak-hero > .st-title{display:block;position:absolute;left:28px;top:28px;margin:0;text-align:left}
+}
