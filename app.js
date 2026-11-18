@@ -215,6 +215,7 @@
     const span = g.next_at ? g.next_at - g.stage_start : 1;
     const pct = g.next_at ? Math.min(100, Math.round(((g.points - g.stage_start) / span) * 100)) : 100;
     $("#heatFill").style.width = pct + "%";
+    $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span} pontos` : "Nível máximo";
     $("#heatBar").setAttribute("aria-valuenow", pct);
     $("#stPoints").textContent = g.points;
     $("#stNext").textContent = g.next_at ? g.next_at - g.points : "Máximo";
