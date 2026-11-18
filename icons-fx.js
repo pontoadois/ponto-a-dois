@@ -16,11 +16,6 @@
     if (d.indexOf("M11.562 3.266") === 0) {
       svg.__fx = 1;
       svg.classList.add("ic-crown");
-      var s1 = mk("path", { class: "ic-spark ic-spark--a", d: "M19.5 1.5v4M17.5 3.5h4" });
-      var s2 = mk("path", { class: "ic-spark ic-spark--b", d: "M4.5 1.5v3M3 3h3" });
-      svg.setAttribute("overflow", "visible");
-      svg.appendChild(s1);
-      svg.appendChild(s2);
     } else if (d.indexOf("M7 11V7a5 5 0 0 1 10 0v4") === 0) {
       svg.__fx = 1;
       svg.classList.add("ic-lock");
