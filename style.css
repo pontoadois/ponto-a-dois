@@ -2343,3 +2343,18 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 .lg--shield { border: 1.5px solid #fb1669; color: #fb1669; }
 .lg--missed { border: 1px dashed rgba(251, 22, 105, 0.6); color: #fb1669; }
 @media (max-width: 420px) { .oc-day .wk-dot { width: 34px; height: 34px; } }
+
+/* Termômetro: coração que enche (a onda sobe até a porcentagem e continua ondulando) */
+.heat-heart { --p: 0; position: relative; flex: 0 0 auto; width: 150px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.heat-heart svg { width: 100%; height: auto; overflow: visible; filter: drop-shadow(0 0 14px rgba(251, 22, 105, 0.4)); }
+.heat-heart b { font-family: var(--font-display); font-weight: 800; font-size: 2rem; line-height: 1; color: #fff7ff; }
+.hh-level { transform: translateY(calc((100 - var(--p)) * 1.54px - 8px)); transition: transform 1.6s cubic-bezier(0.22, 0.8, 0.3, 1); }
+.hh-wave { fill: #fb1669; animation: hh-wave 2.8s linear infinite; }
+.hh-wave--b { fill: rgba(251, 22, 105, 0.45); transform: translateY(-2px); animation-duration: 4.4s; animation-direction: reverse; }
+@keyframes hh-wave { from { transform: translateX(0); } to { transform: translateX(-30px); } }
+.hh-wave--b { animation-name: hh-wave-b; }
+@keyframes hh-wave-b { from { transform: translate(0, -2px); } to { transform: translate(-30px, -2px); } }
+@media (prefers-reduced-motion: reduce) { .hh-level { transition: none; } .hh-wave { animation: none; } }
+@media (min-width: 900px) and (max-height: 820px) { .heat-heart { width: 120px; } .heat-heart b { font-size: 1.6rem; } }
+@media (min-width: 1024px) { .heat-heart { width: 170px; } .heat-heart b { font-size: 2.2rem; } }
+@media (max-width: 600px) { body .heat-heart { grid-area: gauge; width: 92px; margin-top: 12px; align-self: center; } body .heat-heart b { font-size: 1.35rem; } }
