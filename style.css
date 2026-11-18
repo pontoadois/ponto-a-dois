@@ -2410,3 +2410,57 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
 .peek-btn #peekLbl { white-space: nowrap; }
 @media (max-width: 460px) { .peek-btn .peek-pm { display: none; } .peek-btn { padding-left: 14px; padding-right: 14px; } }
 @media (max-width: 340px) { .peek-btn { font-size: 14px; gap: 6px; } }
+
+/* ===== Carta com cara de carta: proporção de baralho, moldura dupla, cantos e verso ===== */
+.screen--game .card-stage { perspective: 1400px; }
+.screen--game .card {
+  position: relative; display: block; width: min(100%, 360px, max(250px, calc((100dvh - 340px) * 0.714)));
+  max-width: none; height: auto; min-height: 0; margin: 0 auto; padding: 0; gap: 0;
+  background: none; border: 0; box-shadow: none; border-radius: 22px; overflow: visible;
+  backdrop-filter: none; -webkit-backdrop-filter: none; transform-style: preserve-3d;
+}
+.screen--game .card::before, .screen--game .card::after { display: none; }
+.screen--game .card.is-spin { animation: cardSpin 0.8s cubic-bezier(0.45, 0.05, 0.3, 1) both; }
+@keyframes cardSpin {
+  0% { transform: rotateY(0) scale(1); }
+  50% { transform: rotateY(180deg) scale(1.04); }
+  100% { transform: rotateY(360deg) scale(1); }
+}
+.screen--game .card-front {
+  position: relative; box-sizing: border-box; width: 100%; aspect-ratio: 5 / 7; min-height: min-content;
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 32px 30px 36px;
+  border-radius: 22px; overflow: hidden; text-align: center;
+  -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  background: url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 142.6%22%3E%3Cpath fill=%22%23FB1669%22 fill-opacity=%220.07%22 fill-rule=%22evenodd%22 d=%22M88.5%2C142.5C88.2%2C142.5 88.0%2C142.5 87.7%2C142.3C86.2%2C141.2 84.8%2C139.8 83.3%2C138.5C80.9%2C136.5 78.5%2C134.4 76.0%2C132.4C74.8%2C131.3 73.5%2C130.2 72.2%2C129.1C71.5%2C128.6 70.7%2C128.1 70.2%2C127.4C69.8%2C126.9 70.1%2C126.4 70.4%2C126.1C82.5%2C113.0 95.2%2C102.7 110.6%2C93.9C115.9%2C90.8 121.5%2C88.1 127.1%2C85.8C142.6%2C79.6 162.9%2C74.6 171.0%2C58.3C172.8%2C54.7 174.0%2C50.6 173.9%2C46.5C173.8%2C39.6 170.2%2C33.6 164.8%2C29.6C157.2%2C24.0 146.6%2C24.6 138.5%2C28.8C132.9%2C31.8 128.8%2C36.3 124.6%2C41.0C122.8%2C43.0 120.9%2C45.0 119.1%2C47.1C115.1%2C51.4 111.1%2C55.7 107.1%2C60.0C97.5%2C70.3 87.6%2C80.4 77.6%2C90.3C72.5%2C95.4 67.5%2C100.5 62.3%2C105.4C61.1%2C106.5 54.1%2C113.7 53.2%2C113.7C52.4%2C113.7 48.9%2C110.5 48.1%2C109.8C43.7%2C106.4 39.4%2C102.9 35.0%2C99.5C30.7%2C96.2 26.3%2C92.9 22.1%2C89.5C19.7%2C87.5 17.4%2C85.5 15.3%2C83.3C6.4%2C74.5 0.3%2C63.0 0.0%2C50.3C-0.0%2C47.4 0.0%2C44.4 0.8%2C41.7C1.2%2C40.1 1.5%2C38.5 2.0%2C36.9C2.9%2C33.6 4.4%2C30.3 6.1%2C27.3C17.9%2C6.1 41.9%2C-4.8 65.3%2C2.1C69.5%2C3.3 73.6%2C4.9 77.3%2C7.2C81.4%2C9.6 85.1%2C12.4 88.7%2C15.5C91.8%2C18.3 94.9%2C21.3 97.9%2C24.2C99.2%2C25.5 100.3%2C26.8 101.6%2C27.9C101.8%2C28.1 102.1%2C28.3 102.4%2C28.4C102.5%2C28.4 102.6%2C28.4 102.7%2C28.3C103.5%2C28.0 107.7%2C23.1 108.7%2C22.1C110.6%2C20.0 112.5%2C17.9 114.6%2C16.0C119.0%2C12.0 123.6%2C8.4 128.9%2C5.6C139.9%2C-0.1 153.1%2C-1.5 165.1%2C1.7C179.6%2C5.6 192.9%2C17.0 197.7%2C31.4C200.6%2C39.9 200.7%2C49.0 198.5%2C57.6C193.2%2C78.5 174.0%2C91.8 155.6%2C100.6C149.9%2C103.3 143.9%2C105.6 138.1%2C108.2C130.1%2C111.8 122.1%2C115.7 114.6%2C120.4C107.2%2C124.9 100.9%2C130.6 94.5%2C136.5C93.4%2C137.5 89.4%2C142.3 88.5%2C142.5ZM50.1%2C74.1C54.2%2C73.8 58.0%2C72.3 61.4%2C70.1C64.1%2C68.5 66.5%2C66.5 68.8%2C64.5C70.7%2C62.8 84.9%2C48.7 85.0%2C47.6C85.1%2C46.8 82.3%2C43.9 81.7%2C43.2C74.4%2C34.7 66.7%2C27.0 55.1%2C25.6C48.4%2C24.9 42.7%2C26.7 37.0%2C30.0C32.3%2C32.7 26.9%2C37.3 25.2%2C42.5C23.9%2C46.4 24.0%2C50.6 25.3%2C54.4C28.2%2C63.2 36.6%2C71.8 45.8%2C73.7C47.2%2C74.0 48.6%2C74.2 50.1%2C74.1Z%22/%3E%3C/svg%3E") center 58% / 82% auto no-repeat, radial-gradient(120% 90% at 50% 0%, #5a0a2e 0%, #2c0a23 55%, #1d0818 100%);
+  box-shadow: 0 0 0 1px rgba(251, 22, 105, 0.35), 0 26px 50px rgba(0, 0, 0, 0.45);
+}
+.screen--game .card-front::before { content: ""; position: absolute; inset: 11px; border-radius: 14px; border: 1.5px solid rgba(251, 22, 105, 0.75); pointer-events: none; }
+.screen--game .card-front::after { content: ""; position: absolute; inset: 17px; border-radius: 9px; border: 1px solid rgba(249, 170, 189, 0.22); pointer-events: none; }
+.screen--game .card-front > * { position: relative; z-index: 1; }
+.screen--game .card-back {
+  position: absolute; inset: 0; border-radius: 22px; overflow: hidden;
+  transform: rotateY(180deg); -webkit-backface-visibility: hidden; backface-visibility: hidden;
+  box-shadow: 0 0 0 1px rgba(251, 22, 105, 0.45), 0 26px 50px rgba(0, 0, 0, 0.45);
+}
+.screen--game .card-back svg { display: block; width: 100%; height: 100%; }
+
+/* cantos de baralho: categoria e nível em cima, repetidos de cabeça para baixo embaixo */
+.screen--game .card-top { align-items: flex-start; padding: 0; }
+.screen--game .card-cat { flex-direction: column; align-items: flex-start; gap: 4px; padding: 0; border: 0; background: none; font-family: var(--font-display); font-weight: 700; font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; color: #F9AABD; text-align: left; }
+.screen--game .card-cat .card-category-icon { width: 22px; height: 22px; color: #FB1669; }
+.screen--game .card-cat .card-category-icon svg { width: 22px; height: 22px; }
+.screen--game .card-int { padding: 0; border: 0; background: none; font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; color: #F9AABD; }
+.card-mirror { display: none; }
+.screen--game .card-mirror { position: absolute; right: 30px; bottom: 28px; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; transform: rotate(180deg); font-family: var(--font-display); font-weight: 700; font-size: 0.64rem; letter-spacing: 0.07em; text-transform: uppercase; color: #F9AABD; text-align: left; pointer-events: none; }
+.screen--game .card-mirror .cm-i { width: 22px; height: 22px; color: #FB1669; }
+.screen--game .card-mirror .cm-i svg { width: 22px; height: 22px; }
+
+/* miolo */
+.screen--game .card-front .card-icon { height: 76px; }
+.screen--game .card-front .card-text { font-size: clamp(1rem, 4.6vw, 1.22rem); font-weight: 400; line-height: 1.4; color: #FFF7FF; padding: 0; }
+.screen--game .card-front .card-text.text--small { font-size: 0.95rem; }
+.screen--game .card-front .card-text.text--xsmall { font-size: 0.85rem; }
+.screen--game .card-front .card-hint { color: #F9AABD; }
+.screen--game .card-front { padding-bottom: 68px; }
+.screen--game .card-front .card-icon { height: 64px; }
+.screen--game .card-front .card-icon svg { width: 54px; height: 54px; }

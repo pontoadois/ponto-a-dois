@@ -559,7 +559,8 @@
           <!-- Carta -->
           <div class="card-stage">
 
-            <article class="card" id="gameCard">
+            <article class="card" id="gameCard" data-back="eco">
+              <div class="card-front">
               
               <div class="card-top">
 
@@ -588,6 +589,9 @@
 
               <div class="card-extra" id="cardExtra" hidden></div>
 
+              <div class="card-mirror" id="cardMirror" aria-hidden="true"></div>
+            </div>
+              <div class="card-back" id="cardBack" aria-hidden="true"></div>
             </article>
           </div>
 
@@ -968,6 +972,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
     <script src="cards.js"></script>
+    <script src="card-backs.js"></script>
     <script src="config.js"></script>
     <script src="script.js"></script>
     <script src="auth.js"></script>

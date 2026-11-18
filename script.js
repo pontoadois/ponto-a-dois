@@ -932,6 +932,8 @@
       // Categoria
       $("#cardCategoryName").textContent = cat ? cat.name : c.cat;
       $("#cardCategoryIcon").innerHTML = cat ? cat.icon : "";
+      const mir = $("#cardMirror");
+      if (mir) mir.innerHTML = `<span class="cm-i">${cat ? cat.icon : ""}</span><b>${cat ? cat.name : ""}</b>`;
 
       // Intensidade (com nome adaptado à categoria)
       const intEl = $("#cardIntensity");
@@ -987,18 +989,29 @@
       adjustCardText();
       updateStage();
     };
-    if (noAnim) {
+    // Verso: "eco" nas cartas normais, "rosa" nas Premium
+    const variant = PREMIUM_CATS.includes(c.cat) ? "rosa" : "eco";
+    const setBack = () => {
+      el.dataset.back = variant;
+      const bk = $("#cardBack");
+      if (bk && window.CARD_BACKS) bk.innerHTML = window.CARD_BACKS[variant] || "";
+    };
+    clearTimeout(renderCard._t1);
+    clearTimeout(renderCard._t2);
+    const reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (noAnim || reduce) {
+      setBack();
       apply();
-      el.classList.remove("is-flip-in", "is-flip-out");
+      el.classList.remove("is-spin");
       return;
     }
-    el.classList.remove("is-flip-in");
-    el.classList.add("is-flip-out");
-    setTimeout(() => {
-      apply();
-      el.classList.remove("is-flip-out");
-      el.classList.add("is-flip-in");
-    }, 280);
+    // A carta gira 360°: no meio do giro aparece o verso e o conteúdo troca
+    setBack();
+    el.classList.remove("is-spin");
+    void el.offsetWidth;
+    el.classList.add("is-spin");
+    renderCard._t1 = setTimeout(apply, 380);
+    renderCard._t2 = setTimeout(() => el.classList.remove("is-spin"), 800);
   }
 
   function updateStage() {
