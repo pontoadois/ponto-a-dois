@@ -2813,7 +2813,25 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 /* Sequência: duas colunas em notebook e monitor, como a tela de Plano */
 .st-col{display:flex;flex-direction:column;gap:22px;min-width:0}
 @media (min-width:1024px){
-  .app.app--streak{max-width:1180px;display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);column-gap:40px;row-gap:20px;align-items:start}
+  .app.app--streak{max-width:1180px;display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);column-gap:40px;row-gap:20px;align-items:stretch}
   .app--streak > .app-bar{grid-column:1/-1}
-  .app--streak .st-col--a{position:sticky;top:24px}
+  .st-col--a{gap:18px}
+  .st-col--a .streak-hero{flex:1;flex-direction:column;justify-content:center;text-align:center;gap:6px;padding:36px 24px}
+  .st-col--a .streak-hero > div{order:2;text-align:center}
+  .st-col--a .streak-hero p{max-width:270px;margin-left:auto;margin-right:auto}
+  .st-col--a .streak-flame{order:1;transform:scale(1.2);margin:6px 0}
+  .st-col--b{padding:28px;border:1px solid rgba(251,22,105,.4);border-radius:24px;background:rgba(255,120,190,.06);gap:16px}
+  .st-col--b .app-h2{margin-top:0}
+  .st-col--b .stat-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:0}
+  .st-col--b .stat{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"ico val" "lbl lbl";grid-template-rows:auto 1fr;row-gap:12px;align-items:start}
+  .st-col--b .stat-ico{grid-area:ico}
+  .st-col--b .stat-lbl{grid-area:lbl;font-size:.9rem;align-self:end}
+  .st-col--b .stat-val{grid-area:val;justify-self:end}
+}
+@media (min-width:1024px) and (max-width:1279px){
+  .app.app--streak{grid-template-columns:minmax(0,340px) minmax(0,1fr);column-gap:28px}
+  .st-col--b{padding:22px}
+  .st-col--b .stat-list{grid-template-columns:1fr}
+  .st-col--b .stat{display:flex;align-items:center;row-gap:0}
+  .st-col--b .stat-lbl{flex:1;font-size:1rem;align-self:auto}
 }
