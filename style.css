@@ -2581,3 +2581,33 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 .streak-hero::after{content:"";position:absolute;right:-30px;top:50%;width:300px;height:300px;margin-top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(251,22,105,.22),rgba(251,22,105,0) 65%);pointer-events:none;animation:sf-cast 3s ease-in-out infinite}
 @keyframes sf-cast{0%,100%{opacity:.6}50%{opacity:1}}
 @media (prefers-reduced-motion:reduce){.streak-hero::after{animation:none}}
+
+/* ===== Ícones animados das Experiências (raio e lua) ===== */
+.exp-ico svg{overflow:visible;width:40px;height:40px}
+.exp-ico symbol,.exp-ico svg *{transform-box:fill-box}
+.exp-ico .halo{transform-origin:50% 50%;animation:ex-pulse 2.6s ease-in-out infinite}
+.exp-ico .bolt{transform-origin:50% 60%;animation:ex-strike 2.6s ease-in-out infinite}
+.exp-ico .sweep{animation:ex-sweep 2.6s ease-in-out infinite}
+.exp-ico .flash{fill:#FFF7FF;opacity:0;animation:ex-flash 2.6s ease-out infinite}
+.exp-ico .ring{fill:none;stroke:#FB1669;stroke-width:.9;transform-origin:50% 50%;opacity:0;animation:ex-ring 2.6s ease-out infinite}
+.exp-ico .arc{fill:none;stroke:#FFF7FF;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;opacity:0;animation:ex-arc 2.6s linear var(--d) infinite}
+.exp-ico .dot{fill:#FB1669;opacity:0;transform-origin:50% 50%;animation:ex-dot 2.6s ease-out var(--d) infinite}
+.exp-ico .mhalo{transform-origin:50% 50%;animation:ex-pulse 4s ease-in-out infinite}
+.exp-ico .moon{transform-origin:50% 50%;animation:ex-rock 5.5s ease-in-out infinite}
+.exp-ico .crater{animation:ex-cr 5.5s ease-in-out infinite}
+.exp-ico .star{fill:#FFF7FF;transform-origin:50% 50%;opacity:.3;animation:ex-tw var(--t) ease-in-out var(--d) infinite}
+.exp-ico .star.r{fill:#FB1669}
+.exp-ico .heartstar{fill:#FB1669;transform-box:fill-box;transform-origin:50% 50%;opacity:.4;animation:ex-tw 3.2s ease-in-out .4s infinite}
+.exp-ico .shoot{opacity:0;animation:ex-shoot 6.5s ease-in 1.5s infinite}
+@keyframes ex-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.12)}}
+@keyframes ex-strike{0%,46%,100%{transform:scale(1) rotate(0)}52%{transform:scale(1.16) rotate(-3deg)}57%{transform:scale(.96) rotate(2.5deg)}63%{transform:scale(1.06) rotate(-1deg)}72%{transform:scale(1) rotate(0)}}
+@keyframes ex-sweep{0%{transform:translate(-12px,-12px);opacity:0}8%{opacity:1}44%{transform:translate(12px,12px);opacity:1}48%,100%{transform:translate(12px,12px);opacity:0}}
+@keyframes ex-flash{0%,49%{opacity:0}53%{opacity:.85}68%,100%{opacity:0}}
+@keyframes ex-ring{0%,50%{opacity:0;transform:scale(.7)}55%{opacity:.85}100%{opacity:0;transform:scale(1.8)}}
+@keyframes ex-arc{0%,50%{opacity:0}53%{opacity:1}57%{opacity:.2}60%{opacity:1}72%,100%{opacity:0}}
+@keyframes ex-dot{0%,50%{opacity:0;transform:translate(0,0) scale(1)}54%{opacity:1}85%,100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
+@keyframes ex-rock{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(5deg) translateY(-.7px)}}
+@keyframes ex-cr{0%,100%{opacity:.7}50%{opacity:1}}
+@keyframes ex-tw{0%,100%{opacity:.25;transform:scale(.55) rotate(0)}50%{opacity:1;transform:scale(1.15) rotate(25deg)}}
+@keyframes ex-shoot{0%{opacity:0;transform:translate(0,0)}6%{opacity:1}22%{opacity:0;transform:translate(-13px,10px)}100%{opacity:0;transform:translate(-13px,10px)}}
+@media (prefers-reduced-motion:reduce){.exp-ico .halo,.exp-ico .bolt,.exp-ico .sweep,.exp-ico .flash,.exp-ico .ring,.exp-ico .arc,.exp-ico .dot,.exp-ico .mhalo,.exp-ico .moon,.exp-ico .crater,.exp-ico .star,.exp-ico .heartstar,.exp-ico .shoot{animation:none}.exp-ico .sweep,.exp-ico .flash,.exp-ico .ring,.exp-ico .arc,.exp-ico .dot,.exp-ico .shoot{opacity:0}.exp-ico .star{opacity:.9}.exp-ico .heartstar{opacity:.8}}
