@@ -25,6 +25,7 @@
     info: "M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20z M12 16v-4 M12 8h.01",
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
+  const COIN = (s = 16) => `<svg class="coin-ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#coinIco"/></svg>`;
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
     `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PATHS[k]}"/></svg>`;
 
@@ -112,9 +113,9 @@
     const daily = c.coins_daily != null ? c.coins_daily : 10, quick = c.coins_quick != null ? c.coins_quick : 10;
     const row = (ico, title, sub, tag) => `<li><span class="coins-ico" aria-hidden="true">${svg(ico, 20, 1.8)}</span><span class="coins-txt"><b>${title}</b><small>${sub}</small></span>${tag}</li>`;
     earn.innerHTML =
-      row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}</span>`) +
-      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}</span>`) +
-      row("heart", "Subir de nível", "Um presente a cada novo estágio do casal, quando chegam nos pontos do próximo nível.", `<span class="coins-tag">+${c.levelup_coins_2 != null ? c.levelup_coins_2 : 60} e +${c.levelup_coins_3 != null ? c.levelup_coins_3 : 120}</span>`);
+      row("calendar", "Entrar no app todo dia", "No primeiro acesso do dia. Se não entrarem, não ganham nada.", `<span class="coins-tag">+${daily}${COIN(14)}</span>`) +
+      row("flame", "Conexão Rápida", "Na primeira do dia: três cartas leves, em uns 5 minutos.", g && g.quick_done ? '<span class="coins-tag is-done">Feita hoje</span>' : `<span class="coins-tag">+${quick}${COIN(14)}</span>`) +
+      row("heart", "Subir de nível", "Um presente a cada novo estágio do casal, quando chegam nos pontos do próximo nível.", `<span class="coins-tag">+${c.levelup_coins_2 != null ? c.levelup_coins_2 : 60} e +${c.levelup_coins_3 != null ? c.levelup_coins_3 : 120}${COIN(14)}</span>`);
     const fc = c.freeze_cost != null ? c.freeze_cost : 50, pc = c.peek_cost != null ? c.peek_cost : 30;
     const need = (cost) => (n >= cost ? '<span class="coins-tag is-done">Já dá</span>' : `<span class="coins-tag is-need">faltam ${cost - n}</span>`);
     spend.innerHTML =

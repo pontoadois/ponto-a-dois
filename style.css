@@ -2516,3 +2516,14 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
   .chest-box.is-open .ch-coin { animation: none; opacity: 0; }
   .chest-box.is-open .ch-lid, .chest-box.is-open .ch-lid-open, .chest-box.is-open .ch-glow, .chest-box.is-open .ch-rays, .chest-box.is-open .ch-pile { transition: none; }
 }
+
+/* ===== Moeda padrão do site (símbolo #coinIco) ===== */
+.coin-ico { flex: none; display: inline-block; vertical-align: -0.22em; }
+.coins-tag { display: inline-flex; align-items: center; gap: 5px; }
+.coins-tag:not(.is-done):not(.is-need) { background: rgba(251, 22, 105, 0.16); border: 1px solid rgba(251, 22, 105, 0.55); color: #fff7ff; }
+.coins-bal { gap: 6px; }
+.coin-ico--big { margin-bottom: 2px; }
+.chest-count { align-items: center; }
+.chest-count .coin-ico { align-self: center; }
+.coin-pill .coin-ico { width: 20px; height: 20px; }
+.heat-chips .chip-st--gold .coin-ico { width: 22px; height: 22px; }
