@@ -2718,3 +2718,6 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 .heat-prog-lbl em{font-style:normal;font-weight:600;color:#fb1669}
 .heat-prog-lbl em:not(:empty)::before{content:"· ";color:var(--muted);font-weight:400}
 .recent-item .ax{width:34px;height:34px;display:block}
+.heat-badge .ax{width:38px;height:38px;animation:none}
+body .heat-badge .ax{width:30px;height:30px;animation:none}
+@media (min-width:0){.heat-badge{overflow:visible}}
