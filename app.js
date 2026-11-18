@@ -599,7 +599,7 @@
       buy.textContent = `Comprar · ${game.cfg.freeze_cost} moedas`;
       buy.disabled = game.freezes >= game.cfg.freeze_max;
     }
-    $("#statList").innerHTML = stats.map(([v, l, k]) => `<div class="stat"><span class="stat-ico">${svg(k, 24)}</span><span class="stat-lbl">${l}</span><span class="stat-val">${v}</span></div>`).join("");
+    $("#statList").innerHTML = stats.map(([v, l, k]) => `<div class="stat"><span class="stat-ico">${AXMAP[k] ? AXI(AXMAP[k], 34) : svg(k, 24)}</span><span class="stat-lbl">${l}</span><span class="stat-val">${v}</span></div>`).join("");
   }
 
   /* ---------- Perfil ---------- */
