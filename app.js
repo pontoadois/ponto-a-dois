@@ -26,6 +26,7 @@
     lock: "M7 11V7a5 5 0 0 1 10 0v4 M5 11h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1z",
   };
   const COIN = (s = 16) => `<svg class="coin-ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#coinIco"/></svg>`;
+  const ICO = (n, s = 20) => `<svg class="ico" width="${s}" height="${s}" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><use href="#ic${n}"/></svg>`;
   const svg = (k, s = 22, sw = 1.9, fill = "none") =>
     `<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="${fill}" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${PATHS[k]}"/></svg>`;
 
@@ -86,18 +87,14 @@
       d.setDate(base.getDate() - dow + i);
       const iso = d.toISOString().slice(0, 10);
       let cls = played.has(iso) ? "is-on" : iso === today ? "is-today" : "";
-      let icon = played.has(iso) || iso === today ? svg("flame", 20, 1.9, played.has(iso) ? "rgba(255,247,255,.3)" : "none") : "";
-      // Dias vazios: perdido (chama riscada) ou futuro (chama só de contorno)
+      let icon = played.has(iso) ? ICO("Flame", 26) : iso === today ? ICO("FlameDim", 24) : "";
+      // Dias vazios: protegido (escudo), perdido (chama riscada) ou futuro (chama apagada)
       if (!played.has(iso) && iso !== today) {
-        if (shielded.has(iso)) { cls = "is-shield"; icon = svg("shield", 19, 1.9); }
-        else if (iso > today) { cls = "is-future"; icon = svg("flame", 19, 1.7); }
-        else if (!since || iso >= since) { cls = "is-missed"; icon = svg("flameOff", 19, 1.8); }
+        if (shielded.has(iso)) { cls = "is-shield"; icon = ICO("Shield", 26); }
+        else if (iso > today) { cls = "is-future"; icon = ICO("FlameDim", 22); }
+        else if (!since || iso >= since) { cls = "is-missed"; icon = ICO("FlameOff", 22); }
       }
-      if (home) {
-        // Início: check nos dias em que jogaram; chama e destaque no dia de hoje (a ofensiva já foi contada)
-        if (played.has(iso)) { icon = svg("check", 20, 2.6); if (iso === today) cls = "is-on is-now"; }
-        else if (iso === today) { cls = "is-today"; icon = svg("flame", 20, 1.9, "none"); }
-      }
+      if (home && played.has(iso) && iso === today) cls = "is-on is-now";
       return `<div class="wk-day ${cls}"><span class="wk-dot">${icon}</span>${name}</div>`;
     }).join("");
   }
@@ -238,7 +235,7 @@
     const peek = $("#peekBtn");
     peek.hidden = plan.premium || g.peeks_left <= 0;
     peek.classList.toggle("is-low", g.coins < g.cfg.peek_cost);
-    $("#peekLbl").innerHTML = `Espiar outra carta<span class="peek-pm"> premium</span> · ${g.cfg.peek_cost} moedas`;
+    $("#peekLbl").innerHTML = `<span class="peek-t">Espiar outra carta<span class="peek-pm"> premium</span></span><span class="peek-cost">${g.cfg.peek_cost}${COIN(16)}</span>`;
   }
 
   /* ---------- Campo de data (digitar DD/MM/AAAA + calendário do site) ---------- */
@@ -548,11 +545,11 @@
       const iso = `${calMonth}-${String(d).padStart(2, "0")}`;
       let cls = "", icon = "";
       // Mesmos ícones da semana na tela inicial
-      if (played.has(iso)) { cls = "is-on"; icon = svg("check", 18, 2.6); if (iso === today) cls = "is-on is-now"; }
-      else if (shielded.has(iso)) { cls = "is-shield"; icon = svg("shield", 18, 1.9); }
-      else if (iso === today) { cls = "is-today"; icon = svg("flame", 18, 1.9, "none"); }
-      else if (iso > today) { cls = "is-future"; icon = svg("flame", 17, 1.7); }
-      else if (!since || iso >= since) { cls = "is-missed"; icon = svg("flameOff", 17, 1.8); }
+      if (played.has(iso)) { cls = "is-on"; icon = ICO("Flame", 22); if (iso === today) cls = "is-on is-now"; }
+      else if (shielded.has(iso)) { cls = "is-shield"; icon = ICO("Shield", 22); }
+      else if (iso === today) { cls = "is-today"; icon = ICO("FlameDim", 20); }
+      else if (iso > today) { cls = "is-future"; icon = ICO("FlameDim", 19); }
+      else if (!since || iso >= since) { cls = "is-missed"; icon = ICO("FlameOff", 19); }
       else cls = "is-before";
       cells += `<div class="wk-day oc-day ${cls}" ${shielded.has(iso) ? 'title="Dia protegido por bloqueio de ofensiva"' : ""}><span class="wk-dot">${icon}</span><span class="oc-n">${d}</span></div>`;
     }
@@ -571,7 +568,7 @@
       </div>
       <div class="oc-dow">${DOW.map((n) => `<span>${n}</span>`).join("")}</div>
       <div class="oc-grid">${cells}</div>
-      <div class="oc-legend"><span><i class="lg lg--on">${svg("check", 10, 3)}</i>Jogado</span><span><i class="lg lg--shield">${svg("shield", 11, 2.4)}</i>Protegido</span><span><i class="lg lg--missed">${svg("flameOff", 10, 2)}</i>Perdido</span></div>`;
+      <div class="oc-legend"><span><i class="lg lg--on">${ICO("Flame", 14)}</i>Jogado</span><span><i class="lg lg--shield">${ICO("Shield", 14)}</i>Protegido</span><span><i class="lg lg--missed">${ICO("FlameOff", 14)}</i>Perdido</span></div>`;
   }
   document.addEventListener("click", (e) => {
     const b = e.target.closest && e.target.closest("[data-cal]");
@@ -1177,6 +1174,13 @@
     }
     btn.textContent = "Continuar";
   }
+  (function initPeekFan() {
+    const B = window.CARD_BACKS;
+    if (!B) return;
+    const e = $(".pf--eco"), r = $(".pf--rosa");
+    if (e) e.innerHTML = B.eco;
+    if (r) r.innerHTML = B.rosa;
+  })();
   (function initChest() {
     const m = $("#modalChest"), box = $("#chestBox"), btn = $("#chestBtn");
     if (!m || !box || !btn) return;
