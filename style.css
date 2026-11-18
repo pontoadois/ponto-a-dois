@@ -2395,7 +2395,7 @@ body[data-screen="inicio"] .pm-banner { animation-delay: 0.44s; }
 
 /* 4. Corações do símbolo subindo devagar ao fundo */
 .fx-hearts { display: none; position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
-body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, body[data-screen="plano"] .fx-hearts, body[data-screen="perfil"] .fx-hearts, body[data-screen="profile"] .fx-hearts { display: block; }
+body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, body[data-screen="plano"] .fx-hearts, body[data-screen="perfil"] .fx-hearts, body[data-screen="profile"] .fx-hearts, body[data-screen="planos"] .fx-hearts { display: block; }
 .fx-h { position: absolute; left: var(--x); bottom: -60px; width: var(--s); height: auto; color: #fb1669; opacity: 0; animation: fx-float var(--t) linear infinite; animation-delay: var(--d); }
 @keyframes fx-float { 0% { transform: translate(0, 0) rotate(-8deg); opacity: 0; } 12% { opacity: 0.16; } 50% { transform: translate(14px, -55vh) rotate(6deg); } 88% { opacity: 0.16; } 100% { transform: translate(-6px, -112vh) rotate(16deg); opacity: 0; } }
 
@@ -2752,3 +2752,37 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 @keyframes pk-shine{0%,38%{transform:translateX(-130%)}62%,100%{transform:translateX(130%)}}
 @keyframes pk-sp{0%{opacity:0;transform:translate(0,0) scale(1)}12%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
 @media (prefers-reduced-motion:reduce){.peek-fan::before,.peek-fan .pf,.peek-fan .pf::after,.pk-sp{animation:none}.pk-sp{opacity:0}}
+
+/* Termômetro de coração: líquido mais agitado */
+.hh-slosh{transform-box:view-box;transform-origin:100px 0;animation:hh-slosh 3.4s ease-in-out infinite}
+.hh-wave{animation:hh-wave 1.6s linear infinite}
+.hh-wave--b{animation-name:hh-wave-b;animation-duration:2.5s}
+@keyframes hh-slosh{0%,100%{transform:rotate(-4deg) translateY(2px)}50%{transform:rotate(4deg) translateY(-2.5px)}}
+@keyframes hh-wave{from{transform:translateX(0) scaleY(2.1)}to{transform:translateX(-30px) scaleY(2.1)}}
+@keyframes hh-wave-b{from{transform:translate(0,-2px) scaleY(2.6)}to{transform:translate(-30px,-2px) scaleY(2.6)}}
+.hh-bub{fill:#fff7ff;opacity:0;animation:hh-bub var(--t) ease-in infinite var(--d)}
+@keyframes hh-bub{0%{opacity:0;transform:translateY(72px) scale(.6)}15%{opacity:.65}85%{opacity:.5}100%{opacity:0;transform:translateY(6px) scale(1)}}
+.hh-drop{fill:#fb1669;opacity:0;animation:hh-drop var(--t) ease-out infinite var(--d)}
+@keyframes hh-drop{0%,55%{opacity:0;transform:translate(0,3px)}65%{opacity:1}82%{opacity:1;transform:translate(var(--x),-13px)}100%{opacity:0;transform:translate(calc(var(--x)*1.5),3px)}}
+.heat-heart svg{transform-origin:50% 55%;animation:hh-beat 2.4s ease-in-out infinite}
+@keyframes hh-beat{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.05)}20%{transform:scale(1)}28%{transform:scale(1.03)}}
+@media (prefers-reduced-motion:reduce){.hh-slosh,.hh-wave,.hh-bub,.hh-drop,.heat-heart svg{animation:none}.hh-bub,.hh-drop{opacity:0}}
+
+/* Planos: leque de cartas bem mais animado */
+.plans-fan{isolation:isolate;overflow:visible}
+.plans-fan::before{content:"";position:absolute;inset:-18% -14%;z-index:-1;border-radius:50%;background:radial-gradient(closest-side,rgba(251,22,105,.5),rgba(251,22,105,0));animation:pl-glow 3.6s ease-in-out infinite;pointer-events:none}
+.plans-fan .fan-card--l{animation:pl-l 5s ease-in-out infinite}
+.plans-fan .fan-card--r{animation:pl-r 5s ease-in-out -.8s infinite}
+.plans-fan .fan-card--c{animation:pl-c 4.2s ease-in-out infinite}
+.plans-fan .fan-card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(112deg,rgba(255,247,255,0) 36%,rgba(255,247,255,.55) 50%,rgba(255,247,255,0) 64%);transform:translateX(-140%);animation:pl-shine 5.2s ease-in-out infinite}
+.plans-fan .fan-card--l::after{animation-delay:1.6s}
+.plans-fan .fan-card--r::after{animation-delay:3.2s}
+.pl-sp{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff7ff;box-shadow:0 0 8px 2px rgba(251,22,105,.7);opacity:0;z-index:3;pointer-events:none;animation:pl-sp var(--t) ease-out var(--d) infinite}
+.pl-sp:nth-of-type(3n){background:#fb1669;box-shadow:0 0 8px 2px rgba(251,22,105,.8)}
+@keyframes pl-glow{0%,100%{opacity:.55;transform:scale(.9)}50%{opacity:1;transform:scale(1.1)}}
+@keyframes pl-l{0%,100%{transform:rotate(-12deg) translate(0,0)}50%{transform:rotate(-19deg) translate(-9%,-5%)}}
+@keyframes pl-r{0%,100%{transform:rotate(12deg) translate(0,0)}50%{transform:rotate(19deg) translate(9%,-6%)}}
+@keyframes pl-c{0%,100%{transform:translateY(0) rotate(-1.2deg) scale(1);box-shadow:0 16px 34px rgba(0,0,0,.5),0 0 22px rgba(251,22,105,.3)}50%{transform:translateY(-9%) rotate(1.4deg) scale(1.04);box-shadow:0 26px 44px rgba(0,0,0,.45),0 0 48px rgba(251,22,105,.65)}}
+@keyframes pl-shine{0%,40%{transform:translateX(-140%)}66%,100%{transform:translateX(140%)}}
+@keyframes pl-sp{0%{opacity:0;transform:translate(0,0) scale(.5)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){.plans-fan::before,.plans-fan .fan-card,.plans-fan .fan-card::after,.pl-sp{animation:none}.pl-sp{opacity:0}}
