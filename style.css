@@ -2703,3 +2703,7 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 @keyframes ayk-fk{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
 @keyframes ayk-mh{0%{opacity:0;transform:translate(0,0) scale(.5)}18%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.2)}}
 @media (prefers-reduced-motion:reduce){.ay-fk,.ay-mh{animation:none;opacity:0}.ay-halo,.ay-bob,.ay-floor,.ay-core,.ay-cal,.ay-chk,.ay-ring,.ay-sp,.ay-heart,.ay-up,.ay-shield,.ay-shine,.ay-bubble{animation:none}.ay-chk{stroke-dashoffset:0}.ay-ring,.ay-sp,.ay-up,.ay-bubble,.ay-shine{opacity:0}}
+
+.ay-fl{transform-box:view-box;transform-origin:12px 20px;animation:ayk-flick 1.8s ease-in-out infinite}
+@keyframes ayk-flick{0%,100%{transform:scale(1,1)}30%{transform:scale(.96,1.05)}60%{transform:scale(1.03,.97)}}
+@media (prefers-reduced-motion:reduce){.ay-fl{animation:none}}

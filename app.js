@@ -102,7 +102,7 @@
   }
 
   /* ---------- Moedas: saldo na barra de cima e formas de ganhar de graça ---------- */
-  const AXMAP = { lock: "axLock", calendar: "axCal", heart: "axHeart", shield: "axShield" };
+  const AXMAP = { lock: "axLock", calendar: "axCal", heart: "axHeart", shield: "axShield", flame: "axFlame" };
   function renderCoins() {
     const g = game, c = (g && g.cfg) || {};
     const n = g ? g.coins : 0;
