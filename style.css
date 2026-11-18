@@ -2406,15 +2406,10 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
 
 /* ===== Ícones com respiração suave (parados com "reduzir movimento") ===== */
 @keyframes ic-glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(251, 22, 105, 0)); } 50% { filter: drop-shadow(0 0 4px rgba(251, 22, 105, 0.55)); } }
-.ic-crown { animation: ic-glow 4.2s ease-in-out infinite; }
-
-.ic-shackle { transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1); }
-.ic-lock:hover .ic-shackle, button:hover .ic-lock .ic-shackle, a:hover .ic-lock .ic-shackle { transform: translateY(-1.6px); }
 
 @keyframes ic-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
 .ic-flame path { transform-box: fill-box; transform-origin: 50% 100%; animation: ic-breathe 2.8s ease-in-out var(--ic-delay, 0s) infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .ic-crown, .ic-flame path { animation: none !important; }
-  .ic-shackle { transition: none; }
 }
