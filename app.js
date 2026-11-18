@@ -216,7 +216,7 @@
     const span = g.next_at ? g.next_at - g.stage_start : 1;
     const pct = g.next_at ? Math.min(100, Math.round(((g.points - g.stage_start) / span) * 100)) : 100;
     $("#heatFill").style.width = pct + "%";
-    $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span} pontos` : "Nível máximo";
+    $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span}` : "Nível máximo";
     $("#heatBar").setAttribute("aria-valuenow", pct);
     $("#stPoints").textContent = g.points;
     $("#stNext").textContent = g.next_at ? g.next_at - g.points : "Máximo";
@@ -225,7 +225,7 @@
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
     renderCoins();
-    $("#heatProgLeft").textContent = g.next_at ? `faltam ${g.next_at - g.points}` : "";
+    $("#heatProgLeft").textContent = g.next_at ? `faltam ${g.next_at - g.points} pontos` : "";
     const next = g.next_at ? "" : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : (next ? " " : "") + '<button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
