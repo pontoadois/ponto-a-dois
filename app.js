@@ -215,7 +215,10 @@
     // A barra mostra o caminho até o próximo estágio (os pontos nunca diminuem)
     const span = g.next_at ? g.next_at - g.stage_start : 1;
     const pct = g.next_at ? Math.min(100, Math.round(((g.points - g.stage_start) / span) * 100)) : 100;
-    $("#heatFill").style.width = pct + "%";
+    const hf = $("#heatFill");
+    hf.style.width = pct + "%";
+    // O reflexo passa uma única vez, quando a barra carrega (ou muda de valor)
+    if (hf.dataset.pct !== String(pct)) { hf.dataset.pct = String(pct); hf.classList.remove("hb-go"); void hf.offsetWidth; hf.classList.add("hb-go"); }
     $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span}` : "Nível máximo";
     $("#heatBar").setAttribute("aria-valuenow", pct);
     $("#stPoints").textContent = g.points;
