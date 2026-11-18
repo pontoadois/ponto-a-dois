@@ -231,9 +231,9 @@
 
   function renderHeroFans() {
     if (!D) return;
-    const get = (id) => D.categories.find((c) => c.id === id);
-    const card = (c, cls) => (c ? `<div class="fan-card ${cls}">${c.icon}<span>${c.name}</span></div>` : "");
-    const html = card(get("diversao"), "fan-card--l") + card(get("intimidade"), "fan-card--r") + card(get("conexao"), "fan-card--c");
+    const B = window.CARD_BACKS || {};
+    const back = (v, cls) => `<div class="fan-card fan-back ${cls}">${B[v] || ""}</div>`;
+    const html = back("eco", "fan-card--l") + back("eco", "fan-card--r") + back("rosa", "fan-card--c");
     $$(".au-fan").forEach((el) => { el.innerHTML = html; });
   }
 

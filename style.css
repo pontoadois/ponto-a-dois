@@ -2733,3 +2733,22 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 @keyframes azk-tk{0%,8%{opacity:.3}16%,72%{opacity:1}86%,100%{opacity:.3}}
 @keyframes azk-beat{0%,34%,100%{transform:scale(1)}10%{transform:scale(1.1)}20%{transform:scale(1)}26%{transform:scale(1.06)}}
 @media (prefers-reduced-motion:reduce){.az-merc,.az-tk,.az-bulb,.az-core{animation:none}.az-tk{opacity:1}}
+
+/* Cartas novas nos leques */
+.fan-card.fan-back{padding:0;gap:0;display:block;overflow:hidden;background:#160713;border-color:rgba(251,22,105,.7);opacity:1}
+.fan-card.fan-back svg{display:block;width:100%;height:100%}
+.fan-card--c.fan-back{box-shadow:0 16px 34px rgba(0,0,0,.5),0 0 26px rgba(251,22,105,.28)}
+/* Animação do botão Espiar */
+.peek-fan::before{content:"";position:absolute;inset:-12px -8px;border-radius:50%;background:radial-gradient(closest-side,rgba(251,22,105,.5),rgba(251,22,105,0));animation:pk-glow 3.4s ease-in-out infinite;pointer-events:none}
+.peek-fan .pf--eco{animation:pk-l 4.2s ease-in-out infinite}
+.peek-fan .pf--rosa{animation:pk-r 4.2s ease-in-out infinite;z-index:1}
+.peek-fan .pf::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,247,255,0) 38%,rgba(255,247,255,.6) 50%,rgba(255,247,255,0) 62%);transform:translateX(-130%);animation:pk-shine 4.2s ease-in-out infinite}
+.peek-fan .pf--rosa::after{animation-delay:.7s}
+.pk-sp{position:absolute;width:4px;height:4px;border-radius:50%;background:#fff7ff;opacity:0;z-index:2;pointer-events:none;animation:pk-sp 3.6s ease-out var(--d) infinite}
+.pk-sp:nth-of-type(even){background:#fb1669}
+@keyframes pk-glow{0%,100%{opacity:.5;transform:scale(.92)}50%{opacity:1;transform:scale(1.08)}}
+@keyframes pk-l{0%,100%{transform:rotate(-9deg) translate(0,0)}50%{transform:rotate(-14deg) translate(-2px,-2px)}}
+@keyframes pk-r{0%,100%{transform:rotate(8deg) translate(0,0)}50%{transform:rotate(13deg) translate(2px,-3px)}}
+@keyframes pk-shine{0%,38%{transform:translateX(-130%)}62%,100%{transform:translateX(130%)}}
+@keyframes pk-sp{0%{opacity:0;transform:translate(0,0) scale(1)}12%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
+@media (prefers-reduced-motion:reduce){.peek-fan::before,.peek-fan .pf,.peek-fan .pf::after,.pk-sp{animation:none}.pk-sp{opacity:0}}
