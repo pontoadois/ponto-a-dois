@@ -2709,3 +2709,6 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 @media (prefers-reduced-motion:reduce){.ay-fl{animation:none}}
 .ay-fl2{transform-box:view-box;transform-origin:12px 22px;animation:ayk-flick 1.8s ease-in-out infinite}
 @media (prefers-reduced-motion:reduce){.ay-fl2{animation:none}}
+
+.chip-st .ax{width:24px;height:24px;flex:none}
+.shield-ico .ax{width:34px;height:34px}
