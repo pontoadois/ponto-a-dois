@@ -2404,22 +2404,17 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
   .fx-hearts { display: none !important; }
 }
 
-/* ===== Ícones animados (parados com "reduzir movimento") ===== */
-.ic-spark { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; opacity: 0; transform-box: fill-box; transform-origin: center; }
-@keyframes ic-twinkle { 0%, 55%, 100% { opacity: 0; transform: scale(0.2) rotate(0); } 70% { opacity: 1; transform: scale(1.15) rotate(20deg); } 85% { opacity: 0.8; transform: scale(0.9) rotate(45deg); } }
-.ic-crown .ic-spark--a { animation: ic-twinkle 3.6s ease-in-out infinite; }
-.ic-crown .ic-spark--b { animation: ic-twinkle 3.6s ease-in-out 1.3s infinite; }
-@keyframes ic-shine { 0%, 60%, 100% { filter: drop-shadow(0 0 0 rgba(251, 22, 105, 0)); } 75% { filter: drop-shadow(0 0 5px rgba(251, 22, 105, 0.9)); } }
-.ic-crown { animation: ic-shine 3.6s ease-in-out infinite; }
+/* ===== Ícones com respiração suave (parados com "reduzir movimento") ===== */
+@keyframes ic-glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(251, 22, 105, 0)); } 50% { filter: drop-shadow(0 0 4px rgba(251, 22, 105, 0.55)); } }
+.ic-crown { animation: ic-glow 4.2s ease-in-out infinite; }
 
-.ic-shackle { transform-box: fill-box; transform-origin: 100% 100%; transition: transform 0.35s cubic-bezier(0.3, 1.4, 0.5, 1); animation: ic-unlock 6s ease-in-out var(--ic-delay, 0s) infinite; }
-@keyframes ic-unlock { 0%, 62%, 100% { transform: none; } 68%, 80% { transform: translateY(-3px) rotate(-24deg); } 88% { transform: translateY(0) rotate(0); } }
-.ic-lock:hover .ic-shackle, button:hover .ic-lock .ic-shackle { animation-play-state: paused; transform: translateY(-3px) rotate(-24deg); }
+.ic-shackle { transition: transform 0.45s cubic-bezier(0.22, 0.8, 0.3, 1); }
+.ic-lock:hover .ic-shackle, button:hover .ic-lock .ic-shackle, a:hover .ic-lock .ic-shackle { transform: translateY(-1.6px); }
 
-@keyframes ic-flicker { 0%, 100% { transform: scale(1, 1) rotate(0); } 20% { transform: scale(0.96, 1.07) rotate(-2deg); } 45% { transform: scale(1.04, 0.96) rotate(1.5deg); } 70% { transform: scale(0.97, 1.05) rotate(-1deg); } }
-.ic-flame path { transform-box: fill-box; transform-origin: 50% 100%; animation: ic-flicker 1.8s ease-in-out var(--ic-delay, 0s) infinite; }
+@keyframes ic-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
+.ic-flame path { transform-box: fill-box; transform-origin: 50% 100%; animation: ic-breathe 2.8s ease-in-out var(--ic-delay, 0s) infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .ic-crown, .ic-crown .ic-spark, .ic-shackle, .ic-flame path { animation: none !important; }
-  .ic-spark { opacity: 0; }
+  .ic-crown, .ic-flame path { animation: none !important; }
+  .ic-shackle { transition: none; }
 }
