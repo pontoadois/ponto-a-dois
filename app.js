@@ -152,7 +152,7 @@
       const b = document.createElement("button");
       b.type = "button";
       b.className = "recent-item";
-      b.innerHTML = `<span>${svg("heart", 22)}</span><span class="recent-name"></span>`;
+      b.innerHTML = `<span>${AXI("axHeart", 34)}</span><span class="recent-name"></span>`;
       $(".recent-name", b).textContent = r.label;
       b.addEventListener("click", () => { app().applyPlay({ categories: r.cats, mode: r.mode }); app().play(r.mode); });
       list.appendChild(b);
@@ -225,8 +225,9 @@
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
     renderCoins();
-    const next = g.next_at ? `Faltam <b class="hl">${g.next_at - g.points} pontos</b> para o próximo nível. Continuem juntos!` : "Vocês chegaram ao estágio mais alto. Que bonito!";
-    $("#heatNext").innerHTML = next + (spouse ? "" : ' <button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
+    $("#heatProgLeft").textContent = g.next_at ? `faltam ${g.next_at - g.points}` : "";
+    const next = g.next_at ? "" : "Vocês chegaram ao estágio mais alto. Que bonito!";
+    $("#heatNext").innerHTML = next + (spouse ? "" : (next ? " " : "") + '<button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");
     if (add) add.addEventListener("click", () => app().goTo("profile"));
     renderSpecialDate(p, g);
@@ -353,9 +354,11 @@
     // Convite discreto para cadastrar a data (depois do nome do cônjuge)
     if (!info && p && p.spouse_name) {
       const hn = $("#heatNext");
-      hn.innerHTML = hn.innerHTML + ' <button type="button" class="link-btn" id="addDate">Adicionar a data especial do casal</button>';
+      hn.innerHTML = hn.innerHTML + (hn.innerHTML ? ' ' : '') + '<button type="button" class="link-btn" id="addDate">Adicionar a data especial do casal</button>';
       $("#addDate").addEventListener("click", () => app().goTo("profile"));
     }
+    const hnp = $("#heatNext").parentElement;
+    hnp.hidden = !$("#heatNext").textContent.trim();
   }
 
   function openLevels() {

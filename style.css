@@ -2713,3 +2713,8 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 .chip-st .ax{width:24px;height:24px;flex:none}
 .shield-ico .ax{width:34px;height:34px}
 .stat-ico .ax{width:34px;height:34px}
+
+.heat-prog-lbl .hp-r{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;justify-content:flex-end;text-align:right}
+.heat-prog-lbl em{font-style:normal;font-weight:600;color:#fb1669}
+.heat-prog-lbl em:not(:empty)::before{content:"· ";color:var(--muted);font-weight:400}
+.recent-item .ax{width:34px;height:34px;display:block}
