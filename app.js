@@ -938,7 +938,7 @@
     if (a && !a.innerHTML) {
       const B = window.CARD_BACKS || {};
       const back = (v, cls) => `<div class="fan-card fan-back ${cls}">${B[v] || ""}</div>`;
-      a.innerHTML = back("eco", "fan-card--l") + back("eco", "fan-card--r") + back("rosa", "fan-card--c");
+      a.innerHTML = back("eco", "fan-card--l") + back("eco", "fan-card--r") + back("rosa", "fan-card--c") + `<b class="pl-sp" style="left:10%;top:30%;--x:-14px;--y:-60px;--t:3.4s;--d:0s"></b><b class="pl-sp" style="left:88%;top:26%;--x:16px;--y:-64px;--t:3.8s;--d:0.7s"></b><b class="pl-sp" style="left:50%;top:4%;--x:-6px;--y:-44px;--t:3.2s;--d:1.4s"></b><b class="pl-sp" style="left:24%;top:70%;--x:-18px;--y:-46px;--t:3.6s;--d:2.1s"></b><b class="pl-sp" style="left:78%;top:74%;--x:18px;--y:-50px;--t:3.5s;--d:2.8s"></b><b class="pl-sp" style="left:60%;top:16%;--x:10px;--y:-52px;--t:3.3s;--d:0.3s"></b><b class="pl-sp" style="left:38%;top:8%;--x:-10px;--y:-48px;--t:3.9s;--d:1.9s"></b>`;
     }
   }
 
