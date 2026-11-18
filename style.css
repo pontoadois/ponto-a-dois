@@ -2403,13 +2403,3 @@ body[data-screen="inicio"] .fx-hearts, body[data-screen="streak"] .fx-hearts, bo
   body[data-screen="inicio"] .week-card, body[data-screen="inicio"] .heat-card, body[data-screen="inicio"] .exp-card, body[data-screen="inicio"] .secret-card, body[data-screen="inicio"] .pm-banner, body[data-screen="inicio"] .peek-btn, .exp-card--quick .exp-btn, .pm-btn, .appnav-play, .heat-badge svg, .pm-banner::after, .secret-card::after { animation: none; }
   .fx-hearts { display: none !important; }
 }
-
-/* ===== Ícones com respiração suave (parados com "reduzir movimento") ===== */
-@keyframes ic-glow { 0%, 100% { filter: drop-shadow(0 0 0 rgba(251, 22, 105, 0)); } 50% { filter: drop-shadow(0 0 4px rgba(251, 22, 105, 0.55)); } }
-
-@keyframes ic-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.045); } }
-.ic-flame path { transform-box: fill-box; transform-origin: 50% 100%; animation: ic-breathe 2.8s ease-in-out var(--ic-delay, 0s) infinite; }
-
-@media (prefers-reduced-motion: reduce) {
-  .ic-crown, .ic-flame path { animation: none !important; }
-}
