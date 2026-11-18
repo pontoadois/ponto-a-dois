@@ -2666,3 +2666,40 @@ body .oc-day.is-now .wk-dot { box-shadow: 0 0 0 2px rgba(255, 247, 255, 0.85); }
 @keyframes axk-lfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.4px)}}
 @keyframes axk-fk{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}}
 @media (prefers-reduced-motion:reduce){.ax-fl,.ax-fk{animation:none}.ax-fk{opacity:0}}
+
+/* ===== Calendário, coração de nível e escudo animados ===== */
+:where(#axCal,#axHeart,#axShield) *{transform-box:fill-box}
+#axCal,#axHeart,#axShield{overflow:visible}
+.ay-halo{transform-origin:50% 50%;animation:ayk-pulse 3s ease-in-out infinite}
+.ay-bob{animation:ayk-bob 4.2s ease-in-out infinite}
+.ay-floor,.ay-core{transform-origin:50% 50%;animation:ayk-flr 4.2s ease-in-out infinite}
+.ay-core{filter:blur(.35px)}
+/* calendário */
+.ay-cal{transform-box:view-box;transform-origin:12px 20px;animation:ayk-calpop 4.2s ease-in-out infinite}
+.ay-chk{stroke-dasharray:14;stroke-dashoffset:14;animation:ayk-chk 4.2s ease-in-out infinite}
+.ay-ring{fill:none;stroke:#FB1669;stroke-width:.9;opacity:0;transform-origin:50% 50%;animation:ayk-ring 4.2s ease-out infinite}
+.ay-sp{fill:#FFF7FF;opacity:0;transform-origin:50% 50%;animation:ayk-sp 4.2s ease-out var(--d) infinite}
+/* coração */
+.ay-heart{transform-box:view-box;transform-origin:12px 14px;animation:ayk-beat 2.4s ease-in-out infinite}
+.ay-up{fill:none;stroke:#FFF7FF;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;opacity:0;animation:ayk-up 2.4s ease-out var(--d) infinite}
+/* escudo */
+.ay-shield{transform-box:view-box;transform-origin:12px 20px;animation:ayk-shpop 4.2s ease-in-out infinite}
+.ay-shine{animation:ayk-shine 4.2s ease-in-out infinite}
+.ay-bubble{fill:none;stroke:#FB1669;stroke-width:.9;opacity:0;transform-box:view-box;transform-origin:12px 12px;animation:ayk-bubble 4.2s ease-out infinite}
+@keyframes ayk-pulse{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:1;transform:scale(1.1)}
+@keyframes ayk-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-1.2px)}
+@keyframes ayk-flr{0%,100%{opacity:1;transform:scaleX(1)}50%{opacity:.5;transform:scaleX(.8)}
+@keyframes ayk-calpop{0%,26%,40%,100%{transform:scale(1)}32%{transform:scale(1.09)}36%{transform:scale(.98)}
+@keyframes ayk-chk{0%,10%{stroke-dashoffset:14}28%,82%{stroke-dashoffset:0}92%,100%{stroke-dashoffset:14}
+@keyframes ayk-ring{0%,28%{opacity:0;transform:scale(.6)}32%{opacity:.85}60%,100%{opacity:0;transform:scale(1.8)}
+@keyframes ayk-sp{0%,28%{opacity:0;transform:translate(0,0) scale(1)}33%{opacity:1}62%,100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.2)}
+@keyframes ayk-beat{0%,40%,100%{transform:scale(1)}8%{transform:scale(1.14)}16%{transform:scale(1)}24%{transform:scale(1.08)}32%{transform:scale(1)}
+@keyframes ayk-up{0%,5%{opacity:0;transform:translateY(0)}20%{opacity:1}70%,100%{opacity:0;transform:translateY(-6px)}
+@keyframes ayk-shpop{0%,34%,100%{transform:scale(1)}40%{transform:scale(1.08)}46%{transform:scale(1)}
+@keyframes ayk-shine{0%,30%{transform:translateX(-12px)}58%,100%{transform:translateX(26px)}
+@keyframes ayk-bubble{0%,36%{opacity:0;transform:scale(.8)}42%{opacity:.9}78%,100%{opacity:0;transform:scale(1.7)}
+.ay-fk{opacity:0;transform-origin:50% 50%;animation:ayk-fk var(--t) ease-out var(--d) infinite}
+.ay-mh{opacity:0;transform-origin:50% 50%;animation:ayk-mh var(--t) ease-out var(--d) infinite}
+@keyframes ayk-fk{0%{opacity:0;transform:translate(0,0) scale(.6)}15%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(.3)}
+@keyframes ayk-mh{0%{opacity:0;transform:translate(0,0) scale(.5)}18%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) scale(1.2)}
+@media (prefers-reduced-motion:reduce){.ay-fk,.ay-mh{animation:none;opacity:0}.ay-halo,.ay-bob,.ay-floor,.ay-core,.ay-cal,.ay-chk,.ay-ring,.ay-sp,.ay-heart,.ay-up,.ay-shield,.ay-shine,.ay-bubble{animation:none}.ay-chk{stroke-dashoffset:0}.ay-ring,.ay-sp,.ay-up,.ay-bubble,.ay-shine{opacity:0}
