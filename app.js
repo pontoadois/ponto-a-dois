@@ -219,7 +219,7 @@
     hf.style.width = pct + "%";
     // O reflexo passa uma única vez, quando a barra carrega (ou muda de valor)
     if (hf.dataset.pct !== String(pct)) { hf.dataset.pct = String(pct); hf.classList.remove("hb-go"); void hf.offsetWidth; hf.classList.add("hb-go"); }
-    $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span}` : "Nível máximo";
+    $("#heatProgTxt").textContent = g.next_at ? `${Math.max(0, g.points - g.stage_start)} de ${span} pontos` : "Nível máximo";
     $("#heatBar").setAttribute("aria-valuenow", pct);
     $("#stPoints").textContent = g.points;
     $("#stNext").textContent = g.next_at ? g.next_at - g.points : "Máximo";
@@ -228,7 +228,7 @@
     $("#stFreezesLbl").textContent = g.freezes === 1 ? "bloqueio de ofensiva" : "bloqueios de ofensiva";
     $("#stCoins").textContent = g.coins;
     renderCoins();
-    $("#heatProgLeft").textContent = g.next_at ? `faltam ${g.next_at - g.points} pontos` : "";
+    $("#heatProgMsg").innerHTML = g.next_at ? `Faltam <b class="hl">${g.next_at - g.points} pontos</b> para o próximo nível` : "Vocês estão no nível mais alto";
     const next = g.next_at ? "" : "Vocês chegaram ao estágio mais alto. Que bonito!";
     $("#heatNext").innerHTML = next + (spouse ? "" : (next ? " " : "") + '<button type="button" class="link-btn" id="addSpouse">Adicionar o nome do cônjuge</button>');
     const add = $("#addSpouse");

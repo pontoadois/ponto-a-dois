@@ -2801,3 +2801,11 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 .heat-prog-lbl .hp-r{flex-wrap:nowrap;white-space:nowrap}
 .heat-prog-lbl em{padding:4px 9px}
 @media (max-width:400px){.heat-prog-lbl .hp-r{flex-wrap:wrap;gap:4px 8px}}
+
+/* Linha da barra: frase clara à esquerda, progresso à direita */
+.heat-prog-lbl{align-items:center}
+.heat-prog-lbl #heatProgMsg{min-width:0}
+.heat-prog-lbl #heatProgMsg b.hl{color:#fb1669;font-weight:600}
+.heat-prog-lbl #heatProgTxt{white-space:nowrap;flex:none}
+.heat-prog-lbl{flex-wrap:wrap;row-gap:2px}
+.heat-prog-lbl > span:first-child{white-space:normal}
