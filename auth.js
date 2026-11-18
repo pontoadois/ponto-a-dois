@@ -234,7 +234,8 @@
     const B = window.CARD_BACKS || {};
     const back = (v, cls) => `<div class="fan-card fan-back ${cls}">${B[v] || ""}</div>`;
     const html = back("eco", "fan-card--l") + back("eco", "fan-card--r") + back("rosa", "fan-card--c");
-    $$(".au-fan").forEach((el) => { el.innerHTML = html; });
+    const flakes = `<b class="pl-sp" style="left:45%;top:39%;--s:5px;--x:6px;--y:-73px;--t:5.7s;--d:3.8s"></b><b class="pl-sp" style="left:50%;top:27%;--s:6px;--x:-8px;--y:-72px;--t:5.8s;--d:2.9s"></b><b class="pl-sp" style="left:34%;top:31%;--s:6px;--x:-1px;--y:-73px;--t:8.0s;--d:0.9s"></b><b class="pl-sp" style="left:32%;top:27%;--s:6px;--x:4px;--y:-95px;--t:5.6s;--d:1.5s"></b><b class="pl-sp" style="left:75%;top:37%;--s:4px;--x:-1px;--y:-79px;--t:7.1s;--d:4.0s"></b><b class="pl-sp" style="left:75%;top:43%;--s:3px;--x:4px;--y:-106px;--t:7.4s;--d:2.6s"></b><b class="pl-sp" style="left:74%;top:28%;--s:6px;--x:-13px;--y:-109px;--t:6.1s;--d:4.8s"></b><b class="pl-sp" style="left:58%;top:60%;--s:5px;--x:4px;--y:-99px;--t:6.6s;--d:1.7s"></b><b class="pl-sp" style="left:27%;top:51%;--s:3px;--x:4px;--y:-89px;--t:7.1s;--d:6.1s"></b><b class="pl-sp" style="left:61%;top:56%;--s:6px;--x:-12px;--y:-77px;--t:7.0s;--d:1.2s"></b><b class="pl-sp" style="left:47%;top:39%;--s:5px;--x:-1px;--y:-72px;--t:8.4s;--d:0.5s"></b><b class="pl-sp" style="left:75%;top:60%;--s:4px;--x:8px;--y:-92px;--t:7.3s;--d:4.1s"></b><b class="pl-sp" style="left:62%;top:28%;--s:3px;--x:-6px;--y:-100px;--t:7.6s;--d:0.5s"></b><b class="pl-sp" style="left:93%;top:59%;--s:6px;--x:7px;--y:-98px;--t:6.4s;--d:2.7s"></b><b class="pl-sp" style="left:89%;top:64%;--s:3px;--x:0px;--y:-92px;--t:6.0s;--d:0.8s"></b><b class="pl-sp" style="left:11%;top:47%;--s:4px;--x:-10px;--y:-117px;--t:6.2s;--d:2.7s"></b>`;
+    $$(".au-fan").forEach((el) => { el.innerHTML = html + (el.classList.contains("plans-fan") ? flakes : ""); });
   }
 
   async function onLogin(e) {
