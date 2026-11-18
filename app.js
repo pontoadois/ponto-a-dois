@@ -237,7 +237,7 @@
     const peek = $("#peekBtn");
     peek.hidden = plan.premium || g.peeks_left <= 0;
     peek.classList.toggle("is-low", g.coins < g.cfg.peek_cost);
-    $("#peekLbl").textContent = `Espiar outra carta premium · ${g.cfg.peek_cost} moedas`;
+    $("#peekLbl").innerHTML = `<span>Espiar outra carta premium</span><span class="peek-cost">${g.cfg.peek_cost} moedas</span>`;
   }
 
   /* ---------- Campo de data (digitar DD/MM/AAAA + calendário do site) ---------- */
