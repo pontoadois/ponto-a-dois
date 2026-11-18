@@ -2809,3 +2809,11 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 .heat-prog-lbl #heatProgTxt{white-space:nowrap;flex:none}
 .heat-prog-lbl{flex-wrap:wrap;row-gap:2px}
 .heat-prog-lbl > span:first-child{white-space:normal}
+
+/* Sequência: duas colunas em notebook e monitor, como a tela de Plano */
+.st-col{display:flex;flex-direction:column;gap:22px;min-width:0}
+@media (min-width:1024px){
+  .app.app--streak{max-width:1180px;display:grid;grid-template-columns:minmax(0,430px) minmax(0,1fr);column-gap:40px;row-gap:20px;align-items:start}
+  .app--streak > .app-bar{grid-column:1/-1}
+  .app--streak .st-col--a{position:sticky;top:24px}
+}
