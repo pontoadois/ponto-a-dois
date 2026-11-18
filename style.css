@@ -2362,3 +2362,11 @@ body[data-screen="login"] .bg-gradient, body[data-screen="login"]::before, body[
 /* Barra de progresso e indicadores formam um bloco: a barra termina junto com o último indicador */
 .heat-stats { display: flex; flex-direction: column; gap: 14px; }
 @media (min-width: 1536px) { .heat-stats { width: fit-content; max-width: 100%; } }
+
+/* Rótulos: o coração é a temperatura; a barra é o caminho até o próximo nível */
+.hh-cap { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: center; line-height: 1.2; }
+.heat-prog-lbl { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; font-size: 0.82rem; color: var(--muted); }
+.heat-prog-lbl b { font-weight: 600; color: #fff7ff; }
+.heat-stats { gap: 8px; }
+.heat-stats .heat-chips { margin-top: 6px; }
+@media (max-width: 600px) { body .heat-heart .hh-cap { font-size: 0.56rem; letter-spacing: 0.06em; } }
