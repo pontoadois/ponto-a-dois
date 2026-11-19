@@ -260,6 +260,24 @@
     if (!el) return;
     const n = state.settings.categories.length;
     el.textContent = `${n} ${n === 1 ? "categoria" : "categorias"} · ${levelsLabel()}`;
+    renderRecap();
+  }
+
+  // Resumo da partida (aparece só no PC e notebook, ao lado do botão Iniciar)
+  function renderRecap() {
+    const box = $("#stRecap");
+    if (!box) return;
+    const cats = state.settings.categories.map((id) => catById(id)).filter(Boolean);
+    const levels = INT_ORDER.filter((i) => state.settings.intensities.includes(i));
+    const usable = cats.filter((c) => isPremium || !PREMIUM_CATS.includes(c.id)).map((c) => c.id);
+    const total = ((D.cards) || []).filter((c) => usable.includes(c.cat) && levels.includes(c.int)).length;
+    const lvNames = levels.map((id) => INTENSITIES.find((i) => i.id === id).name);
+    const chips = cats.map((c) => `<span class="recap-chip">${c.icon}${c.name}</span>`).join("") || '<span class="recap-empty">Nenhuma categoria marcada</span>';
+    box.innerHTML =
+      '<span class="st-label">Sua partida</span>' +
+      `<div class="recap-row"><b>Categorias</b><div class="recap-chips">${chips}</div></div>` +
+      `<div class="recap-row"><b>Clima</b><span>${lvNames.join(" + ") || "—"}</span></div>` +
+      `<div class="recap-row"><b>Cartas</b><span>${total ? total + " cartas para jogar" : "As cartas carregam ao iniciar"}</span></div>`;
   }
 
   // O plano muda a coroa das categorias (quem assina não vê a coroa)
