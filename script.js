@@ -303,26 +303,29 @@
     const lo = Math.min(...idxs), hi = Math.max(...idxs);
     const intWrap = $("#intensityGrid");
     intWrap.innerHTML = "";
-    INTENSITIES.forEach((it) => {
+    INTENSITIES.forEach((it, k) => {
       const sel = on.includes(it.id);
       const opt = document.createElement("button");
       opt.type = "button";
-      opt.className = "st-step" + (sel ? " is-on" : "");
+      opt.className = "st-opt" + (sel ? " is-on" : "");
       opt.dataset.int = it.id;
       opt.setAttribute("role", "checkbox");
       opt.setAttribute("aria-checked", sel ? "true" : "false");
-      opt.innerHTML = `<span class="st-dotwrap"><span class="st-dot"></span></span>${it.name}`;
+      opt.innerHTML = `<span class="st-lv" aria-hidden="true">${[0, 1, 2].map((n) => `<i class="${n <= k ? "f" : ""}"></i>`).join("")}</span>
+        <span class="st-ot"><b>${it.name}</b><small>${it.desc}</small></span>
+        <span class="st-ck" aria-hidden="true"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>`;
       opt.addEventListener("click", () => toggleIntensity(it.id));
       intWrap.appendChild(opt);
     });
     const fill = $("#intFill");
-    fill.style.marginLeft = lo * 50 + "%";
-    fill.style.width = (hi - lo) * 50 + "%";
-    $("#intLevel").textContent = levelsLabel();
+    if (fill) { fill.style.marginLeft = lo * 50 + "%"; fill.style.width = (hi - lo) * 50 + "%"; }
+    const lvlEl = $("#intLevel");
+    if (lvlEl) lvlEl.textContent = "";
+    const onNames = on.map((id) => INTENSITIES.find((i) => i.id === id).name);
     $("#intHelp").textContent =
-      on.length === 1
-        ? INTENSITIES.find((i) => i.id === on[0]).desc + "."
-        : "Mistura as cartas dos níveis escolhidos.";
+      onNames.length === 1
+        ? `Só cartas ${onNames[0]}.`
+        : `Mistura as cartas de ${onNames.slice(0, -1).join(", ")} e ${onNames[onNames.length - 1]}.`;
 
     renderSummary();
 
@@ -1035,7 +1038,9 @@
     const lbl = $("#roundLabel");
     if (state.preset) {
       const total = state.deck.length;
-      lbl.innerHTML = `${total > 1 ? "Carta" : "Sua carta"} <b id="roundCount">${total > 1 ? Math.min(state.drawIndex, total) : ""}</b>${total > 1 ? " de " + total : ""}`;
+      const cur = Math.min(state.drawIndex, total);
+      const segs = total > 1 && total <= 8 ? `<span class="hud-seg" aria-hidden="true">${Array.from({ length: total }, (_, n) => `<i class="${n < cur ? "on" : ""}"></i>`).join("")}</span>` : "";
+      lbl.innerHTML = `<span class="hud-txt">${total > 1 ? "Carta" : "Sua carta"} <b id="roundCount">${total > 1 ? cur : ""}</b>${total > 1 ? " de " + total : ""}</span>${segs}`;
     } else {
       lbl.innerHTML = `Rodada <b id="roundCount">${state.round}</b>`;
     }

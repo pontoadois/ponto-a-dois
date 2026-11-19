@@ -2851,3 +2851,158 @@ body .heat-badge .ax{width:30px;height:30px;animation:none}
 html { background: radial-gradient(ellipse 60% 50% at 85% 0%, rgba(251, 22, 105, 0.22), rgba(251, 22, 105, 0) 70%), radial-gradient(ellipse 50% 45% at 100% 55%, rgba(251, 22, 105, 0.10), rgba(251, 22, 105, 0) 70%), linear-gradient(180deg, #160713 0%, #190817 100%); background-color: #160713; }
 body { background: transparent; }
 .bg-gradient { display: none; }
+
+/* ===== Intensidade: lista de opções (mesmo estilo dos cartões de categoria) ===== */
+#intLevel { display: none; }
+.st-row:has(#intLevel) { margin-bottom: 4px; }
+.st-scale { padding: 0; border: 0; background: none; }
+.st-track { display: none; }
+.st-steps { display: flex; flex-direction: column; gap: 10px; }
+.st-opt { position: relative; display: flex; align-items: center; gap: 14px; width: 100%; padding: 14px 16px; border-radius: 18px; text-align: left; cursor: pointer; color: #fff7ff; border: 1px solid rgba(251, 22, 105, 0.4); background: rgba(69, 2, 33, 0.4); -webkit-tap-highlight-color: transparent; transition: border-color 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.st-lv { display: flex; align-items: flex-end; gap: 3px; width: 34px; height: 30px; flex: none; }
+.st-lv i { flex: 1; border-radius: 3px; background: rgba(251, 22, 105, 0.28); transition: background 0.25s var(--ease); }
+.st-lv i:nth-child(1) { height: 10px; } .st-lv i:nth-child(2) { height: 19px; } .st-lv i:nth-child(3) { height: 30px; }
+.st-lv i.f { background: #fb1669; }
+.st-ot { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.st-ot b { font-size: 1.05rem; font-weight: 600; line-height: 1.2; }
+.st-ot small { font-size: 0.82rem; line-height: 1.35; font-weight: 300; color: #f0dce8; }
+.st-ck { width: 26px; height: 26px; flex: none; border-radius: 50%; border: 2px solid rgba(251, 22, 105, 0.45); display: grid; place-items: center; color: #fff; transition: background 0.25s var(--ease), border-color 0.25s var(--ease); }
+.st-ck svg { opacity: 0; }
+.st-opt.is-on { border-color: #fb1669; background: linear-gradient(160deg, rgba(251, 22, 105, 0.22), rgba(69, 2, 33, 0.55)); box-shadow: 0 0 0 1px rgba(251, 22, 105, 0.35), 0 8px 22px rgba(251, 22, 105, 0.18); }
+.st-opt.is-on .st-ck { background: #fb1669; border-color: #fb1669; }
+.st-opt.is-on .st-ck svg { opacity: 1; }
+.st-help { margin: 12px 8px 0; }
+
+/* ===== Jogo: carta grande, sem caixa em volta (celular e monitor) ===== */
+.screen--game { padding: 12px 8px 14px; }
+.screen--game .game-inner { width: 100%; max-width: 560px; margin: 0 auto; flex: 1; min-height: 0; padding: 0; gap: 12px; background: none; border: 0; box-shadow: none; border-radius: 0; }
+.screen--game .game-hud { padding: 0 6px; }
+.screen--game .hud-center { flex: 1; justify-content: center; }
+.screen--game .hud-round { font-size: 0.9rem; font-weight: 500; }
+.screen--game .hud-round:has(.hud-seg) { display: flex; flex-direction: column; align-items: center; gap: 7px; }
+.hud-seg { display: flex; gap: 5px; }
+.hud-seg i { width: 30px; height: 4px; border-radius: 9px; background: rgba(255, 140, 200, 0.25); }
+.hud-seg i.on { background: #fb1669; box-shadow: 0 0 8px rgba(251, 22, 105, 0.7); }
+.screen--game .turn-bar { margin: 2px 0; }
+.screen--game .card-stage { flex: 1; min-height: 0; display: flex; align-items: stretch; }
+.screen--game .card { width: 100%; flex: 1; display: flex; }
+.screen--game .card-front { aspect-ratio: auto; flex: 1; min-height: 360px; padding: 44px 30px 90px; justify-content: center; gap: 14px; }
+.screen--game .card-front .card-icon { height: 100px; }
+.screen--game .card-front .card-icon svg { width: 84px; height: 84px; }
+.screen--game .card-front .card-text { font-size: clamp(1.3rem, 6.4vw, 1.7rem); line-height: 1.32; }
+.screen--game .card-front .card-text.text--small { font-size: 1.15rem; }
+.screen--game .card-front .card-text.text--xsmall { font-size: 1.02rem; }
+.screen--game .card-front .card-hint { font-size: 0.98rem; }
+.screen--game .card-cat, .screen--game .card-int, .screen--game .card-mirror { font-size: 0.74rem; }
+.screen--game .game-actions { grid-template-columns: 1.7fr 1fr; gap: 12px; padding: 2px 4px 0; }
+.screen--game .game-actions .btn { height: 56px; border-radius: 999px; font-size: 1.05rem; }
+@media (max-width: 640px) {
+  .screen--game .game-inner { max-width: none; margin: 0; }
+  .screen--game .game-hud .btn--ghost { width: 44px; height: 44px; padding: 0; font-size: 0; gap: 0; justify-content: center; border-radius: 50%; }
+  .screen--game .game-hud .btn--ghost svg { width: 22px; height: 22px; margin: 0; }
+  .screen--game .card-front { padding: 40px 24px 84px; }
+}
+@media (min-width: 900px) {
+  .screen--game { padding: 24px 24px 28px; }
+  .screen--game .game-inner { max-width: 620px; gap: 16px; }
+  .screen--game .card-front { min-height: 480px; padding: 56px 44px 100px; }
+  .screen--game .card-front .card-icon { height: 120px; }
+  .screen--game .card-front .card-icon svg { width: 100px; height: 100px; }
+  .screen--game .card-front .card-text { font-size: clamp(1.5rem, 2.1vw, 1.95rem); }
+  .screen--game .card-front .card-text.text--small { font-size: 1.3rem; }
+  .screen--game .card-front .card-text.text--xsmall { font-size: 1.12rem; }
+  .screen--game .card-front .card-hint { font-size: 1.05rem; }
+  .screen--game .card-cat, .screen--game .card-int, .screen--game .card-mirror { font-size: 0.82rem; }
+  .screen--game .game-actions .btn { height: 60px; font-size: 1.12rem; }
+  .st-opt { padding: 18px 20px; gap: 18px; }
+  .st-lv { width: 40px; height: 34px; }
+  .st-lv i:nth-child(1) { height: 12px; } .st-lv i:nth-child(2) { height: 22px; } .st-lv i:nth-child(3) { height: 34px; }
+  .st-ot b { font-size: 1.2rem; }
+  .st-ot small { font-size: 0.95rem; }
+  .st-ck { width: 30px; height: 30px; }
+  .st-help { font-size: 0.95rem; }
+}
+
+/* Monitor: intensidade embaixo das categorias (ocupa o espaço vazio da coluna da esquerda) */
+@media (min-width: 900px) {
+  .free-panel > .st-block:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .free-panel > .st-block:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .free-panel > .st-block:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
+  .free-panel > .st-cta { grid-column: 2; grid-row: 3; align-self: end; }
+  .free-panel .st-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .st-opt { flex-direction: column; align-items: flex-start; gap: 12px; padding: 18px 16px; min-height: 150px; }
+  .st-opt .st-ck { position: absolute; top: 14px; right: 14px; width: 26px; height: 26px; }
+  .st-ot { gap: 4px; }
+  .st-ot b { font-size: 1.15rem; }
+  .st-ot small { font-size: 0.9rem; }
+}
+
+/* ===== Intensidade: três quadradinhos iguais e alinhados ===== */
+.st-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.st-opt { position: relative; flex-direction: column; align-items: center; justify-content: center; gap: 8px; aspect-ratio: 1 / 1.12; min-height: 0; padding: 12px 8px; text-align: center; }
+.st-opt .st-lv { width: 34px; height: 30px; }
+.st-ot { flex: none; align-items: center; text-align: center; gap: 4px; }
+.st-ot b { font-size: 1rem; }
+.st-ot small { font-size: 0.72rem; line-height: 1.3; }
+.st-opt .st-ck { position: absolute; top: 8px; right: 8px; width: 22px; height: 22px; border-width: 2px; }
+.st-opt .st-ck svg { width: 12px; height: 12px; }
+@media (min-width: 900px) {
+  .free-panel .st-steps { gap: 14px; }
+  .st-opt { aspect-ratio: 1 / 1; gap: 14px; padding: 18px 14px; }
+  .st-opt .st-lv { width: 44px; height: 38px; }
+  .st-lv i:nth-child(1) { height: 14px; } .st-lv i:nth-child(2) { height: 26px; } .st-lv i:nth-child(3) { height: 38px; }
+  .st-ot b { font-size: 1.2rem; }
+  .st-ot small { font-size: 0.9rem; }
+  .st-opt .st-ck { top: 12px; right: 12px; width: 26px; height: 26px; }
+  .st-opt .st-ck svg { width: 14px; height: 14px; }
+}
+
+/* ===== Monitor: carta retangular (proporção de baralho, em pé) ===== */
+@media (min-width: 900px) {
+  .screen--game .game-inner { width: min(100%, calc((100dvh - 290px) * 0.714 + 24px)); max-width: 560px; }
+  .screen--game .card-stage { flex: none; }
+  .screen--game .card { width: 100%; flex: none; }
+  .screen--game .card-front { flex: none; aspect-ratio: 5 / 7; min-height: 0; padding: 48px 34px 92px; }
+  .screen--game .card-front .card-icon { height: 92px; }
+  .screen--game .card-front .card-icon svg { width: 80px; height: 80px; }
+}
+
+/* Monitor com pouca altura (notebooks): carta um pouco mais compacta, sem cortar o texto */
+@media (min-width: 900px) {
+  .screen--game .game-inner { width: min(100%, calc((100dvh - 310px) * 0.714 + 24px)); }
+}
+@media (min-width: 900px) and (max-height: 860px) {
+  .screen--game { padding: 14px 24px 16px; }
+  .screen--game .game-inner { gap: 10px; }
+  .screen--game .game-actions .btn { height: 52px; font-size: 1rem; }
+  .screen--game .card-front { padding: 38px 26px 70px; gap: 10px; }
+  .screen--game .card-front .card-icon { height: 60px; }
+  .screen--game .card-front .card-icon svg { width: 52px; height: 52px; }
+  .screen--game .card-front .card-text { font-size: 1.2rem; line-height: 1.3; }
+  .screen--game .card-front .card-text.text--small { font-size: 1rem; }
+  .screen--game .card-front .card-text.text--xsmall { font-size: 0.9rem; }
+  .screen--game .card-front .card-hint { font-size: 0.85rem; }
+  .screen--game .card-cat, .screen--game .card-int, .screen--game .card-mirror { font-size: 0.68rem; }
+}
+
+/* Jogo livre (monitor): uma coluna organizada, tudo alinhado na mesma grade de 3 colunas */
+@media (min-width: 900px) {
+  .free-panel { display: flex; flex-direction: column; gap: 28px; max-width: 860px; margin: 0 auto; }
+  .free-panel > .st-block, .free-panel > .st-cta { grid-column: auto; grid-row: auto; }
+  .free-panel > .st-block:nth-child(3) { order: 1; }
+  .free-panel > .st-block:nth-child(1) { order: 2; }
+  .free-panel > .st-block:nth-child(2) { order: 3; }
+  .free-panel > .st-cta { order: 4; align-self: stretch; }
+  .free-panel .free-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .free-panel .st-steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .free-panel .st-opt { aspect-ratio: auto; min-height: 124px; padding: 16px 14px; gap: 10px; }
+  .free-panel .st-players { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .free-panel .st-help { text-align: center; margin-top: 12px; }
+}
+@media (min-width: 900px) {
+  .free-panel { align-items: stretch; width: 100%; }
+  .free-panel > .st-block, .free-panel > .st-cta { width: 100%; min-width: 0; align-self: stretch; }
+  .free-panel .free-tiles, .free-panel .st-scale, .free-panel .st-steps { width: 100%; }
+  .free-panel .free-tiles .st-tile { min-height: 124px; }
+  .free-panel .st-steps { margin: 0; }
+}
