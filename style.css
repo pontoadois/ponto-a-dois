@@ -3065,3 +3065,14 @@ body { background: transparent; }
   .screen--game .card-front .card-hint { font-size: 0.78rem; }
   .screen--game .game-actions .btn { height: 50px; }
 }
+
+/* Sem o canto de baixo (Conexão) e com mais respiro entre o texto e a moldura da carta */
+.screen--game .card-mirror { display: none !important; }
+.screen--game .card-front { padding: 44px 36px 48px; }
+.screen--game .card-top { padding: 0 2px; }
+@media (max-width: 899px) and (max-height: 740px) {
+  .screen--game .card-front { padding: 36px 30px 34px; }
+}
+@media (min-width: 900px) {
+  .screen--game .card-front { padding: 52px 44px 52px; }
+}
