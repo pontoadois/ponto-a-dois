@@ -3154,3 +3154,39 @@ body { background: transparent; }
   .free-panel[data-lay="a"] .st-players { max-width: none; }
   .free-panel[data-lay="a"] .st-help { margin: 12px 0 6px; }
 }
+
+@media (min-width: 900px) {
+  /* Intensidade (layout A): botões mais baixos, barras ao lado do texto */
+  .free-panel[data-lay="a"] .st-steps { gap: 12px; }
+  .free-panel[data-lay="a"] .st-opt { flex-direction: row; justify-content: center; align-items: center; text-align: left; min-height: 0; padding: 13px 44px 13px 18px; gap: 14px; }
+  .free-panel[data-lay="a"] .st-opt .st-ot b { font-size: 1rem; }
+  .free-panel[data-lay="a"] .st-opt .st-ot small { font-size: 0.8rem; }
+  .free-panel[data-lay="a"] .st-opt .st-ck { width: 20px; height: 20px; top: 50%; right: 14px; transform: translateY(-50%); }
+}
+@media (min-width: 900px) {
+  .free-panel[data-lay="a"] .st-opt .st-ot { text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; }
+}
+
+/* Celular: categorias em duas colunas (Conexão | Diversão), botões e letras menores */
+@media (max-width: 899px) {
+  .free-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .free-tiles .st-tile { min-height: 0; padding: 12px 12px 13px; gap: 6px; border-radius: 16px; }
+  .free-tiles .st-tile-ico { width: 32px; height: 32px; border-radius: 10px; }
+  .free-tiles .st-tile-ico svg { width: 18px; height: 18px; }
+  .free-tiles .st-tile-name { font-size: 0.92rem; }
+  .free-tiles .st-tile-sub { font-size: 0.74rem; line-height: 1.25; }
+  .free-tiles .st-tile .st-check { width: 20px; height: 20px; top: 10px; right: 10px; }
+  .free-tiles .st-tile .st-crown { top: 11px; right: 10px; }
+  .free-tiles .st-tile .st-crown svg { width: 14px; height: 14px; }
+  .free-tiles .st-tile.is-selected .st-crown { right: 34px; }
+}
+
+/* Celular: botões de intensidade menores */
+@media (max-width: 899px) {
+  .st-steps { gap: 8px; }
+  .st-opt { aspect-ratio: auto; min-height: 0; padding: 10px 6px 11px; gap: 4px; border-radius: 16px; }
+  .st-opt .st-lv { transform: scale(0.78); transform-origin: center; margin: -3px 0; }
+  .st-opt .st-ot b { font-size: 0.86rem; }
+  .st-opt .st-ot small { font-size: 0.66rem; line-height: 1.2; }
+  .st-opt .st-ck { width: 18px; height: 18px; top: 7px; right: 7px; }
+}
