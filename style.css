@@ -3006,3 +3006,14 @@ body { background: transparent; }
   .free-panel .free-tiles .st-tile { min-height: 124px; }
   .free-panel .st-steps { margin: 0; }
 }
+
+/* Monitor e notebook: volta ao fundo em camada própria, como era antes (o fundo na página só é necessário no iPhone) */
+@media (min-width: 900px) {
+  html { background: #160713; }
+  body { background: #160713; }
+  .bg-gradient { display: block; }
+  /* Sem desfoque de fundo nos cartões grandes: o fundo já é quase opaco e o desfoque pesa com muitas animações */
+  .heat-card, .reco, .streak-hero, .exp-card, .plan-card--promo { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
+/* Telas que não estão à vista não gastam processamento com animações */
+.screen:not(.is-active) *, .screen:not(.is-active) *::before, .screen:not(.is-active) *::after { animation-play-state: paused !important; }
