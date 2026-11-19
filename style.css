@@ -3041,3 +3041,27 @@ body { background: transparent; }
   .screen--game .card-front .card-icon { height: 92px; }
   .screen--game .card-front .card-icon svg { width: 80px; height: 80px; }
 }
+
+/* Carta com proporção de baralho também no celular (o verso não é mais cortado) e giro que não invade os botões */
+.screen--game .card-stage { justify-content: center; align-items: center; perspective: 3200px; }
+.screen--game .card { flex: none; width: min(100%, calc((100dvh - 300px) * 0.714)); margin: 0 auto; }
+@media (max-width: 899px) {
+  .screen--game .card-front { height: auto; aspect-ratio: 5 / 7; min-height: 0; padding: 38px 22px 70px; }
+}
+@keyframes cardSpin {
+  0% { transform: rotateY(0); }
+  50% { transform: rotateY(180deg); }
+  100% { transform: rotateY(360deg); }
+}
+.screen--game .game-actions, .screen--game .game-hud, .screen--game .turn-bar { position: relative; z-index: 5; }
+.screen--game .card { width: min(100%, calc((100dvh - 250px) * 0.714)); }
+@media (max-width: 899px) and (max-height: 740px) {
+  .screen--game .card-front { padding: 30px 18px 52px; gap: 8px; }
+  .screen--game .card-front .card-icon { height: 52px; }
+  .screen--game .card-front .card-icon svg { width: 46px; height: 46px; }
+  .screen--game .card-front .card-text { font-size: 1rem; line-height: 1.28; }
+  .screen--game .card-front .card-text.text--small { font-size: 0.92rem; }
+  .screen--game .card-front .card-text.text--xsmall { font-size: 0.84rem; }
+  .screen--game .card-front .card-hint { font-size: 0.78rem; }
+  .screen--game .game-actions .btn { height: 50px; }
+}
