@@ -3193,3 +3193,7 @@ body { background: transparent; }
 
 /* Sequência: sem a luz grande atrás do número (a luz achatada embaixo da chama fica) */
 .streak-hero::after { display: none; }
+
+/* Frase da página inicial em uma linha só */
+.home-subtitle { max-width: none; white-space: nowrap; font-size: clamp(0.78rem, 3.4vw, 1.1rem); }
+.au-hero--min .au-hero-sub { max-width: none; white-space: nowrap; }
