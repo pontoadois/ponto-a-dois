@@ -1546,7 +1546,7 @@ body[data-screen="inicio"] .appnav, body[data-screen="streak"] .appnav, body[dat
 .st-crown { position: absolute; top: 12px; right: 12px; color: #fb1669; display: flex; }
 .st-tile.is-selected .st-crown { right: 42px; }
 .st-fl { display: block; margin: 0 0 6px 2px; font-size: 0.8rem; font-weight: 500; color: #f0dce8; }
-.st-p1 .st-fl { color: #fb1669; }
+.st-p1 .st-fl { color: #f0dce8; }
 .st-p2 .st-fl { color: #f0dce8; }
 .st-field input.is-invalid { border-color: #ef5350; box-shadow: 0 0 0 3px rgba(239, 83, 80, 0.2); }
 @media (min-width: 640px) { .free-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -3190,3 +3190,6 @@ body { background: transparent; }
   .st-opt .st-ot small { font-size: 0.66rem; line-height: 1.2; }
   .st-opt .st-ck { width: 18px; height: 18px; top: 7px; right: 7px; }
 }
+
+/* Sequência: sem a luz grande atrás do número (a luz achatada embaixo da chama fica) */
+.streak-hero::after { display: none; }
